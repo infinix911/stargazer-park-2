@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="authStore.isAuthenticated">
     <DropdownMenuTrigger as-child>
       <button class="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors cursor-pointer">
         <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
