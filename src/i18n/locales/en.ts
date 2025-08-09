@@ -13,6 +13,11 @@ export default {
     login: 'Login',
     signup: 'Sign Up'
   },
+  auth: {
+    loginRequired: 'Login Required',
+    loginRequiredMessage: 'Please log in to access this feature.',
+    loginNow: 'Login Now'
+  },
   login: {
     title: 'PRODTEST2',
     subtitle: 'Login Required',

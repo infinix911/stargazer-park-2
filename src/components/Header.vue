@@ -153,13 +153,16 @@
 // Header component with TypeScript
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Swal from 'sweetalert2'
 import Sheet from './ui/sheet/Sheet.vue'
 import SheetContent from './ui/sheet/SheetContent.vue'
 import SheetTrigger from './ui/sheet/SheetTrigger.vue'
 import DepositModal from '../views/transaction/DepositModal.vue'
 import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
+import { useAuthStore } from '../stores/auth'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false)
@@ -170,12 +173,30 @@ const showWithdrawalModal = ref(false)
 
 // Handle deposit button click
 const handleDepositClick = (): void => {
+  if (!authStore.isAuthenticated) {
+    Swal.fire({
+      icon: 'warning',
+      title: t('auth.loginRequired'),
+      text: t('auth.loginRequiredMessage'),
+      confirmButtonText: t('auth.loginNow')
+    })
+    return
+  }
   showDepositModal.value = true
   isMobileMenuOpen.value = false // Close mobile menu if open
 }
 
 // Handle withdrawal button click
 const handleWithdrawalClick = (): void => {
+  if (!authStore.isAuthenticated) {
+    Swal.fire({
+      icon: 'warning',
+      title: t('auth.loginRequired'),
+      text: t('auth.loginRequiredMessage'),
+      confirmButtonText: t('auth.loginNow')
+    })
+    return
+  }
   showWithdrawalModal.value = true
   isMobileMenuOpen.value = false // Close mobile menu if open
 }

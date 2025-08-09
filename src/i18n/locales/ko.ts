@@ -13,6 +13,11 @@ export default {
     login: '로그인',
     signup: '회원가입'
   },
+  auth: {
+    loginRequired: '로그인 필요',
+    loginRequiredMessage: '이 기능을 사용하려면 로그인이 필요합니다.',
+    loginNow: '로그인하기'
+  },
   login: {
     title: 'PRODTEST2',
     subtitle: '로그인이 필요합니다',
