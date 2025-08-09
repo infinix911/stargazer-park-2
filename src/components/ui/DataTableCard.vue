@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-interface Props {
+export interface Props {
   title: string
   subtitle: string
   recordCount: number

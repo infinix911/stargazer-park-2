@@ -65,7 +65,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
 
-interface IData {
+export interface IData {
   last_ip: string;
   last_login: string;
   level: number;

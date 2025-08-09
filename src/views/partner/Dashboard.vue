@@ -100,7 +100,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
 
-interface IData {
+export interface IData {
   deposit: number;
   bonus: number;
   withdrawal: number;
@@ -110,7 +110,7 @@ interface IData {
   wallet_rolling: number;
 }
 
-interface ISummaryTable {
+export interface ISummaryTable {
   game_type: string;
   betamt: string;
   winamt: string;
@@ -123,7 +123,7 @@ interface ISummaryTable {
   games: Array<any>;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
@@ -133,6 +133,7 @@ export default defineComponent({
   components: {
     KTDatatable,
     DateRangePicker,
+    DataTableCard,
   },
   setup() {
     const { t } = useI18n();
@@ -241,11 +242,6 @@ export default defineComponent({
       getList,
       formatDateRange,
     };
-  },
-  components: {
-    KTDatatable,
-    DateRangePicker,
-    DataTableCard,
   },
 });
 </script>

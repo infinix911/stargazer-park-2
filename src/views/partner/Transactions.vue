@@ -238,7 +238,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
 
-interface IData {
+export interface IData {
   member_id: string;
   member: string;
   transaction_type: string;
@@ -249,7 +249,7 @@ interface IData {
   updatedAt: string;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
