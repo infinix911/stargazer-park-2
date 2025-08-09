@@ -35,11 +35,11 @@ export default defineComponent({
 
     const shortcuts = ref([
       {
-        text: t("DateRange.Today"),
+        text: t("dateRange.today"),
         value: new Date(),
       },
       {
-        text: t("DateRange.Yesterday"),
+        text: t("dateRange.yesterday"),
         value: (() => {
           const start = new Date();
           start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
@@ -47,7 +47,7 @@ export default defineComponent({
         })(),
       },
       {
-        text: t("DateRange.LastWeek"),
+        text: t("dateRange.lastWeek"),
         value: (() => {
           const start = new Date();
           start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);

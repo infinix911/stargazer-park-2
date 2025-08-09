@@ -1,16 +1,16 @@
 <template>
   <tbody class="fw-semibold text-center"
-   :class="{'accordion accordion-flush': isAccordion}"
-   id="accordionFlush"
   >
     <template v-for="(item, i) in data" :key="i">
       <tr
-        :class="[gameNameClass(data[i]?.game_name),{'accordion-button collapsed': isAccordion}]"
-        data-bs-toggle="collapse"
-        :data-bs-target="`#flush-collapse${i}`"
-        aria-expanded="false"
-        :aria-controls="`flush-collapse${i}`"
-        @click="getSelectedRow(i)"
+        :class="[
+          gameNameClass(data[i]?.game_name), 
+          { 
+            'cursor-pointer': isAccordion,
+            'active': isAccordion && selectedRow === i
+          }
+        ]"
+        @click="isAccordion ? getSelectedRow(i) : null"
       >
         <td v-if="checkboxEnabled">
           <div
@@ -26,10 +26,18 @@
           </div>
         </td>
         <!-- Is Accordion -->
-        <td v-if="isAccordion">
+        <td v-if="isAccordion" data-accordion-chevron>
           <div>
-            <i class="fa-solid fa-chevron-down" v-if="i != selectedRow"></i>
-            <i class="fa-solid fa-chevron-right" v-else></i>
+            <i 
+              class="fas fa-chevron-down" 
+              v-if="i !== selectedRow"
+              :style="{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px' }"
+            ></i>
+            <i 
+              class="fas fa-chevron-right" 
+              v-else
+              :style="{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px' }"
+            ></i>
           </div>
         </td>
         <template v-for="(cell, j) in header" :key="j">
@@ -101,14 +109,11 @@
         </template>
       </tr>
       <tr
-        class="accordion-collapse collapse text-center w-100"
-        :id="`flush-collapse${i}`"
-        :aria-labelledby="`flush-heading${i}`"
-        data-bs-parent="#accordionFlush"
-        v-if="isAccordion"
+        v-if="isAccordion && selectedRow === i"
+        class="text-center w-100 border-t border-gray-700"
       >
         <!-- COLSPAN -->
-        <td colspan="10" class="accordion-body">
+        <td :colspan="getTotalColumns()" class="p-4 bg-gray-800/50">
           <slot :name="`table-sub${i}`"> </slot>
         </td>
       </tr>
@@ -244,6 +249,13 @@ export default defineComponent({
       window.open(`/partner/member/${id}`, '_blank', 'noreferrer;height=700;width=1200')
     }
 
+    const getTotalColumns = () => {
+      let totalColumns = props.header.length;
+      if (props.checkboxEnabled) totalColumns++;
+      if (props.isAccordion) totalColumns++;
+      return totalColumns;
+    };
+
     return {
       selectedRow,
       selectedItems,
@@ -253,7 +265,8 @@ export default defineComponent({
       rollingTypeClass,
       losingTypeClass,
       openMemberInfo,
-      gameNameClass
+      gameNameClass,
+      getTotalColumns
     };
   },
 });

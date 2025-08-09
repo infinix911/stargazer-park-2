@@ -7,13 +7,15 @@ export default {
     holdem: '홀덤',
     deposit: '입금신청',
     withdraw: '출금신청',
-    myLounge: '마이 라운지'
+    myLounge: '마이 라운지',
+    partner: '파트너',
   },
   topBar: {
     login: '로그인',
     signup: '회원가입'
   },
   login: {
+    id: "유저아이디",
     title: 'PRODTEST2',
     subtitle: '로그인이 필요합니다',
     description: '선택한 서비스를 이용하시려면 로그인이 필요합니다',
@@ -314,6 +316,22 @@ export default {
     faq: '자주 묻는 질문',
     help: '도움말'
   },
+  status: {
+    normal: "정상",
+    new: "신규",
+    waiting: "대기",
+    stopped: "중지",
+    complete: "완료",
+    application: "신청",
+    adminCancel: "관리자 취소",
+    waitingForApproval: "승인대기",
+    0: "대기중",
+    win: "적중",
+    lose: "비적중",
+    tie: "타이 환급",
+    2: "환급",
+    3: "오류",
+  },
   partnerMenu: {
     home: "홈",
     dashboard: "대시보드",
@@ -337,6 +355,8 @@ export default {
     reports: "리포트",
   },
   partner: {
+    winningAmount: "당첨금액",
+    amountAfter: "전환 후",
     slotButton: "슬롯 회수",
     slotMoney: "슬롯 머니",
     type: "타입",

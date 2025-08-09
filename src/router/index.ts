@@ -94,14 +94,39 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/partner/Members.vue"),
       },
       {
+        path: "/partner/members/online",
+        name: "partner-members-online",
+        component: () => import("../views/partner/MembersOnline.vue"),
+      },
+      {
+        path: "/partner/shop-transactions",
+        name: "partner-shop-transactions",
+        component: () => import("../views/partner/ShopTransactions.vue"),
+      },
+      {
+        path: "/partner/betting",
+        name: "partner-betting",
+        component: () => import("../views/partner/Betting.vue"),
+      },
+      {
         path: "/partner/transactions",
         name: "partner-transactions",
         component: () => import("../views/partner/Transactions.vue"),
       },
       {
-        path: "/partner/reports",
-        name: "partner-reports",
-        component: () => import("../views/partner/Reports.vue"),
+        path: "/partner/statistics",
+        name: "partner-statistics",
+        component: () => import("../views/partner/Statistics.vue"),
+      },
+      {
+        path: "/partner/settlement/request",
+        name: "partner-settlement-request",
+        component: () => import("../views/partner/SettlementRequest.vue"),
+      },
+      {
+        path: "/partner/settlement/history",
+        name: "partner-settlement-history",
+        component: () => import("../views/partner/SettlementHistory.vue"),
       },
     ],
   },
