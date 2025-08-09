@@ -100,10 +100,6 @@ const authStore = useAuthStore()
 // Get user data from auth store
 const user = computed(() => authStore.user)
 
-// Counter values
-const mCounter = ref(0)
-const pCounter = ref(0)
-
 // Language switching function
 const setLanguage = (lang: 'ko' | 'en') => {
   locale.value = lang
