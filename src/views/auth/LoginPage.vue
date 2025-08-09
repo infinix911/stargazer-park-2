@@ -211,7 +211,6 @@ const handleSubmit = async (): Promise<void> => {
   isSubmitting.value = true
 
   try {
-    console.log('Login attempt:', form)
     const resp = await authStore.login(form as ILoginForm);
 
     if (resp.success) {

@@ -91,8 +91,18 @@ export default {
       bankAccountRequired: 'Bank account number is required',
       bankAccountFormat: 'Please enter a valid bank account number',
       captchaRequired: 'Please solve the captcha',
-      captchaIncorrect: 'Incorrect captcha answer'
-    }
+      captchaIncorrect: 'Incorrect captcha answer',
+      refreshCaptchaError: 'Failed to refresh captcha',
+      usernameExists: 'Username already exists',
+      allFieldsRequired: 'Please fill in all required fields',
+      invalidRequest: 'Invalid request',
+      serverError: 'Server error occurred'
+    },
+    successTitle: 'Registration Successful!',
+    successMessage: 'Your account has been created successfully. Please log in.',
+    errorTitle: 'Registration Failed',
+    errorMessage: 'An error occurred during registration. Please try again.',
+    ok: 'OK'
   },
   deposit: {
     title: 'Deposit Request',

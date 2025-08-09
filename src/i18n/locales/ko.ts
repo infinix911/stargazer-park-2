@@ -91,8 +91,18 @@ export default {
       bankAccountRequired: '계좌번호를 입력해주세요',
       bankAccountFormat: '올바른 계좌번호를 입력해주세요',
       captchaRequired: '캡차를 해결해주세요',
-      captchaIncorrect: '캡차가 올바르지 않습니다'
-    }
+      captchaIncorrect: '캡차가 올바르지 않습니다',
+      refreshCaptchaError: '캡차 새로고침에 실패했습니다',
+      usernameExists: '이미 존재하는 사용자명입니다',
+      allFieldsRequired: '모든 필드를 입력해주세요',
+      invalidRequest: '잘못된 요청입니다',
+      serverError: '서버 오류가 발생했습니다'
+    },
+    successTitle: '회원가입 성공!',
+    successMessage: '계정이 성공적으로 생성되었습니다. 로그인해 주세요.',
+    errorTitle: '회원가입 실패',
+    errorMessage: '회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.',
+    ok: '확인'
   },
   deposit: {
     title: '입금 신청',
