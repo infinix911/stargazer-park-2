@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="$t('PartnerMenu.dashboard')"
+    :title="t('PartnerMenu.dashboard')"
     subtitle="Transactions Overview and Game Summary"
     icon="fas fa-users"
     icon-color="green-blue"
@@ -32,7 +32,7 @@
               @click="setSelectedDate(dateButton.range)"
               class="w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
-              {{ $t(dateButton.label) }}
+              {{ t(dateButton.label) }}
             </button>
             <button
               @click="getList"
@@ -58,7 +58,7 @@
                   <i class="fas fa-exchange-alt text-blue-400 text-sm"></i>
                 </div>
                 <div>
-                  <h2 class="text-lg font-semibold text-white">{{ $t("partner.totalDepWid") }}</h2>
+                  <h2 class="text-lg font-semibold text-white">{{ t("partner.totalDepWid") }}</h2>
                   <p class="text-xs text-gray-400">Transaction Overview</p>
                 </div>
               </div>
@@ -82,7 +82,7 @@
                   <i class="fas fa-gamepad text-green-400 text-sm"></i>
                 </div>
                 <div>
-                  <h2 class="text-lg font-semibold text-white">{{ $t("partner.gameBetTotal") }}</h2>
+                  <h2 class="text-lg font-semibold text-white">{{ t("partner.gameBetTotal") }}</h2>
                   <p class="text-xs text-gray-400">Game Statistics</p>
                 </div>
               </div>
@@ -107,13 +107,13 @@
                   :rowsPerPage="50"
                 >
                   <template #cell-game="{ row: data }">
-                    <span>{{ $t(data.game) }}</span>
+                    <span>{{ t(data.game) }}</span>
                   </template>
                 </KTDatatable>
               </template>
               <!-- Main Game Type Cell -->
               <template #cell-game="{ row: data }">
-                <span>{{ $t(data.game_type) }}</span>
+                <span>{{ t(data.game_type) }}</span>
               </template>
             </KTDatatable>
           </div>
@@ -151,7 +151,7 @@ interface ISummaryTable {
   rollamtsub: string;
   loseamt: string;
   loseamtsub: string;
-  games: Object;
+  games: Array<any>;
 }
 
 interface DateRange {
@@ -262,6 +262,7 @@ export default defineComponent({
     });
 
     return {
+      t,
       tableHeaders,
       tableData,
       gameTableHeaders,

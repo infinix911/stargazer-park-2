@@ -2,7 +2,7 @@
   <!-- Page Header -->
   <PartnerPageHeader 
     v-if="member_id === undefined"
-    :title="$t('partnerMenu.transaction')"
+    :title="t('partnerMenu.transaction')"
     subtitle="Member deposit and withdrawal transaction history"
     icon="fas fa-exchange-alt"
     icon-color="blue-indigo"
@@ -16,7 +16,7 @@
           <!-- Transaction Type -->
           <div class="flex-shrink-0">
             <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              {{ $t("partner.tranType") }}
+              {{ t("partner.tranType") }}
             </label>
             <select 
               v-model="tranType" 
@@ -71,7 +71,7 @@
                 class="mr-2 bg-white/10 border-white/20 text-blue-500 focus:ring-blue-500 focus:ring-2"
               />
               <label for="include-sub-check" class="text-white text-sm whitespace-nowrap">
-                {{ $t("partner.includeSub") }}
+                {{ t("partner.includeSub") }}
               </label>
             </div>
           </div>
@@ -113,8 +113,8 @@
               <i class="fas fa-arrow-down text-green-300 text-xl"></i>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white">{{ $n(sums.deposits) }}</h3>
-              <p class="text-sm text-gray-300">{{ $t('partnerMenu.totalDepositAmount') }}</p>
+              <h3 class="text-2xl font-bold text-white">{{ n(sums.deposits) }}</h3>
+              <p class="text-sm text-gray-300">{{ t('partnerMenu.totalDepositAmount') }}</p>
             </div>
           </div>
         </div>
@@ -126,8 +126,8 @@
               <i class="fas fa-arrow-up text-red-300 text-xl"></i>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white">{{ $n(sums.withdrawals) }}</h3>
-              <p class="text-sm text-gray-300">{{ $t('partnerMenu.totalWithdrawalAmount') }}</p>
+              <h3 class="text-2xl font-bold text-white">{{ n(sums.withdrawals) }}</h3>
+              <p class="text-sm text-gray-300">{{ t('partnerMenu.totalWithdrawalAmount') }}</p>
             </div>
           </div>
         </div>
@@ -155,14 +155,14 @@
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
                   >
                     <i class="fas fa-arrow-down mr-1"></i>
-                    {{ $t("depWid." + data.transaction_type) }}
+                    {{ t("depWid." + data.transaction_type) }}
                   </span>
                   <span 
                     v-else
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
                   >
                     <i class="fas fa-arrow-up mr-1"></i>
-                    {{ $t("depWid." + data.transaction_type) }}
+                    {{ t("depWid." + data.transaction_type) }}
                   </span>
                 </div>
               </template>
@@ -175,9 +175,9 @@
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
                   >
                     <i class="fas fa-plus mr-1"></i>
-                    {{ $n(parseInt(data.amount_deposit)) }}
+                    {{ n(parseInt(data.amount_deposit)) }}
                     <span v-if="data.amount_coupon > 0" class="ml-1 text-yellow-300">
-                      (+{{ $n(parseInt(data.amount_coupon)) }})
+                      (+{{ n(parseInt(data.amount_coupon)) }})
                     </span>
                   </span>
                   <span 
@@ -185,7 +185,7 @@
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
                   >
                     <i class="fas fa-minus mr-1"></i>
-                    {{ $n(parseInt(data.amount_withdraw)) }}
+                    {{ n(parseInt(data.amount_withdraw)) }}
                   </span>
                 </div>
               </template>
@@ -235,7 +235,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n();
+    const { t, n } = useI18n();
     
     const tableData = ref<IData[]>([]);
     const tableHeaders = [
@@ -331,6 +331,8 @@ export default defineComponent({
       setSelectedDate,
       getList,
       sums,
+      t,
+      n,
     };
   },
 });

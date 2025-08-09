@@ -14,7 +14,7 @@
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
               style="height: 40px;"
             >
-              <option value="" class="bg-gray-800 text-white">{{ $t("partner.all") }}</option>
+              <option value="" class="bg-gray-800 text-white">{{ t("partner.all") }}</option>
               <option v-for="mem in members" :key="mem.member_id" :value="mem.member_id" class="bg-gray-800 text-white">
                 {{ mem.member }}
               </option>
@@ -42,7 +42,7 @@
               @click="setSelectedDate(dateButton.range)"
               class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
-              {{ $t(dateButton.label) }}
+              {{ t(dateButton.label) }}
             </button>
             <button
               @click="getList"
@@ -65,7 +65,7 @@
               <i class="fas fa-chart-bar text-yellow-400 text-sm"></i>
             </div>
             <div>
-              <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ $t('partnerMenu.statistics') }}</h2>
+              <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ t('partnerMenu.statistics') }}</h2>
               <p class="text-xs text-gray-400">Game performance and analytics overview</p>
             </div>
           </div>
@@ -102,12 +102,12 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 
-interface IMember {
+export interface IMember {
   member: string;
   member_id: string;
 }
 
-interface IData {
+export interface IData {
   betamt: number;
   deposits: number;
   loseamt: number;
@@ -121,7 +121,7 @@ interface IData {
   withdrawals: number;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
@@ -256,6 +256,7 @@ export default defineComponent({
       gameDisplayName,
       setSelectedDate,
       getList,
+      t,
     };
   },
 });

@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="$t('partnerMenu.betting')"
+    :title="t('partnerMenu.betting')"
     subtitle="Betting history and game analytics"
     icon="fas fa-dice"
     icon-color="red-rose"
@@ -24,7 +24,7 @@
             ]"
           >
             <i :class="`${tab.icon} mr-2`"></i>
-            {{ $t(tab.label) }}
+            {{ t(tab.label) }}
           </button>
         </nav>
       </div>
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import GameBetHistory from "@/components/bet-history/GameBetHistory.vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "BetHistory",
@@ -51,6 +52,7 @@ export default defineComponent({
     GameBetHistory,
   },
   setup() {
+    const { t } = useI18n();
     const activeTab = ref("casino");
     
     const gameTabs = [
@@ -81,6 +83,7 @@ export default defineComponent({
     };
 
     return {
+      t,
       activeTab,
       gameTabs,
       setActiveTab,

@@ -5,7 +5,7 @@
     v-model="date"
     type="datetime"
     unlink-panels
-    :placeholder="$t('Date')"
+    :placeholder="t('Date')"
     :shortcuts="shortcuts"
     :change="emitSelectedDates()"
     :clearable="false"
@@ -64,6 +64,7 @@ export default defineComponent({
     };
 
     return {
+      t,
       date,
       shortcuts,
       emitSelectedDates,

@@ -4,7 +4,7 @@
     <template v-for="(item, i) in data" :key="i">
       <tr
         :class="[
-          gameNameClass(data[i]?.game_name), 
+          gameNameClass(data[i]?.game_name || ''), 
           { 
             'cursor-pointer': isAccordion,
             'active': isAccordion && selectedRow === i
@@ -19,7 +19,7 @@
             <input
               class="form-check-input"
               type="checkbox"
-              :value="row[checkboxLabel]"
+              :value="item[checkboxLabel]"
               v-model="selectedItems"
               @change="onChange"
             />
@@ -46,7 +46,7 @@
             <span v-if="cell.key === 'member'">
               <a
                 href="javascript:void(0);"
-                @click="openMemberInfo(item['member_id'])"
+                @click="openMemberInfo(item['member_id'] || '')"
                 >{{ item[cell.key] }}</a
               >
               </span>
@@ -69,26 +69,26 @@
                 :class="rollingTypeClass(item[cell.key])"
                 class="text-white"
               >
-                {{ $t("Agents.RollingType." + item[cell.key]) }}
+                {{ t("Agents.RollingType." + item[cell.key]) }}
               </span>
             </span>
             <!-- Losing Type -->
             <span v-if="cell.key === 'losing_type'">
               <span :class="losingTypeClass(item[cell.key])" class="text-white">
-                {{ $t("Agents.LosingType." + item[cell.key]) }}
+                {{ t("Agents.LosingType." + item[cell.key]) }}
               </span>
             </span>
             <!-- Currency Column -->
-            <span v-if="cell.currency"> {{ $n(Number(item[cell.key])) }}</span>
+            <span v-if="cell.currency"> {{ n(Number(item[cell.key])) }}</span>
             <!-- Text column -->
             <span v-if="cell.text"> {{ item[cell.key] }}</span>
             <!-- Profit Column -->
             <template v-if="cell.profit">
               <span class="text-success" v-if="Number(item[cell.key]) >= 0">
-                {{ $n(Number(item[cell.key])) }}
+                {{ n(Number(item[cell.key])) }}
               </span>
               <span class="text-danger" v-else-if="Number(item[cell.key]) < 0">
-                {{ $n(Number(item[cell.key])) }}
+                {{ n(Number(item[cell.key])) }}
               </span>
             </template>
             <!-- Date Column -->
@@ -131,7 +131,7 @@
               class="fas"
               :class="cell.columnSumIcon"
             />
-            {{ $n(sumColumn(data, cell.key)) }}</span
+            {{ n(sumColumn(data, cell.key)) }}</span
           >
         </td>
       </template>
@@ -157,12 +157,14 @@ import { defineComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { array } from "yup";
 
+import type { TableHeader, TableRow } from "@/components/kt-datatable/types";
+
 export default defineComponent({
   name: "table-body-row",
   props: {
-    header: { type: Array, required: true },
-    data: { type: Array, required: true },
-    currentlySelectedItems: { type: Array, required: false, default: () => [] },
+    header: { type: Array as () => TableHeader[], required: true },
+    data: { type: Array as () => TableRow[], required: true },
+    currentlySelectedItems: { type: Array as () => any[], required: false, default: () => [] },
     checkboxEnabled: { type: Boolean, required: false, default: false },
     checkboxLabel: { type: String, required: false, default: "id" },
     columnSum: { type: Boolean, default: false },
@@ -171,6 +173,7 @@ export default defineComponent({
   },
   emits: ["on-select"],
   setup(props, { emit }) {
+    const { t, n } = useI18n();
     const selectedRow: any = ref(-1);
     //eslint-disable-next-line
     const selectedItems = ref<Array<any>>([]);
@@ -192,8 +195,11 @@ export default defineComponent({
       emit("on-select", selectedItems.value);
     };
 
-    const getSelectedRow = (row: number) => {
-      if (selectedRow.value === row) return (selectedRow.value = -1);
+    const getSelectedRow = (row: number): void => {
+      if (selectedRow.value === row) {
+        selectedRow.value = -1;
+        return;
+      }
       selectedRow.value = row;
     };
 
@@ -201,24 +207,24 @@ export default defineComponent({
      * Sum
      *
      */
-    const sumColumn = (items: any, column: string) =>
-      items.reduce((a, b) => +a + +Number(b[column]), 0);
+    const sumColumn = (items: any[], column: string): number =>
+      items.reduce((a: number, b: any) => +a + +Number(b[column]), 0);
 
     /**
      * For Rolling and Losing type badges
      */
-    const rollingTypeClass = (type: number) => {
-      const badgeColor = {
+    const rollingTypeClass = (type: number): string => {
+      const badgeColor: Record<number, string> = {
         0: "badge bg-primary",
         1: "badge bg-info",
         2: "badge bg-success",
       };
 
-      return badgeColor[type];
+      return badgeColor[type] || "";
     };
 
-    const losingTypeClass = (type: number) => {
-      const badgeColor = {
+    const losingTypeClass = (type: number): string => {
+      const badgeColor: Record<number, string> = {
         0: "badge bg-success",
         1: "badge bg-warning",
         2: "badge bg-info",
@@ -230,19 +236,17 @@ export default defineComponent({
         8: "badge bg-white text-secondary",
       };
 
-      return badgeColor[type];
+      return badgeColor[type] || "";
     };
 
-    const gameNameClass = (game: string) => {
-      const { t } = useI18n();
-
-      let rowColor: Array<{}> = [];
+    const gameNameClass = (game: string): string => {
+      const rowColor: Record<string, string> = {};
       rowColor[t("header.Casino")] = "bg-row-blue";
       rowColor[t("header.Slot")] = "bg-row-blue";
       rowColor[t("header.Hotel")] = "bg-row-orange";
       rowColor[t("header.Sport")] = "bg-row-red";
 
-      return rowColor[game];
+      return rowColor[game] || "";
     }
 
     const openMemberInfo = (id: string) => {
@@ -266,7 +270,9 @@ export default defineComponent({
       losingTypeClass,
       openMemberInfo,
       gameNameClass,
-      getTotalColumns
+      getTotalColumns,
+      t,
+      n
     };
   },
 });

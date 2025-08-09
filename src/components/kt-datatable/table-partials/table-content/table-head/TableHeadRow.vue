@@ -37,7 +37,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import type Sort from "@/components/kt-datatable/table-partials/models";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import type { TableHeader } from "@/components/kt-datatable/types";
 
 export default defineComponent({
   name: "table-head-row",
@@ -50,7 +51,7 @@ export default defineComponent({
       required: false,
       default: "asc",
     },
-    header: { type: Array, required: true },
+    header: { type: Array as () => TableHeader[], required: true },
     isAccordion: { type: Boolean, required: false, default: false, },
   },
   emits: ["on-select", "on-sort"],

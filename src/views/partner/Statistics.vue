@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="$t('partnerMenu.statistics')"
+    :title="t('partnerMenu.statistics')"
     subtitle="Game statistics and performance analytics"
     icon="fas fa-chart-bar"
     icon-color="yellow-orange"
@@ -24,7 +24,7 @@
             ]"
           >
             <i :class="`${tab.icon} mr-2`"></i>
-            {{ $t(tab.label) }}
+            {{ t(tab.label) }}
           </button>
         </nav>
       </div>
@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import Statistics from "@/components/partner/game-statistics/Statistics.vue";
 
 export default defineComponent({
@@ -51,6 +52,7 @@ export default defineComponent({
     Statistics,
   },
   setup() {
+    const { t } = useI18n();
     const activeTab = ref("all");
     
     const gameTabs = [
@@ -89,6 +91,7 @@ export default defineComponent({
       activeTab,
       gameTabs,
       setActiveTab,
+      t,
     };
   },
 });

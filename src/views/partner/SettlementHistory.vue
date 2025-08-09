@@ -1,14 +1,23 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold text-white mb-4">{{ $t('partnerMenu.settlementHistory') }}</h1>
-    <p class="text-gray-400">정산 내역 페이지입니다.</p>
+    <PartnerPageHeader 
+      :title="t('partnerMenu.settlementHistory')"
+      subtitle="정산 내역 페이지입니다."
+      icon="fas fa-file-alt"
+      icon-color="green-blue"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
-  name: 'SettlementHistory'
+  name: 'SettlementHistory',
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  }
 });
 </script>

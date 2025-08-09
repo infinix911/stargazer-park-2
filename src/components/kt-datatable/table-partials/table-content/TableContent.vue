@@ -47,13 +47,14 @@ import { defineComponent, ref, watch, onMounted } from "vue";
 import TableHeadRow from "@/components/kt-datatable/table-partials/table-content/table-head/TableHeadRow.vue";
 import TableBodyRow from "@/components/kt-datatable/table-partials/table-content/table-body/TableBodyRow.vue";
 import Loading from "@/components/kt-datatable/table-partials/Loading.vue";
-import type Sort from "@/components/kt-datatable/table-partials/models";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import type { TableHeader } from "@/components/kt-datatable/types";
 
 export default defineComponent({
   name: "table-body",
   props: {
-    header: { type: Array, required: true },
-    data: { type: Array, required: true },
+    header: { type: Array as () => TableHeader[], required: true },
+    data: { type: Array as () => any[], required: true },
     emptyTableText: { type: String, default: "No data found" },
     sortLabel: { type: String, required: false, default: null },
     sortOrder: {
@@ -121,7 +122,7 @@ export default defineComponent({
 
     const onSort = (sort: Sort) => {
       if (sort.order === "asc")
-        dataToDisplay.value = dataToDisplay.value.sort((a, b) =>
+        dataToDisplay.value = dataToDisplay.value.sort((a: any, b: any) =>
           isNaN(a[sort.label ?? "id"])
             ? a[sort.label ?? "id"] > b[sort.label ?? "id"]
               ? 1
@@ -131,7 +132,7 @@ export default defineComponent({
             : -1
         );
       else
-        dataToDisplay.value = dataToDisplay.value.sort((a, b) =>
+        dataToDisplay.value = dataToDisplay.value.sort((a: any, b: any) =>
           isNaN(a[sort.label ?? "id"])
             ? a[sort.label ?? "id"] < b[sort.label ?? "id"]
               ? 1

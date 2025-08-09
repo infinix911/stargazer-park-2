@@ -54,7 +54,7 @@
               @click="setSelectedDate(dateButton.range)"
               class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
-              {{ $t(dateButton.label) }}
+              {{ t(dateButton.label) }}
             </button>
             <button
               @click="getHistory"
@@ -78,9 +78,9 @@
               <i class="fas fa-chart-line text-red-300 text-xl"></i>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white">{{ $n(Number(historySums.rollamt)) }}</h3>
+              <h3 class="text-2xl font-bold text-white">{{ n(Number(historySums.rollamt)) }}</h3>
               <p class="text-sm text-gray-300">
-                {{ game === 'CASINO' ? $t('partner.noTieBetAmount') : $t('partner.rollAmount') }}
+                {{ game === 'CASINO' ? t('partner.noTieBetAmount') : t('partner.rollAmount') }}
               </p>
             </div>
           </div>
@@ -93,8 +93,8 @@
               <i class="fas fa-trophy text-green-300 text-xl"></i>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white">{{ $n(Number(historySums.winamt)) }}</h3>
-              <p class="text-sm text-gray-300">{{ $t('partner.winningAmount') }}</p>
+              <h3 class="text-2xl font-bold text-white">{{ n(Number(historySums.winamt)) }}</h3>
+              <p class="text-sm text-gray-300">{{ t('partner.winningAmount') }}</p>
             </div>
           </div>
         </div>
@@ -106,8 +106,8 @@
               <i class="fas fa-handshake text-blue-300 text-xl"></i>
             </div>
             <div>
-              <h3 class="text-2xl font-bold text-white">{{ $n(Number(historySums.tieamt)) }}</h3>
-              <p class="text-sm text-gray-300">{{ $t('partner.tieBetAmount') }}</p>
+              <h3 class="text-2xl font-bold text-white">{{ n(Number(historySums.tieamt)) }}</h3>
+              <p class="text-sm text-gray-300">{{ t('partner.tieBetAmount') }}</p>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
                 <i class="fas fa-dice text-red-400 text-sm"></i>
               </div>
               <div>
-                <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ $t('partnerMenu.betHistory') }}</h2>
+                <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ t('partnerMenu.betHistory') }}</h2>
                 <p class="text-xs text-gray-400">Detailed betting records and results</p>
               </div>
             </div>
@@ -149,8 +149,8 @@
               <div class="text-center">
                 <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-300 rounded-lg border border-blue-500/30">
                   <i class="fas fa-gamepad mr-1"></i>
-                  {{ $t(data.game) }} - 
-                  <span v-if="data.game === 'K_EVO'">{{ $t('Evolution.' + data.roomno) }}</span>
+                  {{ t(data.game) }} - 
+                  <span v-if="data.game === 'K_EVO'">{{ t('Evolution.' + data.roomno) }}</span>
                   <span v-else>{{ data.roomno }}</span>
                 </span>
               </div>
@@ -161,19 +161,19 @@
               <div class="text-center">
                 <span v-if="data.state === 0" class="inline-flex items-center px-2 py-1 text-xs font-medium bg-yellow-500/20 text-yellow-300 rounded-full border border-yellow-500/30">
                   <i class="fas fa-clock mr-1"></i>
-                  {{ $t("status.0") }}
+                  {{ t("status.0") }}
                 </span>
                 <span v-else-if="data.state === 1 && data.winamount > 0" class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-full border border-green-500/30">
                   <i class="fas fa-check mr-1"></i>
-                  {{ $t("status.win") }}
+                  {{ t("status.win") }}
                 </span>
                 <span v-else-if="data.state === 1 && data.winamount <= 0" class="inline-flex items-center px-2 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-full border border-red-500/30">
                   <i class="fas fa-times mr-1"></i>
-                  {{ $t("status.lose") }}
+                  {{ t("status.lose") }}
                 </span>
                 <span v-else class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-500/20 text-gray-300 rounded-full border border-gray-500/30">
                   <i class="fas fa-question mr-1"></i>
-                  {{ $t("status.2") }}
+                  {{ t("status.2") }}
                 </span>
               </div>
             </template>
@@ -192,7 +192,7 @@
                     'mr-1',
                     data.profit > 0 ? 'fas fa-arrow-up' : 'fas fa-arrow-down'
                   ]"></i>
-                  {{ $n(Number(data.profit)) }}
+                  {{ n(Number(data.profit)) }}
                 </span>
               </div>
             </template>
@@ -203,7 +203,7 @@
                 <span v-if="data.state === 0" class="text-gray-400">-</span>
                 <span v-else class="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-300 rounded-lg border border-blue-500/30">
                   <i class="fas fa-wallet mr-1"></i>
-                  {{ $n(Number(data.after_acc)) }}
+                  {{ n(Number(data.after_acc)) }}
                 </span>
               </div>
             </template>
@@ -223,7 +223,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 
-interface IData {
+export interface IData {
   betamount: number;
   createdAt: string;
   game: string;
@@ -239,7 +239,7 @@ interface IData {
   winamount: string;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
@@ -261,7 +261,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n();
+    const { t, n } = useI18n();
     
     const tableData = ref<IData[]>([]);
     const tableHeaders = [
@@ -392,6 +392,8 @@ export default defineComponent({
     };
 
     return {
+      t,
+      n,
       tableHeaders,
       tableData,
       searchType,

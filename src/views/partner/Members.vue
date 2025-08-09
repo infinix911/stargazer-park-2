@@ -7,7 +7,7 @@
           <i class="fas fa-users text-white text-xl"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold text-white">{{ $t("partnerMenu.member") }}</h1>
+          <h1 class="text-2xl font-bold text-white">{{ t("partnerMenu.member") }}</h1>
           <p class="text-sm text-gray-400">Member Management and Analytics</p>
         </div>
       </div>
@@ -26,7 +26,7 @@
             style="height: 40px;"
           >
             <i class="fas fa-user-plus mr-2"></i>
-            {{ $t("partner.tab.addSubMember") }}
+            {{ t("partner.tab.addSubMember") }}
           </button>
         </div>
         
@@ -55,7 +55,7 @@
             </label>
             <input 
               v-model="searchValue" 
-              :placeholder="$t('SearchKeyword')" 
+              :placeholder="t('SearchKeyword')" 
               type="text"
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
               style="height: 40px;"
@@ -83,7 +83,7 @@
               @click="setSelectedDate(dateButton.range)"
               class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
-              {{ $t(dateButton.label) }}
+              {{ t(dateButton.label) }}
             </button>
             <button
               @click="getList"
@@ -149,12 +149,12 @@
                   </template>
                   <!-- Level -->
                   <template v-slot:cell-level="{ row: data }">
-                    <span>{{ $t(`partner.level${data.level}`) }}</span>
+                    <span>{{ t(`partner.level${data.level}`) }}</span>
                   </template>
                   <!-- Wallet -->
                   <template v-slot:cell-wallet="{ row: data }">
                     <div class="space-y-1">
-                      <div class="text-white">{{ $n(Number(data.wallet)) }}</div>
+                      <div class="text-white">{{ n(Number(data.wallet)) }}</div>
                       <button 
                         type="button" 
                         class="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
@@ -173,7 +173,7 @@
                         @click="onShopTransact(data.member_id, data.member, data.wallet, 'ADD')"
                       >
                         <i class="fas fa-plus mr-1.5"></i>
-                        {{ $t("partner.add") }}
+                        {{ t("partner.add") }}
                       </button>
                       <button 
                         type="button" 
@@ -181,7 +181,7 @@
                         @click="onShopTransact(data.member_id, data.member, data.wallet, 'DEDUCT')"
                       >
                         <i class="fas fa-minus mr-1.5"></i>
-                        {{ $t("partner.subtract") }}
+                        {{ t("partner.subtract") }}
                       </button>
                     </div>
                     <div v-else></div>
@@ -195,9 +195,9 @@
                         class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
                         @click="onGameMoneyWithdraw(data.member_id)"
                       >
-                        {{ $t("partner.subtract") }}
+                        {{ t("partner.subtract") }}
                       </button>
-                      <div v-if="data.game_bal" class="text-white">{{ $n(Number(data.game_bal)) }}</div>
+                      <div v-if="data.game_bal" class="text-white">{{ n(Number(data.game_bal)) }}</div>
                     </div>
                   </template>
                   <!-- Slot Money -->
@@ -209,9 +209,9 @@
                         @click="slotMoney(data.member_id)"
                       >
                         <i class="fas fa-check-circle mr-1"></i>
-                        {{ $t("partner.slotButton") }}
+                        {{ t("partner.slotButton") }}
                       </button>
-                      <div class="text-white">{{ $n(Number(data.wallet_game)) }}</div>
+                      <div class="text-white">{{ n(Number(data.wallet_game)) }}</div>
                     </div>
                     <div v-else></div>
                   </template>
@@ -223,7 +223,7 @@
                       @click="onPointTransfer(data.member_id, data.member, 'ADD')"
                     >
                       <i class="fas fa-exchange-alt mr-1.5"></i>
-                      {{ $t("partner.addPoint") }}
+                      {{ t("partner.addPoint") }}
                     </button>
                   </template>
                   <template v-slot:cell-bonus="{ }">
@@ -268,8 +268,7 @@ import MemberTree from "@/components/partner/member/MemberTree.vue";
 import Swal from "sweetalert2";
 
 
-
-interface IData {
+export interface IData {
   createdAt: string;
   deposits: number;
   last_login: string;
@@ -289,7 +288,7 @@ interface IData {
   shop_deduct: number;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
@@ -305,7 +304,7 @@ export default defineComponent({
   },
   setup() {
     // vue variables
-    const { t } = useI18n();
+    const { t, n } = useI18n();
     const appStore = useAppStore();
     const authStore = useAuthStore();
     const openModal = (modal: string) => appStore.openModal(modal);
@@ -542,7 +541,8 @@ export default defineComponent({
         );
     }
 
-    return {
+    return { 
+      t, n,
       tableHeaders,
       tableData,
       searchType,

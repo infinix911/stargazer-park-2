@@ -6,8 +6,8 @@
     type="daterange"
     unlink-panels
     range-separator="~"
-    :start-placeholder="$t('dateRange.start')"
-    :end-placeholder="$t('dateRange.end')"
+    :start-placeholder="t('dateRange.start')"
+    :end-placeholder="t('dateRange.end')"
     :shortcuts="shortcuts"
     :change="emitSelectedDates()"
   >
@@ -94,6 +94,7 @@ export default defineComponent({
     };
 
     return {
+      t,
       daterange,
       shortcuts,
       emitSelectedDates,

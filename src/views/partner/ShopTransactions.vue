@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="$t('partnerMenu.shopTranHistory')"
+    :title="t('partnerMenu.shopTranHistory')"
     subtitle="Shop transaction history and member transfers"
     icon="fas fa-store"
     icon-color="purple-indigo"
@@ -15,7 +15,7 @@
           <!-- Transaction Type -->
           <div class="flex-shrink-0">
             <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              {{ $t("partner.tranType") }}
+              {{ t("partner.tranType") }}
             </label>
             <select 
               v-model="tranType" 
@@ -31,7 +31,7 @@
           <!-- Store Member -->
           <div class="flex-shrink-0">
             <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              {{ $t("partner.storeMember") }}
+              {{ t("partner.storeMember") }}
             </label>
             <input 
               v-model="receiver" 
@@ -92,14 +92,14 @@
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
                   >
                     <i class="fas fa-plus mr-1"></i>
-                    {{ $t("partner.add") }}
+                    {{ t("partner.add") }}
                   </span>
                   <span 
                     v-else
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
                   >
                     <i class="fas fa-minus mr-1"></i>
-                    {{ $t("partner.deduct") }}
+                    {{ t("partner.deduct") }}
                   </span>
                 </div>
               </template>
@@ -112,14 +112,14 @@
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
                   >
                     <i class="fas fa-plus mr-1"></i>
-                    {{ $n(Number(data.amount)) }}
+                    {{ n(Number(data.amount)) }}
                   </span>
                   <span 
                     v-else
                     class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
                   >
                     <i class="fas fa-minus mr-1"></i>
-                    {{ $n(Number(data.amount)) }}
+                    {{ n(Number(data.amount)) }}
                   </span>
                 </div>
               </template>
@@ -141,7 +141,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import { useAuthStore } from "@/stores/auth";
 
-interface IData {
+export interface IData {
   member_id: string;
   member: string;
   transaction_type: string;
@@ -151,7 +151,7 @@ interface IData {
   updatedAt: string;
 }
 
-interface DateRange {
+export interface DateRange {
   start: string;
   end: string;
 }
@@ -166,7 +166,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = useI18n();
+    const { t, n } = useI18n();
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
 
@@ -224,14 +224,15 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      if (user.value.shoplevel === 2) {
-        tableHeaderShop.value[0].key = "sender";
-        tableHeaderShop.value[0].name = t("partner.sender");
+      if (user.value.shoplevel === 2 && tableHeaderShop.value.length > 0) {
+        tableHeaderShop.value[0]!.key = "sender";
+        tableHeaderShop.value[0]!.name = t("partner.sender");
         getList();
       }
     });
 
     return {
+      t, n,
       tableHeaderShop,
       tableData,
       tranType,

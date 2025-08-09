@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="$t('partnerMenu.memberOnline')"
+    :title="t('partnerMenu.memberOnline')"
     subtitle="Currently active members and their session details"
     icon="fas fa-circle"
     icon-color="green-blue"
@@ -112,7 +112,7 @@ export default defineComponent({
 
     onMounted(getList);
 
-    return { tableHeaders, tableData, getList };
+    return { tableHeaders, tableData, getList, t };
   },
 });
 </script>

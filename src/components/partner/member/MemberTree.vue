@@ -2,13 +2,13 @@
 	<div class="flex-row-fluid mb-1em px-4 tree-content pb-4">
 			<div class="row mb-6 d-flex">
 			<button class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded-lg font-medium transition-all duration-200 hover:scale-105 m-2 treeBtn" @click="getMembersTree(true)">
-					<i class="fas fa-expand mr-1 text-sm" /> {{ $t("openAll") }}
+					<i class="fas fa-expand mr-1 text-sm" /> {{ t("openAll") }}
 			</button>
 			<button
 					class="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-lg font-medium transition-all duration-200 hover:scale-105 m-2 treeBtn"
 					@click="getMembersTree(false)"
 			>
-					<i class="fas fa-compress mr-1 text-sm" /> {{ $t("closeAll") }}
+					<i class="fas fa-compress mr-1 text-sm" /> {{ t("closeAll") }}
 			</button>
 			</div>
 			<div class="row g-5 g-xl-12 tree">
@@ -40,16 +40,16 @@
 					</div>
 					<span class="mx-1" v-if="node.status">
 						<span class="badge badge-info text-sm" v-if="node.status === 0">
-							{{ $t("status.new") }}
+							{{ t("status.new") }}
 						</span>
 						<span class="badge badge-warning text-sm" v-else-if="node.status == 1">
-							{{ $t("status.waiting") }}
+							{{ t("status.waiting") }}
 						</span>
 						<span class="badge badge-primary text-sm" v-else-if="node.status === 2">
-							{{ $t("status.normal") }}
+							{{ t("status.normal") }}
 						</span>
 						<span class="badge badge-danger text-sm" v-else>
-							{{ $t("status.stopped") }}
+							{{ t("status.stopped") }}
 						</span>
                 	</span>						
 					</template>
@@ -65,7 +65,7 @@ import Tree from "vue3-tree";
 import "vue3-tree/dist/style.css";
 import ApiService from "@/services/ApiService";
 
-interface ITreeViewItem {
+export interface ITreeViewItem {
 	id: string;
 	userlabel: number;
 	label: number;
@@ -93,7 +93,7 @@ export default defineComponent({
 		 * Get Agents Tree
 		 *
 		 */
-		const getMembersTree = async (isOpen) => {
+		const getMembersTree = async (isOpen: boolean) => {
 		// add data
 		isOpenTree.value = isOpen;
 		const results = await ApiService.get("/partner/member/tree")
@@ -131,7 +131,7 @@ export default defineComponent({
 		treeData.value = obj;
 		};
 
-		const getMemberClass = (depth) => {
+		const getMemberClass = (depth: number) => {
 		return t("partner.parent" + depth);
 		};
 
@@ -144,6 +144,8 @@ export default defineComponent({
 		});
 
 		return {
+		// i18n
+		t,
 		// Members Tree data
 		treeData,
 		// Members Tree

@@ -35,13 +35,14 @@
 import { computed, defineComponent, ref, watch } from "vue";
 import TableContent from "./table-partials/table-content/TableContent.vue";
 import TableFooter from "./table-partials/TableFooter.vue";
-import type Sort from "./table-partials/models";
+import type { Sort } from "./table-partials/models";
+import type { TableHeader } from "./types";
 
 export default defineComponent({
   name: "KTDataTable",
   props: {
-    tableHeader: { type: Array, required: true },
-    tableData: { type: Array, required: true },
+    tableHeader: { type: Array as () => TableHeader[], required: true },
+    tableData: { type: Array as () => any[], required: true },
     rowsPerPage: { type: Number, default: 50 },
     enableItemsPerPageDropdown: {
       type: Boolean,
