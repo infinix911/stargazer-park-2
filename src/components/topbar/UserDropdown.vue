@@ -89,7 +89,6 @@ import {
 import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
 import { useAuthStore } from '../../stores/auth'
-import JwtService from '../../services/JwtService'
 
 const authStore = useAuthStore()
 const user = computed(() => authStore.user);
@@ -100,6 +99,7 @@ const showPointWithdrawalModal = ref(false)
 
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
+  showPointWithdrawalModal.value = true
   console.log('Point Withdrawal clicked')
 }
 
