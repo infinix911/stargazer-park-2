@@ -122,7 +122,7 @@
             <!-- Deposit Button -->
             <button 
               @click="handleDepositClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors"
+              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors cursor-pointer"
             >
               <img src="/images/header/deposit.svg" alt="Deposit" class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert">
               <span class="hidden sm:inline">{{ t('header.deposit') }}</span>
@@ -131,7 +131,7 @@
             <!-- Withdrawal Button -->
             <button 
               @click="handleWithdrawalClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc]"
+              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc] cursor-pointer"
             >
               <img src="/images/header/withdraw.svg" alt="Withdraw" class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert">
               <span class="hidden sm:inline">{{ t('header.withdraw') }}</span>
