@@ -7,7 +7,8 @@
           v-if="props.currentSlide === 0" 
           :class="['max-w-4xl text-left transition-all duration-1000', showText ? 'opacity-100' : 'opacity-0']"
         >
-          <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight text-white font-pretendard-extra-bold" v-html="t('banner.slot.title')">
+          <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight text-white font-pretendard-extra-bold">
+            {{ t('banner.slot.title') }}<br>{{ t('banner.slot.titleLine2') }}
           </h2>
           <p class="text-xl md:text-2xl font-bold mb-8 opacity-90 text-white font-pretendard">
             {{ t('banner.slot.subtitle') }}
@@ -19,7 +20,8 @@
           v-if="props.currentSlide === 1" 
           :class="['max-w-4xl text-left transition-all duration-1000', showText ? 'opacity-100' : 'opacity-0']"
         >
-          <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight text-white font-pretendard-extra-bold" v-html="t('banner.casino.title')">
+          <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight text-white font-pretendard-extra-bold">
+            {{ t('banner.casino.title') }}<br>{{ t('banner.casino.titleLine2') }}
           </h2>
           <p class="text-xl md:text-2xl font-bold mb-8 opacity-90 text-white font-pretendard">
             {{ t('banner.casino.subtitle') }}

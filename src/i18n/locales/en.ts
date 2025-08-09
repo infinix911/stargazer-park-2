@@ -189,11 +189,13 @@ export default {
   },
   banner: {
     slot: {
-      title: 'Fun, Thrills, and Jackpots!<br>Everything About Slots!',
+      title: 'Fun, Thrills, and Jackpots!',
+    titleLine2: 'Everything About Slots!',
       subtitle: 'Try your luck! Start playing slots right now.'
     },
     casino: {
-      title: 'Thrills Beyond Betting,<br>Every Moment is a Battle!',
+      title: 'Thrills Beyond Betting,',
+    titleLine2: 'Every Moment is a Battle!',
       subtitle: 'We offer a casino experience worthy of your class.'
     }
   },

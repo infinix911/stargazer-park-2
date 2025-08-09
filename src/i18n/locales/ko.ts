@@ -189,11 +189,13 @@ export default {
   },
   banner: {
     slot: {
-      title: '재미와 스릴, 그리고 잭팟!<br>슬롯의 모든 것!',
+      title: '재미와 스릴, 그리고 잭팟!',
+    titleLine2: '슬롯의 모든 것!',
       subtitle: '당신의 행운을 돌려보세요! 지금 바로 슬롯을 시작하세요.'
     },
     casino: {
-      title: '베팅 그 이상의 짜릿함,<br>매 순간이 승부다!',
+      title: '베팅 그 이상의 짜릿함,',
+    titleLine2: '매 순간이 승부다!',
       subtitle: '당신의 품격에 걸맞은 카지노 경험을 선사합니다.'
     }
   },
