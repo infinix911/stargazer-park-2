@@ -65,11 +65,12 @@
             <label class="text-gray-700 font-medium">{{ t('deposit.depositAmount') }}</label>
           </div>
           <Input
-            v-model="form.depositAmount"
-            type="number"
+            v-model="displayAmount"
+            type="text"
             :placeholder="t('deposit.depositAmountPlaceholder')"
             :class="{ 'border-red-500': errors.depositAmount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            @input="handleNumberInput"
           />
           <p v-if="errors.depositAmount" class="text-red-400 text-sm">{{ errors.depositAmount }}</p>
         </div>
@@ -145,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { Input } from '../../components/ui/input'
@@ -165,9 +166,24 @@ import {
   DollarSign
 } from 'lucide-vue-next'
 
-const { t } = useI18n()
+const { t, n } = useI18n()
 const authStore = useAuthStore()
 const user = computed(() => authStore.user)
+
+// Display value for the input field
+const displayAmount = ref('0')
+
+// Watch for changes in display amount and update form
+watch(displayAmount, () => {
+  updateFormAmount()
+})
+
+// Handle number input - only allow digits
+const handleNumberInput = (event: Event): void => {
+  const target = event.target as HTMLInputElement
+  const value = target.value.replace(/[^\d]/g, '') // Remove all non-digits
+  displayAmount.value = value
+}
 
 // Props
 interface Props {
@@ -185,23 +201,16 @@ const emit = defineEmits<{
 
 // Form validation schema
 const depositSchema = z.object({
-  depositAmount: z.string()
+  depositAmount: z.number()
     .min(1, t('deposit.errors.depositAmountRequired'))
-    .refine((val) => {
-      const amount = parseFloat(val)
-      return !isNaN(amount) && amount > 0
-    }, t('deposit.errors.depositAmountPositive'))
-    .refine((val) => {
-      const amount = parseFloat(val)
-      return !isNaN(amount) && amount >= 10000
-    }, t('deposit.errors.depositAmountMinimum'))
+    .min(10000, t('deposit.errors.depositAmountMinimum'))
 })
 
 type DepositForm = {
   name: string;
   bankAccountName: string;
   mobileNumber: string;
-  depositAmount: string;
+  depositAmount: number;
 }
 
 // Form data
@@ -214,11 +223,16 @@ const form = reactive<DepositForm>({
       )
     : user.value?.bank_account_name || '',
   mobileNumber: String(user.value?.mobile || ''),
-  depositAmount: '0'
+  depositAmount: 0
 })
 
 // Form state
-const errors = reactive<Partial<DepositForm>>({})
+const errors = reactive<Partial<{
+  name: string;
+  bankAccountName: string;
+  mobileNumber: string;
+  depositAmount: string;
+}>>({})
 const isSubmitting = ref(false)
 
 // Handle dialog open/close
@@ -230,13 +244,22 @@ const handleOpenChange = (open: boolean): void => {
 
 // Set amount from quick buttons
 const setAmount = (amount: number): void => {
-  form.depositAmount = amount.toString()
+  form.depositAmount += amount
+  displayAmount.value = n(form.depositAmount)
   errors.depositAmount = undefined
 }
 
 // Reset amount
 const resetAmount = (): void => {
-  form.depositAmount = '0'
+  form.depositAmount = 0
+  displayAmount.value = '0'
+  errors.depositAmount = undefined
+}
+
+// Watch for changes in display amount and update form
+const updateFormAmount = (): void => {
+  const cleanValue = displayAmount.value.replace(/[^\d]/g, '')
+  form.depositAmount = cleanValue ? parseInt(cleanValue) : 0
   errors.depositAmount = undefined
 }
 
