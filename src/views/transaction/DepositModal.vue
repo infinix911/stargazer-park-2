@@ -23,10 +23,9 @@
             v-model="form.name"
             type="text"
             :placeholder="t('deposit.namePlaceholder')"
-            :class="{ 'border-red-500': errors.name }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.name" class="text-red-400 text-sm">{{ errors.name }}</p>
         </div>
 
         <!-- Bank Account Name Field -->
@@ -39,10 +38,9 @@
             v-model="form.bankAccountName"
             type="text"
             :placeholder="t('deposit.bankAccountNamePlaceholder')"
-            :class="{ 'border-red-500': errors.bankAccountName }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.bankAccountName" class="text-red-400 text-sm">{{ errors.bankAccountName }}</p>
         </div>
 
         <!-- Mobile Number Field -->
@@ -55,10 +53,9 @@
             v-model="form.mobileNumber"
             type="tel"
             :placeholder="t('deposit.mobileNumberPlaceholder')"
-            :class="{ 'border-red-500': errors.mobileNumber }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.mobileNumber" class="text-red-400 text-sm">{{ errors.mobileNumber }}</p>
         </div>
 
         <!-- Deposit Amount Field -->
@@ -148,11 +145,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { Input } from '../../components/ui/input'
 import Button from '../../components/ui/Button.vue'
+import { useAuthStore } from '../../stores/auth'
 import {
   Dialog,
   DialogContent,
@@ -168,6 +166,8 @@ import {
 } from 'lucide-vue-next'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 
 // Props
 interface Props {
@@ -185,14 +185,6 @@ const emit = defineEmits<{
 
 // Form validation schema
 const depositSchema = z.object({
-  name: z.string()
-    .min(1, t('deposit.errors.nameRequired'))
-    .min(2, t('deposit.errors.nameMinLength')),
-  bankAccountName: z.string()
-    .min(1, t('deposit.errors.bankAccountNameRequired')),
-  mobileNumber: z.string()
-    .min(1, t('deposit.errors.mobileNumberRequired'))
-    .regex(/^[0-9+\-\s()]+$/, t('deposit.errors.mobileNumberFormat')),
   depositAmount: z.string()
     .min(1, t('deposit.errors.depositAmountRequired'))
     .refine((val) => {
@@ -205,13 +197,23 @@ const depositSchema = z.object({
     }, t('deposit.errors.depositAmountMinimum'))
 })
 
-type DepositForm = z.infer<typeof depositSchema>
+type DepositForm = {
+  name: string;
+  bankAccountName: string;
+  mobileNumber: string;
+  depositAmount: string;
+}
 
 // Form data
 const form = reactive<DepositForm>({
-  name: '',
-  bankAccountName: '',
-  mobileNumber: '',
+  name: user.value?.name || '',
+  bankAccountName: user.value?.bank_account_name?.includes('[')
+    ? user.value.bank_account_name.substring(
+        0,
+        user.value.bank_account_name.indexOf('['),
+      )
+    : user.value?.bank_account_name || '',
+  mobileNumber: String(user.value?.mobile || ''),
   depositAmount: '0'
 })
 
