@@ -11,7 +11,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
               </svg>
             </div>
-            <span class="text-gray-900">{{ $t('notifications.title') }}</span>
+            <span class="text-gray-900">{{ t('notifications.title') }}</span>
           </h2>
         </div>
 

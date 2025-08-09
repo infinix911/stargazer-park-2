@@ -3,8 +3,8 @@
     <div class="max-w-[1660px] mx-auto px-4">
       <!-- Section Header -->
       <!-- <div class="text-center mb-8">
-        <h2 class="text-3xl font-black text-white mb-4">{{ $t('providers.title') }}</h2>
-        <p class="text-gray-400 text-lg">{{ $t('providers.subtitle') }}</p>
+        <h2 class="text-3xl font-black text-white mb-4">{{ t('providers.title') }}</h2>
+        <p class="text-gray-400 text-lg">{{ t('providers.subtitle') }}</p>
       </div> -->
 
       <!-- Provider Marquee -->

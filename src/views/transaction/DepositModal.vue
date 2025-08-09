@@ -4,10 +4,10 @@
       <!-- Form Title -->
       <DialogHeader class="text-center mb-8">
         <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
-          {{ $t('deposit.title') }}
+          {{ t('deposit.title') }}
         </DialogTitle>
         <DialogDescription class="text-gray-600 mt-2">
-          {{ $t('deposit.description') }}
+          {{ t('deposit.description') }}
         </DialogDescription>
       </DialogHeader>
 
@@ -17,12 +17,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('deposit.name') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('deposit.name') }}</label>
           </div>
           <Input
             v-model="form.name"
             type="text"
-            :placeholder="$t('deposit.namePlaceholder')"
+            :placeholder="t('deposit.namePlaceholder')"
             :class="{ 'border-red-500': errors.name }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -33,12 +33,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('deposit.bankAccountName') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('deposit.bankAccountName') }}</label>
           </div>
           <Input
             v-model="form.bankAccountName"
             type="text"
-            :placeholder="$t('deposit.bankAccountNamePlaceholder')"
+            :placeholder="t('deposit.bankAccountNamePlaceholder')"
             :class="{ 'border-red-500': errors.bankAccountName }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -49,12 +49,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <Phone class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('deposit.mobileNumber') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('deposit.mobileNumber') }}</label>
           </div>
           <Input
             v-model="form.mobileNumber"
             type="tel"
-            :placeholder="$t('deposit.mobileNumberPlaceholder')"
+            :placeholder="t('deposit.mobileNumberPlaceholder')"
             :class="{ 'border-red-500': errors.mobileNumber }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -65,12 +65,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('deposit.depositAmount') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('deposit.depositAmount') }}</label>
           </div>
           <Input
             v-model="form.depositAmount"
             type="number"
-            :placeholder="$t('deposit.depositAmountPlaceholder')"
+            :placeholder="t('deposit.depositAmountPlaceholder')"
             :class="{ 'border-red-500': errors.depositAmount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -128,7 +128,7 @@
               variant="outline"
               :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
             >
-              {{ $t('deposit.reset') }}
+              {{ t('deposit.reset') }}
             </Button>
           </div>
         </div>
@@ -139,8 +139,8 @@
           class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ $t('deposit.submitting') }}</span>
-          <span v-else>{{ $t('deposit.submit') }}</span>
+          <span v-if="isSubmitting">{{ t('deposit.submitting') }}</span>
+          <span v-else>{{ t('deposit.submit') }}</span>
         </Button>
       </form>
     </DialogContent>

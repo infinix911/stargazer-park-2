@@ -14,7 +14,7 @@
     <HotBrandBackground :current-slide="currentSlide" />
     
     <!-- Router View for Page Content -->
-    <router-view :key="$route.fullPath" />
+    <router-view :key="route.fullPath" />
     
     <!-- Provider Section -->
     <ProviderSection />
@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 // Import layout components
 import TopBar from '../components/topbar/TopBar.vue'
 import Header from '../components/Header.vue'
@@ -44,6 +45,7 @@ import ScrollToTop from '../components/ScrollToTop.vue'
 
 // Reactive data for current slide
 const currentSlide = ref(0)
+const route = useRoute()
 
 // Handle slide change from HeroSection
 const handleSlideChange = (slideIndex: number): void => {

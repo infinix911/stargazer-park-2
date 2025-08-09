@@ -45,11 +45,11 @@
                   <nav class="flex flex-col space-y-6 font-orbitron">
                     <router-link to="/casino" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
                       <img src="/images/header/casino.svg" alt="Casino" class="w-6 h-6 filter brightness-0 invert">
-                      <span class="text-xl">{{ $t('header.casino') }}</span>
+                      <span class="text-xl">{{ t('header.casino') }}</span>
                     </router-link>
                     <router-link to="/slot" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
                       <img src="/images/header/slot.svg" alt="Slots" class="w-6 h-6 filter brightness-0 invert">
-                      <span class="text-xl">{{ $t('header.slots') }}</span>
+                      <span class="text-xl">{{ t('header.slots') }}</span>
                     </router-link>
                     <a href="#" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
                       <img src="/images/header/holdem.svg" alt="Hold'em" class="w-6 h-6 filter brightness-0 invert">
@@ -65,18 +65,18 @@
                         class="bg-[#00a8ff] hover:bg-[#0097e6] px-4 py-3 flex items-center justify-center space-x-2 text-white text-base font-medium transition-colors rounded-lg cursor-pointer"
                       >
                         <img src="/images/header/deposit.svg" alt="Deposit" class="w-5 h-5 filter brightness-0 invert">
-                        <span>{{ $t('header.deposit') }}</span>
+                        <span>{{ t('header.deposit') }}</span>
                       </button>
                       <button 
                         @click="handleWithdrawalClick"
                         class="bg-[#00a8ff] hover:bg-[#0097e6] px-4 py-3 flex items-center justify-center space-x-2 text-white text-base font-medium transition-colors rounded-lg cursor-pointer"
                       >
                         <img src="/images/header/withdraw.svg" alt="Withdraw" class="w-5 h-5 filter brightness-0 invert">
-                        <span>{{ $t('header.withdraw') }}</span>
+                        <span>{{ t('header.withdraw') }}</span>
                       </button>
                       <button class="bg-white hover:bg-gray-100 px-4 py-3 flex items-center justify-center space-x-2 text-gray-700 text-base font-medium transition-colors rounded-lg">
                         <img src="/images/header/mylounge.svg" alt="My Lounge" class="w-5 h-5">
-                        <span class="text-[#1494dc]">{{ $t('header.myLounge') }}</span>
+                        <span class="text-[#1494dc]">{{ t('header.myLounge') }}</span>
                       </button>
                     </div>
                   </div>
@@ -97,19 +97,19 @@
            <nav class="hidden lg:flex items-center space-x-4 xl:space-x-8 font-orbitron text-sm lg:text-[1.25rem] text-white">
              <!-- <a href="#" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
                <img src="/images/header/sport.svg" alt="Sports" class="w-6 h-6 filter brightness-0 invert">
-               <span>{{ $t('header.sports') }}</span>
+               <span>{{ t('header.sports') }}</span>
              </a> -->
              <router-link to="/casino" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
                <img src="/images/header/casino.svg" alt="Casino" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ $t('header.casino') }}</span>
+               <span class="hidden xl:inline">{{ t('header.casino') }}</span>
              </router-link>
              <router-link to="/slot" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
                <img src="/images/header/slot.svg" alt="Slots" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ $t('header.slots') }}</span>
+               <span class="hidden xl:inline">{{ t('header.slots') }}</span>
              </router-link>
              <a href="#" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
                <img src="/images/header/holdem.svg" alt="Hold'em" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ $t('header.holdem') }}</span>
+               <span class="hidden xl:inline">{{ t('header.holdem') }}</span>
              </a>
            </nav>
          </div>
@@ -125,7 +125,7 @@
               class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors"
             >
               <img src="/images/header/deposit.svg" alt="Deposit" class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert">
-              <span class="hidden sm:inline">{{ $t('header.deposit') }}</span>
+              <span class="hidden sm:inline">{{ t('header.deposit') }}</span>
             </button>
             
             <!-- Withdrawal Button -->
@@ -134,13 +134,13 @@
               class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc]"
             >
               <img src="/images/header/withdraw.svg" alt="Withdraw" class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert">
-              <span class="hidden sm:inline">{{ $t('header.withdraw') }}</span>
+              <span class="hidden sm:inline">{{ t('header.withdraw') }}</span>
             </button>
             
             <!-- My Lounge Button -->
             <button class="bg-white hover:bg-gray-100 px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 lg:space-x-2 text-gray-700 text-xs lg:text-base font-medium transition-colors">
               <img src="/images/header/mylounge.svg" alt="My Lounge" class="w-4 h-4 lg:w-8 lg:h-8">
-              <span class="text-[#1494dc] hidden sm:inline">{{ $t('header.myLounge') }}</span>
+              <span class="text-[#1494dc] hidden sm:inline">{{ t('header.myLounge') }}</span>
             </button>
           </div>
         </div>
@@ -152,11 +152,14 @@
 <script setup lang="ts">
 // Header component with TypeScript
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Sheet from './ui/sheet/Sheet.vue'
 import SheetContent from './ui/sheet/SheetContent.vue'
 import SheetTrigger from './ui/sheet/SheetTrigger.vue'
 import DepositModal from '../views/transaction/DepositModal.vue'
 import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
+
+const { t } = useI18n()
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false)

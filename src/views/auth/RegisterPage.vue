@@ -3,14 +3,14 @@
     <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
       <!-- Logo/Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ $t('register.title') }}</h1>
+        <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ t('register.title') }}</h1>
       </div>
 
       <!-- Registration Form -->
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <!-- Basic Information Section -->
         <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-300 pb-2">{{ $t('register.basicInformation') }}</h3>
+          <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-300 pb-2">{{ t('register.basicInformation') }}</h3>
           
           <!-- Username Field -->
           <div class="space-y-2">
@@ -18,12 +18,12 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.username') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.username') }}</label>
             </div>
             <Input
               v-model="form.username"
               type="text"
-              :placeholder="$t('register.usernamePlaceholder')"
+              :placeholder="t('register.usernamePlaceholder')"
               :class="{ 'border-red-500': errors.username }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -36,13 +36,13 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.password') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.password') }}</label>
             </div>
             <div class="relative">
               <Input
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
-                :placeholder="$t('register.passwordPlaceholder')"
+                :placeholder="t('register.passwordPlaceholder')"
                 :class="{ 'border-red-500': errors.password }"
                 class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
               />
@@ -69,13 +69,13 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.confirmPassword') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.confirmPassword') }}</label>
             </div>
             <div class="relative">
               <Input
                 v-model="form.confirmPassword"
                 :type="showConfirmPassword ? 'text' : 'password'"
-                :placeholder="$t('register.confirmPasswordPlaceholder')"
+                :placeholder="t('register.confirmPasswordPlaceholder')"
                 :class="{ 'border-red-500': errors.confirmPassword }"
                 class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
               />
@@ -102,12 +102,12 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.name') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.name') }}</label>
             </div>
             <Input
               v-model="form.name"
               type="text"
-              :placeholder="$t('register.namePlaceholder')"
+              :placeholder="t('register.namePlaceholder')"
               :class="{ 'border-red-500': errors.name }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -120,13 +120,13 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.mobileNumber') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.mobileNumber') }}</label>
             </div>
             <div class="relative">
               <Input
                 v-model="form.mobileNumber"
                 type="tel"
-                :placeholder="$t('register.mobileNumberPlaceholder')"
+                :placeholder="t('register.mobileNumberPlaceholder')"
                 :class="{ 'border-red-500': errors.mobileNumber }"
                 class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
               />
@@ -145,7 +145,7 @@
 
         <!-- Account Information Section -->
         <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-300 pb-2">{{ $t('register.accountInformation') }}</h3>
+          <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-300 pb-2">{{ t('register.accountInformation') }}</h3>
           
           <!-- Bank Name Field -->
           <div class="space-y-2">
@@ -153,14 +153,14 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.bankName') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.bankName') }}</label>
             </div>
             <Select
               v-model="form.bankName"
               :class="{ 'border-red-500': errors.bankName }"
               class="bg-white border-gray-300 text-gray-900 focus:border-purple-500 focus:ring-purple-500"
             >
-              <option value="" disabled class="bg-white text-gray-500">{{ $t('register.bankNamePlaceholder') }}</option>
+              <option value="" disabled class="bg-white text-gray-500">{{ t('register.bankNamePlaceholder') }}</option>
               <option value="KB국민은행" class="bg-white text-gray-900">KB국민은행</option>
               <option value="신한은행" class="bg-white text-gray-900">신한은행</option>
               <option value="우리은행" class="bg-white text-gray-900">우리은행</option>
@@ -177,12 +177,12 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.bankAccountName') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.bankAccountName') }}</label>
             </div>
             <Input
               v-model="form.bankAccountName"
               type="text"
-              :placeholder="$t('register.bankAccountNamePlaceholder')"
+              :placeholder="t('register.bankAccountNamePlaceholder')"
               :class="{ 'border-red-500': errors.bankAccountName }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -195,13 +195,13 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.bankAccount') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.bankAccount') }}</label>
             </div>
             <div class="relative">
               <Input
                 v-model="form.bankAccount"
                 type="text"
-                :placeholder="$t('register.bankAccountPlaceholder')"
+                :placeholder="t('register.bankAccountPlaceholder')"
                 :class="{ 'border-red-500': errors.bankAccount }"
                 class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
               />
@@ -226,12 +226,12 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.referralCode') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.referralCode') }}</label>
             </div>
             <Input
               v-model="form.referralCode"
               type="text"
-              :placeholder="$t('register.referralCodePlaceholder')"
+              :placeholder="t('register.referralCodePlaceholder')"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
@@ -250,14 +250,14 @@
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
-              <label class="text-gray-700 font-medium">{{ $t('register.captcha') }}</label>
+              <label class="text-gray-700 font-medium">{{ t('register.captcha') }}</label>
             </div>
             
             <div class="flex space-x-2">
               <Input
                 v-model="form.captcha"
                 type="text"
-                :placeholder="$t('register.captchaPlaceholder')"
+                :placeholder="t('register.captchaPlaceholder')"
                 :class="{ 'border-red-500': errors.captcha }"
                 class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
               />
@@ -283,17 +283,17 @@
           class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ $t('register.creatingAccount') }}</span>
-          <span v-else>{{ $t('register.createAccountButton') }}</span>
+          <span v-if="isSubmitting">{{ t('register.creatingAccount') }}</span>
+          <span v-else>{{ t('register.createAccountButton') }}</span>
         </Button>
       </form>
 
       <!-- Login Link -->
       <div class="text-center mt-6">
         <p class="text-gray-600 text-sm">
-          {{ $t('register.alreadyHaveAccount') }} 
+          {{ t('register.alreadyHaveAccount') }} 
           <a href="/login" class="text-purple-600 hover:text-purple-700 font-medium">
-            {{ $t('register.loginHere') }}
+            {{ t('register.loginHere') }}
           </a>
         </p>
       </div>

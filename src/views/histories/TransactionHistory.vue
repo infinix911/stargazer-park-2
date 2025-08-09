@@ -11,7 +11,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
               </svg>
             </div>
-            <span class="text-gray-900">{{ $t('transactionHistory.title') }}</span>
+            <span class="text-gray-900">{{ t('transactionHistory.title') }}</span>
           </h2>
         </div>
 
@@ -42,7 +42,7 @@
               @click="handleSearch"
               class="bg-[#22c55e] hover:bg-[#16a34a] px-6 py-2 rounded-md text-white font-medium transition-colors"
             >
-              {{ $t('transactionHistory.search') }}
+              {{ t('transactionHistory.search') }}
             </button>
           </div>
         </div>
@@ -117,7 +117,7 @@
 
           <!-- No Results Message -->
           <div v-if="transactions.length === 0" class="flex items-center justify-center py-12">
-            <p class="text-gray-600 text-lg">{{ $t('transactionHistory.noResults') }}</p>
+            <p class="text-gray-600 text-lg">{{ t('transactionHistory.noResults') }}</p>
           </div>
 
           <!-- Pagination -->

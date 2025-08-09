@@ -15,7 +15,7 @@
               @click="setLanguage('ko')" 
               :class="[
                 'px-2 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
-                $i18n.locale === 'ko' 
+                locale === 'ko' 
                   ? 'bg-red-500 text-white' 
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               ]"
@@ -26,7 +26,7 @@
               @click="setLanguage('en')" 
               :class="[
                 'px-2 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
-                $i18n.locale === 'en' 
+                locale === 'en' 
                   ? 'bg-red-500 text-white' 
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               ]"

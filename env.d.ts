@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  readonly VITE_APP_API: string
+  // Note: DEV is already provided by Vite
+}
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
@@ -21,8 +26,6 @@ export interface GameItem {
   image: string
   color: string
 }
-
-
 
 export interface CasinoItem {
   id: number

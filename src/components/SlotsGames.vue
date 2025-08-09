@@ -10,7 +10,7 @@
               class="w-8 h-8 filter brightness-0 invert-1"
             />
           </div>
-          <span>{{ $t('sections.slots') }}</span>
+          <span>{{ t('sections.slots') }}</span>
         </h2>
       </div>
       
@@ -33,7 +33,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import GameMediaCard from './GameMediaCard.vue'
+
+const { t } = useI18n()
 
 interface SlotGame {
   id: number

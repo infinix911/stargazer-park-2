@@ -9,56 +9,56 @@
             class="text-[#45443f] font-bold font-orbitron text-2xl lg:text-4xl cursor-pointer hover:text-[#1494dc] transition-colors"
             @click="navigateToHome"
           >
-            {{ $t('footer.company') }}
+            {{ t('footer.company') }}
           </span>
-          <p class="text-xs mt-1">{{ $t('footer.copyright') }}</p>
+          <p class="text-xs mt-1">{{ t('footer.copyright') }}</p>
         </div>
         
         <!-- Center - Navigation Icons -->
         <div class="flex flex-wrap items-center justify-center gap-2 lg:gap-4 max-w-full lg:max-w-none">
           <NavItem 
             icon="🎰" 
-            :label="$t('footer.nav.casino')" 
+            :label="t('footer.nav.casino')" 
             @click="handleNavClick('casino')"
           />
           <NavItem 
             icon="🎲" 
-            :label="$t('footer.nav.slots')" 
+            :label="t('footer.nav.slots')" 
             @click="handleNavClick('slots')"
           />
           <NavItem 
             icon="♠️" 
-            :label="$t('footer.nav.holdem')" 
+            :label="t('footer.nav.holdem')" 
             @click="handleNavClick('holdem')"
           />
           <NavItem 
             icon="👤" 
-            :label="$t('footer.nav.wallet')" 
+            :label="t('footer.nav.wallet')" 
             @click="handleNavClick('wallet')"
           />
           <NavItem 
             icon="📢" 
-            :label="$t('footer.nav.notice')" 
+            :label="t('footer.nav.notice')" 
             @click="handleNavClick('notice')"
           />
           <NavItem 
             icon="🎉" 
-            :label="$t('footer.nav.event')" 
+            :label="t('footer.nav.event')" 
             @click="handleNavClick('event')"
           />
           <NavItem 
             icon="💳" 
-            :label="$t('footer.nav.deposit')" 
+            :label="t('footer.nav.deposit')" 
             @click="handleNavClick('deposit')"
           />
           <NavItem 
             icon="💰" 
-            :label="$t('footer.nav.withdrawal')" 
+            :label="t('footer.nav.withdrawal')" 
             @click="handleNavClick('withdrawal')"
           />
           <NavItem 
             icon="❓" 
-            :label="$t('footer.nav.inquiry')" 
+            :label="t('footer.nav.inquiry')" 
             @click="handleNavClick('inquiry')"
           />
         </div>
@@ -81,7 +81,7 @@
                 class="w-6 h-6 lg:w-8 lg:h-8"
               />
             </span>
-            <span class="text-[#1494dc] hidden sm:inline">{{ $t('footer.recentPlayed') }}</span>
+            <span class="text-[#1494dc] hidden sm:inline">{{ t('footer.recentPlayed') }}</span>
           </Button>
         </div>
       </div>
@@ -91,8 +91,11 @@
 
 <script setup lang="ts">
 // Footer component with TypeScript
+import { useI18n } from 'vue-i18n'
 import NavItem from './NavItem.vue'
 import Button from '../ui/Button.vue'
+
+const { t } = useI18n()
 
 // Define emits
 const emit = defineEmits<{

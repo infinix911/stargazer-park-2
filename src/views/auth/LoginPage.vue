@@ -1,25 +1,25 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-20">
     <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-              <!-- Logo/Header -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ $t('login.title') }}</h1>
-        </div>
+      <!-- Logo/Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ t('login.title') }}</h1>
+      </div>
 
       <!-- Login Form -->
       <form @submit.prevent="handleSubmit" class="space-y-6">
-                <!-- Username Field -->
+        <!-- Username Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('login.username') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('login.username') }}</label>
           </div>
           <Input
             v-model="form.username"
             type="text"
-            :placeholder="$t('login.usernamePlaceholder')"
+            :placeholder="t('login.usernamePlaceholder')"
             :class="{ 'border-red-500': errors.username }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -32,13 +32,13 @@
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('login.password') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('login.password') }}</label>
           </div>
           <div class="relative">
             <Input
               v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
-              :placeholder="$t('login.passwordPlaceholder')"
+              :placeholder="t('login.passwordPlaceholder')"
               :class="{ 'border-red-500': errors.password }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
             />
@@ -73,14 +73,14 @@
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('login.captcha') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('login.captcha') }}</label>
           </div>
           
           <div class="flex space-x-2">
             <Input
               v-model="form.captcha"
               type="text"
-              :placeholder="$t('login.captchaPlaceholder')"
+              :placeholder="t('login.captchaPlaceholder')"
               :class="{ 'border-red-500': errors.captcha }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -105,17 +105,17 @@
           class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ $t('login.loggingIn') }}</span>
-          <span v-else>{{ $t('login.loginButton') }}</span>
+          <span v-if="isSubmitting">{{ t('login.loggingIn') }}</span>
+          <span v-else>{{ t('login.loginButton') }}</span>
         </Button>
       </form>
 
       <!-- Sign Up Link -->
       <div class="text-center mt-6">
         <p class="text-gray-600 text-sm">
-          {{ $t('login.noAccount') }} 
+          {{ t('login.noAccount') }} 
           <a href="/register" class="text-purple-600 hover:text-purple-700 font-medium">
-            {{ $t('login.signupLink') }}
+            {{ t('login.signupLink') }}
           </a>
         </p>
       </div>

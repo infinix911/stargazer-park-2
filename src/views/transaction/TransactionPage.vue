@@ -4,7 +4,7 @@
       <div class="max-w-[1660px] mx-auto px-4">
         <!-- Page Header -->
         <div class="mb-8">
-          <h1 class="text-3xl font-black text-gray-900 mb-4">{{ $t('transaction.title') }}</h1>
+          <h1 class="text-3xl font-black text-gray-900 mb-4">{{ t('transaction.title') }}</h1>
         </div>
 
         <!-- Tabs -->
@@ -15,14 +15,14 @@
               class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
-              {{ $t('transaction.tabs.transHistory') }}
+              {{ t('transaction.tabs.transHistory') }}
             </TabsTrigger>
             <TabsTrigger 
               value="point-history" 
               class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
-              {{ $t('transaction.tabs.pointHistory') }}
+              {{ t('transaction.tabs.pointHistory') }}
             </TabsTrigger>
           </TabsList>
           

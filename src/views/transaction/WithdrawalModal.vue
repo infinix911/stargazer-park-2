@@ -4,10 +4,10 @@
       <!-- Form Title -->
       <DialogHeader class="text-center mb-8">
         <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
-          {{ $t('withdrawal.title') }}
+          {{ t('withdrawal.title') }}
         </DialogTitle>
         <DialogDescription class="text-gray-600 mt-2">
-          {{ $t('withdrawal.description') }}
+          {{ t('withdrawal.description') }}
         </DialogDescription>
       </DialogHeader>
 
@@ -17,12 +17,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <Building2 class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankName') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankName') }}</label>
           </div>
           <Input
             v-model="form.bankName"
             type="text"
-            :placeholder="$t('withdrawal.bankNamePlaceholder')"
+            :placeholder="t('withdrawal.bankNamePlaceholder')"
             :class="{ 'border-red-500': errors.bankName }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -33,12 +33,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankAccountName') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccountName') }}</label>
           </div>
           <Input
             v-model="form.bankAccountName"
             type="text"
-            :placeholder="$t('withdrawal.bankAccountNamePlaceholder')"
+            :placeholder="t('withdrawal.bankAccountNamePlaceholder')"
             :class="{ 'border-red-500': errors.bankAccountName }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -49,12 +49,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankAccount') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccount') }}</label>
           </div>
           <Input
             v-model="form.bankAccount"
             type="text"
-            :placeholder="$t('withdrawal.bankAccountPlaceholder')"
+            :placeholder="t('withdrawal.bankAccountPlaceholder')"
             :class="{ 'border-red-500': errors.bankAccount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -65,12 +65,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <Wallet class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.balance') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.balance') }}</label>
           </div>
           <Input
             v-model="form.balance"
             type="text"
-            :placeholder="$t('withdrawal.balancePlaceholder')"
+            :placeholder="t('withdrawal.balancePlaceholder')"
             disabled
             class="bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
           />
@@ -80,12 +80,12 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.withdrawalAmount') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.withdrawalAmount') }}</label>
           </div>
           <Input
             v-model="form.withdrawalAmount"
             type="number"
-            :placeholder="$t('withdrawal.withdrawalAmountPlaceholder')"
+            :placeholder="t('withdrawal.withdrawalAmountPlaceholder')"
             :class="{ 'border-red-500': errors.withdrawalAmount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
@@ -143,7 +143,7 @@
               variant="outline"
               :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
             >
-              {{ $t('withdrawal.reset') }}
+              {{ t('withdrawal.reset') }}
             </Button>
           </div>
         </div>
@@ -154,8 +154,8 @@
           class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ $t('withdrawal.withdrawing') }}</span>
-          <span v-else>{{ $t('withdrawal.withdraw') }}</span>
+          <span v-if="isSubmitting">{{ t('withdrawal.withdrawing') }}</span>
+          <span v-else>{{ t('withdrawal.withdraw') }}</span>
         </Button>
       </form>
     </DialogContent>
