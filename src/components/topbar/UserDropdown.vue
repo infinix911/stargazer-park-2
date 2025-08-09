@@ -101,7 +101,6 @@ const showPointWithdrawalModal = ref(false)
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
   console.log('Point Withdrawal clicked')
-  showPointWithdrawalModal.value = true
 }
 
 const handlePointHistory = () => {
@@ -110,14 +109,12 @@ const handlePointHistory = () => {
 }
 
 const handleChangePassword = () => {
-  console.log('Change Password clicked')
   showChangePasswordModal.value = true
 }
 
 const handleLogout = async () => {
   try {
     await authStore.logout()
-    JwtService.destroyToken();
   } catch (error) {
     console.error('Logout failed:', error)
   }
