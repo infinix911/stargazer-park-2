@@ -89,6 +89,7 @@ import {
 import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
 import { useAuthStore } from '../../stores/auth'
+import JwtService from '../../services/JwtService'
 
 const authStore = useAuthStore()
 const user = computed(() => authStore.user);
@@ -113,8 +114,12 @@ const handleChangePassword = () => {
   showChangePasswordModal.value = true
 }
 
-const handleLogout = () => {
-  console.log('Logout clicked')
-  // Add logout logic here
+const handleLogout = async () => {
+  try {
+    await authStore.logout()
+    JwtService.destroyToken();
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
 }
 </script>
