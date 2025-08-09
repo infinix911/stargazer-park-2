@@ -43,22 +43,61 @@
                   
                   <!-- Navigation -->
                   <nav class="flex flex-col space-y-6 font-orbitron">
-                    <router-link to="/casino" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
-                      <img src="/images/header/casino.svg" alt="Casino" class="w-6 h-6 filter brightness-0 invert">
-                      <span class="text-xl">{{ t('header.casino') }}</span>
-                    </router-link>
-                    <router-link to="/slot" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
-                      <img src="/images/header/slot.svg" alt="Slots" class="w-6 h-6 filter brightness-0 invert">
-                      <span class="text-xl">{{ t('header.slots') }}</span>
-                    </router-link>
-                    <a href="#" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
-                      <img src="/images/header/holdem.svg" alt="Hold'em" class="w-6 h-6 filter brightness-0 invert">
-                      <span class="text-xl">홀덤</span>
-                    </a>
+                    <!-- Partner Navigation -->
+                    <template v-if="isPartner">
+                      <router-link 
+                        to="/partner/dashboard" 
+                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        :class="isActive('/partner/dashboard') ? 'bg-gray-800 text-red-400' : ''"
+                      >
+                        <i class="fas fa-home w-6 h-6 text-lg"></i>
+                        <span class="text-xl">{{ t('PartnerMenu.home') || 'Dashboard' }}</span>
+                      </router-link>
+                      <router-link 
+                        to="/partner/members" 
+                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        :class="isActive('/partner/members') ? 'bg-gray-800 text-red-400' : ''"
+                      >
+                        <i class="fas fa-users w-6 h-6 text-lg"></i>
+                        <span class="text-xl">{{ t('PartnerMenu.member') || 'Members' }}</span>
+                      </router-link>
+                      <router-link 
+                        to="/partner/transactions" 
+                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        :class="isActive('/partner/transactions') ? 'bg-gray-800 text-red-400' : ''"
+                      >
+                        <i class="fas fa-exchange-alt w-6 h-6 text-lg"></i>
+                        <span class="text-xl">{{ t('PartnerMenu.transaction') || 'Transactions' }}</span>
+                      </router-link>
+                      <router-link 
+                        to="/partner/reports" 
+                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        :class="isActive('/partner/reports') ? 'bg-gray-800 text-red-400' : ''"
+                      >
+                        <i class="fas fa-chart-line w-6 h-6 text-lg"></i>
+                        <span class="text-xl">{{ t('PartnerMenu.reports') || 'Reports' }}</span>
+                      </router-link>
+                    </template>
+                    
+                    <!-- Regular Navigation -->
+                    <template v-else>
+                      <router-link to="/casino" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
+                        <img src="/images/header/casino.svg" alt="Casino" class="w-6 h-6 filter brightness-0 invert">
+                        <span class="text-xl">{{ t('header.casino') }}</span>
+                      </router-link>
+                      <router-link to="/slot" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
+                        <img src="/images/header/slot.svg" alt="Slots" class="w-6 h-6 filter brightness-0 invert">
+                        <span class="text-xl">{{ t('header.slots') }}</span>
+                      </router-link>
+                      <a href="#" class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white">
+                        <img src="/images/header/holdem.svg" alt="Hold'em" class="w-6 h-6 filter brightness-0 invert">
+                        <span class="text-xl">홀덤</span>
+                      </a>
+                    </template>
                   </nav>
                   
                   <!-- Footer Actions -->
-                  <div class="mt-auto pt-6 border-t border-gray-700">
+                  <div class="mt-auto pt-6 border-t border-gray-700" v-if="!isPartner">
                     <div class="flex flex-col space-y-3">
                       <button 
                         @click="handleDepositClick"
@@ -95,27 +134,62 @@
            
            <!-- Desktop Navigation -->
            <nav class="hidden lg:flex items-center space-x-4 xl:space-x-8 font-orbitron text-sm lg:text-[1.25rem] text-white">
-             <!-- <a href="#" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
-               <img src="/images/header/sport.svg" alt="Sports" class="w-6 h-6 filter brightness-0 invert">
-               <span>{{ t('header.sports') }}</span>
-             </a> -->
-             <router-link to="/casino" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
-               <img src="/images/header/casino.svg" alt="Casino" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ t('header.casino') }}</span>
-             </router-link>
-             <router-link to="/slot" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
-               <img src="/images/header/slot.svg" alt="Slots" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ t('header.slots') }}</span>
-             </router-link>
-             <a href="#" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
-               <img src="/images/header/holdem.svg" alt="Hold'em" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
-               <span class="hidden xl:inline">{{ t('header.holdem') }}</span>
-             </a>
+             <!-- Partner Navigation -->
+             <template v-if="isPartner">
+               <router-link 
+                 to="/partner/dashboard" 
+                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                 :class="isActive('/partner/dashboard') ? 'text-red-400' : ''"
+               >
+                 <i class="fas fa-home w-4 h-4 lg:w-6 lg:h-6"></i>
+                 <span class="hidden xl:inline">{{ t('PartnerMenu.home') || 'Dashboard' }}</span>
+               </router-link>
+               <router-link 
+                 to="/partner/members" 
+                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                 :class="isActive('/partner/members') ? 'text-red-400' : ''"
+               >
+                 <i class="fas fa-users w-4 h-4 lg:w-6 lg:h-6"></i>
+                 <span class="hidden xl:inline">{{ t('PartnerMenu.member') || 'Members' }}</span>
+               </router-link>
+               <router-link 
+                 to="/partner/transactions" 
+                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                 :class="isActive('/partner/transactions') ? 'text-red-400' : ''"
+               >
+                 <i class="fas fa-exchange-alt w-4 h-4 lg:w-6 lg:h-6"></i>
+                 <span class="hidden xl:inline">{{ t('PartnerMenu.transaction') || 'Transactions' }}</span>
+               </router-link>
+               <router-link 
+                 to="/partner/reports" 
+                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                 :class="isActive('/partner/reports') ? 'text-red-400' : ''"
+               >
+                 <i class="fas fa-chart-line w-4 h-4 lg:w-6 lg:h-6"></i>
+                 <span class="hidden xl:inline">{{ t('PartnerMenu.reports') || 'Reports' }}</span>
+               </router-link>
+             </template>
+             
+             <!-- Regular Navigation -->
+             <template v-else>
+               <router-link to="/casino" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
+                 <img src="/images/header/casino.svg" alt="Casino" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
+                 <span class="hidden xl:inline">{{ t('header.casino') }}</span>
+               </router-link>
+               <router-link to="/slot" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
+                 <img src="/images/header/slot.svg" alt="Slots" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
+                 <span class="hidden xl:inline">{{ t('header.slots') }}</span>
+               </router-link>
+               <a href="#" class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold">
+                 <img src="/images/header/holdem.svg" alt="Hold'em" class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert">
+                 <span class="hidden xl:inline">{{ t('header.holdem') }}</span>
+               </a>
+             </template>
            </nav>
          </div>
          
          <!-- User Actions -->
-         <div class="flex items-center space-x-2 lg:space-x-0">
+         <div class="flex items-center space-x-2 lg:space-x-0" v-if="!isPartner">
           
           <!-- Deposit/Withdrawal Section -->
           <div class="flex rounded-lg lg:rounded-xl overflow-hidden border border-gray-600">
@@ -151,15 +225,31 @@
 
 <script setup lang="ts">
 // Header component with TypeScript
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import Sheet from './ui/sheet/Sheet.vue'
 import SheetContent from './ui/sheet/SheetContent.vue'
 import SheetTrigger from './ui/sheet/SheetTrigger.vue'
 import DepositModal from '../views/transaction/DepositModal.vue'
 import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
 
+// Props
+interface Props {
+  isPartner?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isPartner: false
+})
+
 const { t } = useI18n()
+const route = useRoute()
+
+// Check if route is active
+const isActive = (path: string): boolean => {
+  return route.path === path || route.path.startsWith(path + '/')
+}
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false)

@@ -73,6 +73,38 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  /**
+   *
+   * Partner Layout
+   *
+   */
+  {
+    path: "/partner",
+    name: "partner-layout",
+    component: () => import("../layouts/PartnerLayout.vue"),
+    children: [
+      {
+        path: "/partner/dashboard",
+        name: "partner-dashboard",
+        component: () => import("../views/partner/Dashboard.vue"),
+      },
+      {
+        path: "/partner/members",
+        name: "partner-members",
+        component: () => import("../views/partner/Members.vue"),
+      },
+      {
+        path: "/partner/transactions",
+        name: "partner-transactions",
+        component: () => import("../views/partner/Transactions.vue"),
+      },
+      {
+        path: "/partner/reports",
+        name: "partner-reports",
+        component: () => import("../views/partner/Reports.vue"),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
@@ -90,8 +122,28 @@ router.beforeEach(async (to, from, next) => {
   // Public routes that don't need authentication
   const publicRoutes = ['login-page', 'register-page', 'Error404'];
   
+  // Partner routes that need special authentication
+  const partnerRoutes = ['partner-dashboard', 'partner-members', 'partner-transactions', 'partner-reports'];
+  
   if (publicRoutes.includes(to.name as string)) {
     next();
+    return;
+  }
+
+  // Handle partner routes
+  if (partnerRoutes.includes(to.name as string)) {
+    try {
+      // Verify partner authentication
+      const verify = await authStore.verifyAuth(true);
+      if (verify) {
+        next();
+      } else {
+        next({ name: "login-page" });
+      }
+    } catch (error) {
+      console.error('Partner auth verification failed:', error);
+      next({ name: "login-page" });
+    }
     return;
   }
 
