@@ -34,7 +34,10 @@ export default {
       passwordMinLength: '비밀번호는 최소 6자 이상이어야 합니다',
       captchaRequired: '캡차를 입력해주세요',
       captchaIncorrect: '캡차가 올바르지 않습니다'
-    }
+    },
+    successTitle: '로그인 성공!',
+    successMessage: '환영합니다! 성공적으로 로그인되었습니다.',
+    refreshCaptchaError: '캡차 새로고침에 실패했습니다'
   },
   register: {
     title: '계정 만들기',

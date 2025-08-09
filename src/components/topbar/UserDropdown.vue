@@ -20,7 +20,8 @@
           <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
           </svg>
-          <span class="text-gray-600 font-medium">Level 1</span>
+          <span class="text-gray-600 font-medium">{{ `LV.${user.level}` }}</span>
+          <span class="text-gray-600 font-medium">{{ user.name }} 님</span>
         </div>
       </DropdownMenuLabel>
 
@@ -75,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,6 +88,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
+import { useAuthStore } from '../../stores/auth'
+
+const authStore = useAuthStore()
+const user = computed(() => authStore.user);
 
 // Modal state
 const showChangePasswordModal = ref(false)

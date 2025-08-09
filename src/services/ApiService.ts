@@ -14,6 +14,10 @@ class ApiService {
    */
   public static vueInstance: App;
   /**
+   * @description configured axios instance
+   */
+  public static axiosInstance: any;
+  /**
    * @description initialize vue axios
    */
   public static init(app: App<any>) {
@@ -37,6 +41,7 @@ class ApiService {
     });
     ApiService.vueInstance = app;
     ApiService.vueInstance.use(VueAxios, axios);
+    ApiService.axiosInstance = axiosIns;
 
     // Pre approved POST Request
     const approvedPOST = ["/auth/login", "/auth/register"];
@@ -86,7 +91,7 @@ class ApiService {
     resource: string,
     params: AxiosRequestConfig,
   ): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.get(resource, params).catch((error) => {
+    return ApiService.axiosInstance.get(resource, params).catch((error: any) => {
       throw new Error(`[KT] ApiService ${error}`);
     });
   }
@@ -98,7 +103,8 @@ class ApiService {
    * @returns Promise<AxiosResponse>
    */
   public static get(resource: string): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.get(`${resource}`).catch((error) => {
+    return ApiService.axiosInstance.get(`${resource}`).catch((error: any) => {
+      console.error(`API Error for ${resource}:`, error);
       throw new Error(`[KT] ApiService ${error}`);
     });
   }
@@ -110,7 +116,7 @@ class ApiService {
    * @returns Promise<AxiosResponse>
    */
   public static post(resource: string, params: any): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.post(`${resource}`, params);
+    return ApiService.axiosInstance.post(`${resource}`, params);
   }
 
   /**
@@ -125,7 +131,7 @@ class ApiService {
     slug: string,
     params: AxiosRequestConfig,
   ): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.put(`${resource}/${slug}`, params);
+    return ApiService.axiosInstance.put(`${resource}/${slug}`, params);
   }
 
   /**
@@ -138,7 +144,7 @@ class ApiService {
     resource: string,
     params: AxiosRequestConfig,
   ): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.put(`${resource}`, params);
+    return ApiService.axiosInstance.put(`${resource}`, params);
   }
 
   /**
@@ -148,7 +154,7 @@ class ApiService {
    * @returns Promise<AxiosResponse>
    */
   public static patch(resource: string, params: any): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.patch(`${resource}`, params);
+    return ApiService.axiosInstance.patch(`${resource}`, params);
   }
 
   /**
@@ -158,9 +164,9 @@ class ApiService {
    * @returns Promise<AxiosResponse>
    */
   public static delete(resource: string, params: any): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios
+    return ApiService.axiosInstance
       .delete(resource, params)
-      .catch((error) => {
+      .catch((error: any) => {
         throw new Error(`[RWV] ApiService ${error}`);
       });
   }

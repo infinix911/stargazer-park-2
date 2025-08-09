@@ -34,7 +34,10 @@ export default {
       passwordMinLength: 'Password must be at least 6 characters',
       captchaRequired: 'Captcha is required',
       captchaIncorrect: 'Captcha is incorrect'
-    }
+    },
+    successTitle: 'Login Successful!',
+    successMessage: 'Welcome back! You have been successfully logged in.',
+    refreshCaptchaError: 'Failed to refresh captcha'
   },
   register: {
     title: 'Create an account',

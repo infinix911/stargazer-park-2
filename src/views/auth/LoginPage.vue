@@ -62,13 +62,10 @@
         <!-- Captcha Field -->
         <div class="space-y-2">
           <!-- Captcha Display -->
-          <div class="bg-white rounded-lg p-4 text-center border border-gray-300">
-            <div class="text-2xl font-bold text-gray-800 relative">
-              {{ captcha.num1 }} + {{ captcha.num2 }}
-              <div class="absolute inset-0 border-b-2 border-gray-300 transform -rotate-1"></div>
-            </div>
+          <div class="flex items-center justify-center space-x-2 border border-gray-300 rounded-lg p-4">
+            <span v-html="authStore.cvalue"/>
           </div>
-          
+
           <div class="flex items-center space-x-2">
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
@@ -86,7 +83,7 @@
             />
             <Button
               type="button"
-              @click="generateCaptcha"
+              @click="refreshServerCaptcha"
               variant="outline"
               size="icon"
               class="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -102,7 +99,7 @@
         <!-- Login Button -->
         <Button
           type="submit"
-          class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
+          class="cursor-pointer w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
           :disabled="isSubmitting"
         >
           <span v-if="isSubmitting">{{ t('login.loggingIn') }}</span>
@@ -124,13 +121,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 import { Input } from '../../components/ui/input'
 import Button from '../../components/ui/Button.vue'
+import { useAuthStore } from '../../stores/auth'
+import { useAppStore } from "../../stores/app";
+
+interface ILoginForm {
+  username: string;
+  password: string;
+  captcha: string;
+}
 
 const { t } = useI18n()
+const router = useRouter()
+const authStore = useAuthStore()
 
 // Form validation schema
 const loginSchema = z.object({
@@ -153,20 +162,15 @@ const errors = reactive<Partial<LoginForm>>({})
 const isSubmitting = ref(false)
 const showPassword = ref(false)
 
-// Captcha state
-const captcha = reactive({
-  num1: 4,
-  num2: 5,
-  answer: 9
-})
-
-// Generate new captcha
-const generateCaptcha = (): void => {
-  captcha.num1 = Math.floor(Math.random() * 10) + 1
-  captcha.num2 = Math.floor(Math.random() * 10) + 1
-  captcha.answer = captcha.num1 + captcha.num2
-  form.captcha = ''
-  errors.captcha = undefined
+// Refresh server captcha
+const refreshServerCaptcha = async (): Promise<void> => {
+  try {
+    await authStore.getCaptcha()
+    form.captcha = ''
+    errors.captcha = undefined
+  } catch (error) {
+    console.error(t('login.refreshCaptchaError'), error)
+  }
 }
 
 // Toggle password visibility
@@ -199,8 +203,8 @@ const handleSubmit = async (): Promise<void> => {
   if (!validateForm()) return
 
   // Validate captcha
-  if (parseInt(form.captcha) !== captcha.answer) {
-    errors.captcha = t('login.errors.captchaIncorrect')
+  if (!form.captcha) {
+    errors.captcha = t('login.errors.captchaRequired')
     return
   }
 
@@ -208,9 +212,20 @@ const handleSubmit = async (): Promise<void> => {
 
   try {
     console.log('Login attempt:', form)
-    // Add your login logic here
-    await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-    console.log('Login successful')
+    const resp = await authStore.login(form as ILoginForm);
+
+    if (resp.success) {
+      await Swal.fire({
+        icon: 'success',
+        title: t('login.successTitle'),
+        text: t('login.successMessage'),
+        timer: 1000,
+        showConfirmButton: false
+      })
+      router.push("/");
+      console.log('Login successful')
+    }
+
   } catch (error) {
     console.error('Login failed:', error)
   } finally {
@@ -218,8 +233,10 @@ const handleSubmit = async (): Promise<void> => {
   }
 }
 
-// Generate initial captcha
-generateCaptcha()
+// Get captcha from server on mount
+onMounted(() => {
+  authStore.getCaptcha()
+})
 </script>
 
 <style scoped>

@@ -31,7 +31,7 @@ interface IMember {
 interface ILogin {
   username: string;
   password: string;
-  captcha: number;
+  captcha: string;
 }
 
 interface IRegForm {

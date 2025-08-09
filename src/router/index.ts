@@ -1,6 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw, } from 'vue-router'
+import { useAuthStore } from "../stores/auth";
+import { useAppStore } from "../stores/app";
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   /**
    *
    * Main Layout
@@ -78,4 +80,47 @@ const router = createRouter({
   routes
 })
 
-export default router 
+router.beforeEach(async (to, from, next) => {
+  const authStore: any = useAuthStore();
+  const appStore: any = useAppStore();
+
+  // Get Site Settings
+  appStore.getSettings();
+
+  // Public routes that don't need authentication
+  const publicRoutes = ['login-page', 'register-page', 'Error404'];
+  
+  if (publicRoutes.includes(to.name as string)) {
+    next();
+    return;
+  }
+
+  switch (to.name) {
+    // Connect to Socket
+    case "main-page":
+      try {
+        // verify the auth allow if authenticated; otherwise return to login-page
+        const verify = await authStore.verifyAuth(true);
+        if (verify) next()
+        else next({ name: "login-page" })
+      } catch (error) {
+        console.error('Auth verification failed in router:', error);
+        next({ name: "login-page" })
+      }
+      break;
+    case "Error404":
+      next();
+      break;
+    default:
+      try {
+        await authStore.verifyAuth(true)
+        next();
+      } catch (error) {
+        console.error('Auth verification failed in router:', error);
+        next();
+      }
+      break;
+  }
+})
+
+export default router

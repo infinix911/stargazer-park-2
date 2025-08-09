@@ -5,7 +5,7 @@
         <!-- Left side - Login and Sign Up buttons -->
         <div class="flex items-center">
           <!-- Login Button -->
-          <button @click="navigateToLogin" class="flex items-center space-x-1 px-2 py-1.5 rounded text-gray-300 hover:text-white transition-colors">
+          <button @click="navigateToLogin" class="cursor-pointer flex items-center space-x-1 px-2 py-1.5 rounded text-gray-300 hover:text-white transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
@@ -13,7 +13,7 @@
           </button>
           
           <!-- Sign Up Button -->
-          <button @click="navigateToSignup" class="flex items-center space-x-1 px-2 py-1.5 rounded text-gray-300 hover:text-white transition-colors">
+          <button @click="navigateToSignup" class="cursor-pointer flex items-center space-x-1 px-2 py-1.5 rounded text-gray-300 hover:text-white transition-colors">
             <div class="relative">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
