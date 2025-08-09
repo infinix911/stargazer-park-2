@@ -88,7 +88,7 @@ router.beforeEach(async (to, from, next) => {
   appStore.getSettings();
 
   // Public routes that don't need authentication
-  const publicRoutes = ['login-page', 'register-page', 'Error404'];
+  const publicRoutes = ['login-page', 'register-page', 'main-page', 'Error404'];
   
   if (publicRoutes.includes(to.name as string)) {
     next();
@@ -96,18 +96,6 @@ router.beforeEach(async (to, from, next) => {
   }
 
   switch (to.name) {
-    // Connect to Socket
-    case "main-page":
-      try {
-        // verify the auth allow if authenticated; otherwise return to login-page
-        const verify = await authStore.verifyAuth(true);
-        if (verify) next()
-        else next({ name: "login-page" })
-      } catch (error) {
-        console.error('Auth verification failed in router:', error);
-        next({ name: "login-page" })
-      }
-      break;
     case "Error404":
       next();
       break;
