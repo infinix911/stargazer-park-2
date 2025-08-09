@@ -22,18 +22,15 @@
     </div>
 
     <!-- Data Table Section -->
-    <div class="relative z-10 pb-6">
-      <div class="w-full mx-auto px-2">
-        <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-end">
-            <div class="text-xs text-gray-400">
-              <i class="fas fa-table mr-1"></i>
-              {{ tableData.length }} records
-            </div>
-          </div>
-          
-          <div class="w-full px-10 pb-5">
-            <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
+    <div class="max-w-[1500px] mx-auto px-2 pb-6">
+      <DataTableCard
+        :title="t('partnerMenu.memberOnline')"
+        subtitle="Currently active members and their session details"
+        :record-count="tableData.length"
+        icon="fas fa-circle"
+        icon-color="#10b981"
+      >
+        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
               <template v-slot:cell-location="{ row: data }">
                 <div class="text-center">
                   <a
@@ -55,10 +52,8 @@
                   </span>
                 </div>
               </template>
-            </KTDatatable>
-          </div>
-        </div>
-      </div>
+        </KTDatatable>
+      </DataTableCard>
     </div>
   </div>
 </template>
@@ -68,6 +63,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 
 interface IData {
   last_ip: string;
@@ -83,7 +79,10 @@ interface IData {
 
 export default defineComponent({
   name: "MemberOnline",
-  components: { KTDatatable },
+  components: { 
+    KTDatatable,
+    DataTableCard,
+  },
   setup() {
     const { t } = useI18n();
     const tableData = ref<IData[]>([]);

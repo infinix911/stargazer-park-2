@@ -116,26 +116,13 @@
 
     <!-- Data Table Section -->
     <div class="w-full px-4 pb-6">
-      <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-        <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="p-2 bg-red-500/20 rounded-lg">
-                <i class="fas fa-dice text-red-400 text-sm"></i>
-              </div>
-              <div>
-                <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ t('partnerMenu.betHistory') }}</h2>
-                <p class="text-xs text-gray-400">Detailed betting records and results</p>
-              </div>
-            </div>
-            <div class="text-xs text-gray-400">
-              <i class="fas fa-table mr-1"></i>
-              {{ tableData.length }} records
-            </div>
-          </div>
-        </div>
-        
-        <div class="w-full px-10 pb-5">
+      <DataTableCard
+        :title="`${gameDisplayName} ${t('partnerMenu.betHistory')}`"
+        subtitle="Detailed betting records and results"
+        :record-count="tableData.length"
+        icon="fas fa-dice"
+        icon-color="#ef4444"
+      >
           <KTDatatable 
             :tableHeader="tableHeaders" 
             :tableData="tableData" 
@@ -207,9 +194,8 @@
                 </span>
               </div>
             </template>
-          </KTDatatable>
-        </div>
-      </div>
+        </KTDatatable>
+      </DataTableCard>
     </div>
   </div>
 </template>
@@ -222,6 +208,7 @@ import qs from "qs";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 
 export interface IData {
   betamount: number;
@@ -249,6 +236,7 @@ export default defineComponent({
   components: {
     KTDatatable,
     DateRangePicker,
+    DataTableCard,
   },
   props: {
     game: {

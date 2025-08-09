@@ -58,24 +58,13 @@
 
     <!-- Data Table Section -->
     <div class="w-full px-4 pb-6">
-      <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-        <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="p-2 bg-yellow-500/20 rounded-lg">
-              <i class="fas fa-chart-bar text-yellow-400 text-sm"></i>
-            </div>
-            <div>
-              <h2 class="text-lg font-semibold text-white">{{ gameDisplayName }} {{ t('partnerMenu.statistics') }}</h2>
-              <p class="text-xs text-gray-400">Game performance and analytics overview</p>
-            </div>
-          </div>
-          <div class="text-xs text-gray-400">
-            <i class="fas fa-table mr-1"></i>
-            {{ tableData.length }} records
-          </div>
-        </div>
-        
-        <div class="w-full px-10 pb-5">
+      <DataTableCard
+        :title="`${gameDisplayName} ${t('partnerMenu.statistics')}`"
+        subtitle="Game performance and analytics overview"
+        :record-count="tableData.length"
+        icon="fas fa-chart-bar"
+        icon-color="#eab308"
+      >
           <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
             <!-- Tie Amount (always 0 for now) -->
             <template v-slot:cell-tieamt="{}">
@@ -86,9 +75,8 @@
                 </span>
               </div>
             </template>
-          </KTDatatable>
-        </div>
-      </div>
+        </KTDatatable>
+      </DataTableCard>
     </div>
   </div>
 </template>
@@ -101,6 +89,7 @@ import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 
 export interface IMember {
   member: string;
@@ -131,6 +120,7 @@ export default defineComponent({
   components: {
     KTDatatable,
     DateRangePicker,
+    DataTableCard,
   },
   props: {
     game: {

@@ -1,6 +1,6 @@
 <template>
   <!-- Page Header -->
-  <PartnerPageHeader 
+  <PartnerPageHeader
     v-if="member_id === undefined"
     :title="t('partnerMenu.transaction')"
     subtitle="Member deposit and withdrawal transaction history"
@@ -15,15 +15,22 @@
         <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
           <!-- Transaction Type -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               {{ t("partner.tranType") }}
             </label>
-            <select 
-              v-model="tranType" 
+            <select
+              v-model="tranType"
               class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px;"
+              style="height: 40px"
             >
-              <option v-for="option in tranTypes" :key="option.value" :value="option.value" class="bg-gray-800 text-white">
+              <option
+                v-for="option in tranTypes"
+                :key="option.value"
+                :value="option.value"
+                class="bg-gray-800 text-white"
+              >
                 {{ option.label }}
               </option>
             </select>
@@ -31,15 +38,22 @@
 
           <!-- Search Type -->
           <div v-if="member_id === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               Search Type
             </label>
-            <select 
-              v-model="searchType" 
+            <select
+              v-model="searchType"
               class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px;"
+              style="height: 40px"
             >
-              <option v-for="option in searchTypes" :key="option.value" :value="option.value" class="bg-gray-800 text-white">
+              <option
+                v-for="option in searchTypes"
+                :key="option.value"
+                :value="option.value"
+                class="bg-gray-800 text-white"
+              >
                 {{ option.label }}
               </option>
             </select>
@@ -47,26 +61,33 @@
 
           <!-- Search Value -->
           <div v-if="member_id === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               Search Value
             </label>
-            <input 
-              v-model="searchValue" 
+            <input
+              v-model="searchValue"
               type="text"
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
           <!-- Include Sub Members -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               Options
             </label>
-            <div class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3" style="height: 40px;">
-              <input 
-                type="checkbox" 
-                id="include-sub-check" 
+            <div
+              class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3"
+              style="height: 40px"
+            >
+              <input
+                type="checkbox"
+                id="include-sub-check"
                 v-model="includeSub"
                 class="mr-2 bg-white/10 border-white/20 text-blue-500 focus:ring-blue-500 focus:ring-2"
               />
@@ -78,14 +99,16 @@
 
           <!-- Date Range Picker -->
           <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               Date Range
             </label>
             <DateRangePicker
               class="w-full date-picker-modern"
               @changedate="setSelectedDate"
               initial="month"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
@@ -104,30 +127,43 @@
     </div>
 
     <!-- Statistics Cards -->
-    <div class="w-full px-4 pb-6" v-if="tranType === 'DEPOSIT' || tranType === 'WITHDRAW' || tranType === 'ALL'">
+    <div
+      class="w-full px-4 pb-6"
+      v-if="tranType === 'DEPOSIT' || tranType === 'WITHDRAW' || tranType === 'ALL'"
+    >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Total Deposits -->
-        <div v-if="tranType === 'DEPOSIT' || tranType === 'ALL'" class="bg-gradient-to-r from-green-500/20 to-emerald-600/20 backdrop-blur-sm border border-green-500/30 rounded-xl p-6">
+        <div
+          v-if="tranType === 'DEPOSIT' || tranType === 'ALL'"
+          class="bg-gradient-to-r from-green-500/20 to-emerald-600/20 backdrop-blur-sm border border-green-500/30 rounded-xl p-6"
+        >
           <div class="flex items-center gap-4">
             <div class="p-3 bg-green-500/30 rounded-lg">
               <i class="fas fa-arrow-down text-green-300 text-xl"></i>
             </div>
             <div>
               <h3 class="text-2xl font-bold text-white">{{ n(sums.deposits) }}</h3>
-              <p class="text-sm text-gray-300">{{ t('partnerMenu.totalDepositAmount') }}</p>
+              <p class="text-sm text-gray-300">
+                {{ t("partnerMenu.totalDepositAmount") }}
+              </p>
             </div>
           </div>
         </div>
 
         <!-- Total Withdrawals -->
-        <div v-if="tranType === 'WITHDRAW' || tranType === 'ALL'" class="bg-gradient-to-r from-red-500/20 to-rose-600/20 backdrop-blur-sm border border-red-500/30 rounded-xl p-6">
+        <div
+          v-if="tranType === 'WITHDRAW' || tranType === 'ALL'"
+          class="bg-gradient-to-r from-red-500/20 to-rose-600/20 backdrop-blur-sm border border-red-500/30 rounded-xl p-6"
+        >
           <div class="flex items-center gap-4">
             <div class="p-3 bg-red-500/30 rounded-lg">
               <i class="fas fa-arrow-up text-red-300 text-xl"></i>
             </div>
             <div>
               <h3 class="text-2xl font-bold text-white">{{ n(sums.withdrawals) }}</h3>
-              <p class="text-sm text-gray-300">{{ t('partnerMenu.totalWithdrawalAmount') }}</p>
+              <p class="text-sm text-gray-300">
+                {{ t("partnerMenu.totalWithdrawalAmount") }}
+              </p>
             </div>
           </div>
         </div>
@@ -135,64 +171,59 @@
     </div>
 
     <!-- Data Table Section -->
-    <div class="relative z-10 pb-6">
-      <div class="w-full mx-auto px-2">
-        <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-end">
-            <div class="text-xs text-gray-400">
-              <i class="fas fa-table mr-1"></i>
-              {{ tableData.length }} records
+    <div class="max-w-[1500px] mx-auto px-2 pb-6">
+      <DataTableCard
+        :title="t('partnerMenu.transaction')"
+        subtitle="Transaction records and history"
+        :record-count="tableData.length"
+        icon="fas fa-exchange-alt"
+        icon-color="#3b82f6"
+      >
+        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
+          <!-- Transaction Type -->
+          <template v-slot:cell-transaction_type="{ row: data }">
+            <div class="text-center">
+              <span
+                v-if="data.transaction_type === 'DEPOSIT'"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+              >
+                <i class="fas fa-arrow-down mr-1"></i>
+                {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+              >
+                <i class="fas fa-arrow-up mr-1"></i>
+                {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
+              </span>
             </div>
-          </div>
-          
-          <div class="w-full px-10 pb-5">
-            <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
-              <!-- Transaction Type -->
-              <template v-slot:cell-transaction_type="{ row: data }">
-                <div class="text-center">
-                  <span
-                    v-if="data.transaction_type === 'DEPOSIT'"
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
-                  >
-                    <i class="fas fa-arrow-down mr-1"></i>
-                    {{ t("depWid." + data.transaction_type) }}
-                  </span>
-                  <span 
-                    v-else
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
-                  >
-                    <i class="fas fa-arrow-up mr-1"></i>
-                    {{ t("depWid." + data.transaction_type) }}
-                  </span>
-                </div>
-              </template>
+          </template>
 
-              <!-- Amount -->
-              <template v-slot:cell-depwid="{ row: data }">
-                <div class="text-center">
-                  <span
-                    v-if="data.transaction_type === 'DEPOSIT'"
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
-                  >
-                    <i class="fas fa-plus mr-1"></i>
-                    {{ n(parseInt(data.amount_deposit)) }}
-                    <span v-if="data.amount_coupon > 0" class="ml-1 text-yellow-300">
-                      (+{{ n(parseInt(data.amount_coupon)) }})
-                    </span>
-                  </span>
-                  <span 
-                    v-else
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
-                  >
-                    <i class="fas fa-minus mr-1"></i>
-                    {{ n(parseInt(data.amount_withdraw)) }}
-                  </span>
-                </div>
-              </template>
-            </KTDatatable>
-          </div>
-        </div>
-      </div>
+          <!-- Amount -->
+          <template v-slot:cell-depwid="{ row: data }">
+            <div class="text-center">
+              <span
+                v-if="data.transaction_type === 'DEPOSIT'"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+              >
+                <i class="fas fa-plus mr-1"></i>
+                {{ n(parseInt(data.amount_deposit)) }}
+                <span v-if="data.amount_coupon > 0" class="ml-1 text-yellow-300">
+                  (+{{ n(parseInt(data.amount_coupon)) }})
+                </span>
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+              >
+                <i class="fas fa-minus mr-1"></i>
+                {{ n(parseInt(data.amount_withdraw)) }}
+              </span>
+            </div>
+          </template>
+        </KTDatatable>
+      </DataTableCard>
     </div>
   </div>
 </template>
@@ -205,6 +236,7 @@ import qs from "qs";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 
 interface IData {
   member_id: string;
@@ -227,6 +259,7 @@ export default defineComponent({
   components: {
     KTDatatable,
     DateRangePicker,
+    DataTableCard,
   },
   props: {
     member_id: {
@@ -236,7 +269,7 @@ export default defineComponent({
   },
   setup(props) {
     const { t, n } = useI18n();
-    
+
     const tableData = ref<IData[]>([]);
     const tableHeaders = [
       { key: "member", name: t("partner.member"), text: true },
@@ -263,7 +296,7 @@ export default defineComponent({
 
     const sums = ref({
       withdrawals: 0,
-      deposits: 0
+      deposits: 0,
     });
 
     let daterange = {
@@ -306,17 +339,23 @@ export default defineComponent({
         tableData.value.splice(0, tableData.value.length, ...results);
         getSums(results);
       } catch (error) {
-        console.error('Failed to fetch transaction history:', error);
+        console.error("Failed to fetch transaction history:", error);
       }
     };
 
     const getSums = (results: Array<IData>) => {
       // Total Withdrawals
-      sums.value.withdrawals = results.reduce((total: number, obj) => Number(obj.amount_withdraw) + Number(total), 0);
+      sums.value.withdrawals = results.reduce(
+        (total: number, obj) => Number(obj.amount_withdraw) + Number(total),
+        0
+      );
       sums.value.withdrawals *= -1;
 
       // Total Deposits
-      sums.value.deposits = results.reduce((total: number, obj) => Number(obj.amount_deposit) + Number(total), 0);
+      sums.value.deposits = results.reduce(
+        (total: number, obj) => Number(obj.amount_deposit) + Number(total),
+        0
+      );
     };
 
     return {
@@ -339,5 +378,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import '@/assets/common-dashboard.css';
+@import "@/assets/common-dashboard.css";
 </style>

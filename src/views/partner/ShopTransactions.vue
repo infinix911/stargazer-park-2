@@ -1,6 +1,6 @@
 <template>
   <!-- Page Header -->
-  <PartnerPageHeader 
+  <PartnerPageHeader
     :title="t('partnerMenu.shopTranHistory')"
     subtitle="Shop transaction history and member transfers"
     icon="fas fa-store"
@@ -14,15 +14,22 @@
         <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
           <!-- Transaction Type -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               {{ t("partner.tranType") }}
             </label>
-            <select 
-              v-model="tranType" 
+            <select
+              v-model="tranType"
               class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px;"
+              style="height: 40px"
             >
-              <option v-for="option in tranTypes" :key="option.value" :value="option.value" class="bg-gray-800 text-white">
+              <option
+                v-for="option in tranTypes"
+                :key="option.value"
+                :value="option.value"
+                class="bg-gray-800 text-white"
+              >
                 {{ option.label }}
               </option>
             </select>
@@ -30,27 +37,31 @@
 
           <!-- Store Member -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               {{ t("partner.storeMember") }}
             </label>
-            <input 
-              v-model="receiver" 
+            <input
+              v-model="receiver"
               type="text"
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
           <!-- Date Range Picker -->
           <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            <label
+              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
+            >
               Date Range
             </label>
             <DateRangePicker
               class="w-full date-picker-modern"
               @changedate="setSelectedDate"
               initial="month"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
@@ -59,7 +70,7 @@
             <button
               @click="getList"
               class="w-20 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg text-xs"
-              style="height: 40px;"
+              style="height: 40px"
             >
               <i class="fas fa-search mr-1"></i>
               Search
@@ -70,63 +81,60 @@
     </div>
 
     <!-- Data Table Section -->
-    <div class="relative z-10 pb-6">
-      <div class="w-full mx-auto px-2">
-        <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
-            <div class="flex items-center justify-end">
-              <div class="text-xs text-gray-400">
-                <i class="fas fa-table mr-1"></i>
-                {{ tableData.length }} records
-              </div>
+    <div class="max-w-[1500px] mx-auto px-2 pb-6">
+      <DataTableCard
+        :title="t('partnerMenu.shopTranHistory')"
+        subtitle="Shop transaction records and history"
+        :record-count="tableData.length"
+        icon="fas fa-store"
+        icon-color="#8b5cf6"
+      >
+        <KTDatatable
+          :tableHeader="tableHeaderShop"
+          :tableData="tableData"
+          :rowsPerPage="50"
+        >
+          <!-- Transaction Type -->
+          <template v-slot:cell-type="{ row: data }">
+            <div class="text-center">
+              <span
+                v-if="data.type === 'ADD'"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+              >
+                <i class="fas fa-plus mr-1"></i>
+                {{ t("partner.add") }}
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+              >
+                <i class="fas fa-minus mr-1"></i>
+                {{ t("partner.deduct") }}
+              </span>
             </div>
-          </div>
-          
-          <div class="w-full px-10 pb-5">
-            <KTDatatable :tableHeader="tableHeaderShop" :tableData="tableData" :rowsPerPage="50">
-              <!-- Transaction Type -->
-              <template v-slot:cell-type="{ row: data }">
-                <div class="text-center">
-                  <span
-                    v-if="data.type === 'ADD'"
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
-                  >
-                    <i class="fas fa-plus mr-1"></i>
-                    {{ t("partner.add") }}
-                  </span>
-                  <span 
-                    v-else
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
-                  >
-                    <i class="fas fa-minus mr-1"></i>
-                    {{ t("partner.deduct") }}
-                  </span>
-                </div>
-              </template>
+          </template>
 
-              <!-- Amount -->
-              <template v-slot:cell-amount="{ row: data }">
-                <div class="text-center">
-                  <span
-                    v-if="data.type === 'ADD'"
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
-                  >
-                    <i class="fas fa-plus mr-1"></i>
-                    {{ n(Number(data.amount)) }}
-                  </span>
-                  <span 
-                    v-else
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
-                  >
-                    <i class="fas fa-minus mr-1"></i>
-                    {{ n(Number(data.amount)) }}
-                  </span>
-                </div>
-              </template>
-            </KTDatatable>
-          </div>
-        </div>
-      </div>
+          <!-- Amount -->
+          <template v-slot:cell-amount="{ row: data }">
+            <div class="text-center">
+              <span
+                v-if="data.type === 'ADD'"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+              >
+                <i class="fas fa-plus mr-1"></i>
+                {{ n(Number(data.amount)) }}
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+              >
+                <i class="fas fa-minus mr-1"></i>
+                {{ n(Number(data.amount)) }}
+              </span>
+            </div>
+          </template>
+        </KTDatatable>
+      </DataTableCard>
     </div>
   </div>
 </template>
@@ -139,6 +147,7 @@ import qs from "qs";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 import { useAuthStore } from "@/stores/auth";
 
 export interface IData {
@@ -158,7 +167,11 @@ export interface DateRange {
 
 export default defineComponent({
   name: "ShopTransactions",
-  components: { KTDatatable, DateRangePicker },
+  components: {
+    KTDatatable,
+    DateRangePicker,
+    DataTableCard,
+  },
   props: {
     member_id: {
       type: String,
@@ -219,7 +232,7 @@ export default defineComponent({
 
         tableData.value.splice(0, tableData.value.length, ...results);
       } catch (error) {
-        console.error('Failed to fetch shop transactions:', error);
+        console.error("Failed to fetch shop transactions:", error);
       }
     };
 
@@ -232,7 +245,8 @@ export default defineComponent({
     });
 
     return {
-      t, n,
+      t,
+      n,
       tableHeaderShop,
       tableData,
       tranType,
@@ -247,5 +261,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import '@/assets/common-dashboard.css';
+@import "@/assets/common-dashboard.css";
 </style>

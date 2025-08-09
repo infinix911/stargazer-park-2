@@ -7,119 +7,87 @@
     icon-color="green-blue"
   />
 
-  <div class="max-w-[1500px] mx-auto">
-    <!-- Controls Section -->
-    <div class="w-full mx-auto px-4 py-6">
-      <div class="flex items-end justify-end mt-5">
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
-          <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Date Range
-            </label>
-            <DateRangePicker
-              class="w-full h-10 date-picker-modern"
-              @changedate="setSelectedDate"
-              initial="month"
-            />
-          </div>
+  <!-- Controls Section -->
+  <div class="max-w-[1500px] mx-auto px-4 py-6">
+    <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5">
+      <!-- Date Range Picker -->
+      <div class="flex-1 min-w-0 max-w-[300px]">
+        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+          Date Range
+        </label>
+        <DateRangePicker
+          class="w-full h-10 date-picker-modern"
+          @changedate="setSelectedDate"
+          initial="month"
+        />
+      </div>
 
-          <!-- Quick Action Buttons -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-            <button
-              v-for="dateButton in dateButtons"
-              :key="dateButton.key"
-              @click="setSelectedDate(dateButton.range)"
-              class="w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
-            >
-              {{ t(dateButton.label) }}
-            </button>
-            <button
-              @click="getList"
-              class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
-            >
-              <i class="fas fa-search mr-1"></i>
-              Search
-            </button>
-          </div>
-        </div>
+      <!-- Quick Action Buttons -->
+      <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
+        <button
+          v-for="dateButton in dateButtons"
+          :key="dateButton.key"
+          @click="setSelectedDate(dateButton.range)"
+          class="w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+        >
+          {{ t(dateButton.label) }}
+        </button>
+        <button
+          @click="getList"
+          class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+        >
+          <i class="fas fa-search mr-1"></i>
+          Search
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- Content Area -->
-    <div class="relative z-10 pb-6">
-      <div class="w-full mx-auto px-2 space-y-6">
-        <!-- Transaction Table -->
-        <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="p-2 bg-blue-500/20 rounded-lg">
-                  <i class="fas fa-exchange-alt text-blue-400 text-sm"></i>
-                </div>
-                <div>
-                  <h2 class="text-lg font-semibold text-white">{{ t("partner.totalDepWid") }}</h2>
-                  <p class="text-xs text-gray-400">Transaction Overview</p>
-                </div>
-              </div>
-              <div class="text-xs text-gray-400">
-                <i class="fas fa-table mr-1"></i>
-                {{ tableData.length }} records
-              </div>
-            </div>
-          </div>
-          <div class="w-full px-10 pb-5">
-            <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" />
-          </div>
-        </div>
+  <!-- Content Area -->
+  <div class="max-w-[1500px] mx-auto px-2 pb-6 space-y-6">
+    <!-- Transaction Table -->
+    <DataTableCard
+      :title="t('partner.totalDepWid')"
+      subtitle="Transaction Overview"
+      :record-count="tableData.length"
+      icon="fas fa-exchange-alt"
+      icon-color="#3b82f6"
+    >
+      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" />
+    </DataTableCard>
 
-        <!-- Game Summary Table -->
-        <div class="w-full bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="p-2 bg-green-500/20 rounded-lg">
-                  <i class="fas fa-gamepad text-green-400 text-sm"></i>
-                </div>
-                <div>
-                  <h2 class="text-lg font-semibold text-white">{{ t("partner.gameBetTotal") }}</h2>
-                  <p class="text-xs text-gray-400">Game Statistics</p>
-                </div>
-              </div>
-              <div class="text-xs text-gray-400">
-                <i class="fas fa-table mr-1"></i>
-                {{ gameTableData.length }} records
-              </div>
-            </div>
-          </div>
-          <div class="w-full px-10 pb-5">
-            <KTDatatable
-              :tableHeader="gameTableHeaders"
-              :tableData="gameTableData"
-              :rowsPerPage="50"
-              :isAccordion="true"
-            >
-              <!-- Dynamic Sub Tables -->
-              <template v-for="(gameType, index) in gameTableData" :key="index" #[`table-sub${index}`]>
-                <KTDatatable
-                  :tableHeader="gameTableHeaders"
-                  :tableData="gameType?.games || []"
-                  :rowsPerPage="50"
-                >
-                  <template #cell-game="{ row: data }">
-                    <span>{{ t(data.game) }}</span>
-                  </template>
-                </KTDatatable>
-              </template>
-              <!-- Main Game Type Cell -->
-              <template #cell-game="{ row: data }">
-                <span>{{ t(data.game_type) }}</span>
-              </template>
-            </KTDatatable>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Game Summary Table -->
+    <DataTableCard
+      :title="t('partner.gameBetTotal')"
+      subtitle="Game Statistics"
+      :record-count="gameTableData.length"
+      icon="fas fa-gamepad"
+      icon-color="#10b981"
+    >
+      <KTDatatable
+        :tableHeader="gameTableHeaders"
+        :tableData="gameTableData"
+        :rowsPerPage="50"
+        :isAccordion="true"
+      >
+        <!-- Dynamic Sub Tables -->
+        <template v-for="(gameType, index) in gameTableData" :key="index" #[`table-sub${index}`]>
+          <KTDatatable
+            :tableHeader="gameTableHeaders"
+            :tableData="gameType?.games || []"
+            :rowsPerPage="50"
+          >
+            <template #cell-game="{ row: data }">
+              <span>{{ t(data.game) }}</span>
+            </template>
+          </KTDatatable>
+        </template>
+        <!-- Main Game Type Cell -->
+        <template #cell-game="{ row: data }">
+          <span>{{ t(data.game_type) }}</span>
+        </template>
+      </KTDatatable>
+    </DataTableCard>
   </div>
 </template>
 
@@ -130,6 +98,7 @@ import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 
 interface IData {
   deposit: number;
@@ -272,6 +241,11 @@ export default defineComponent({
       getList,
       formatDateRange,
     };
+  },
+  components: {
+    KTDatatable,
+    DateRangePicker,
+    DataTableCard,
   },
 });
 </script>

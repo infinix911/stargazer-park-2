@@ -123,25 +123,13 @@
 
           <!-- Member Table -->
           <div class="xl:col-span-3">
-            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden">
-              <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3">
-                    <div class="p-2 bg-blue-500/20 rounded-lg">
-                      <i class="fas fa-users text-blue-400 text-sm"></i>
-                    </div>
-                    <div>
-                      <h2 class="text-lg font-semibold text-white">Member List</h2>
-                      <p class="text-xs text-gray-400">Member Management</p>
-                    </div>
-                  </div>
-                  <div class="text-xs text-gray-400">
-                    <i class="fas fa-table mr-1"></i>
-                    {{ tableData.length }} members
-                  </div>
-                </div>
-              </div>
-              <div class="w-full px-10 pb-5">
+            <DataTableCard
+              title="Member List"
+              subtitle="Member Management"
+              :record-count="tableData.length"
+              icon="fas fa-users"
+              icon-color="#3b82f6"
+            >
                 <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
                   <!-- Member -->
                   <template v-slot:cell-member="{ row: data }">
@@ -229,9 +217,8 @@
                   <template v-slot:cell-bonus="{ }">
                     <span></span>
                   </template>
-                </KTDatatable>
-              </div>
-            </div>
+            </KTDatatable>
+            </DataTableCard>
           </div>
         </div>
       </div>
@@ -265,6 +252,7 @@ import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
+import DataTableCard from "@/components/ui/DataTableCard.vue";
 import Swal from "sweetalert2";
 
 
@@ -301,6 +289,7 @@ export default defineComponent({
     // ShopMoneyTransaction,
     // PointMoneyTransfer,
     MemberTree,
+    DataTableCard,
   },
   setup() {
     // vue variables
