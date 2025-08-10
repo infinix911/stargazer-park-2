@@ -68,11 +68,28 @@
             v-model="displayAmount"
             type="text"
             :placeholder="t('deposit.depositAmountPlaceholder')"
-            :class="{ 'border-red-500': errors.depositAmount }"
+            :class="{ 'border-red-500': errors.amount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             @input="handleNumberInput"
           />
-          <p v-if="errors.depositAmount" class="text-red-400 text-sm">{{ errors.depositAmount }}</p>
+          <p v-if="errors.amount" class="text-red-400 text-sm">{{ errors.amount }}</p>
+        </div>
+
+        <!-- Coupon Field -->
+        <div class="space-y-2" v-if="couponList.length > 0">
+          <div class="flex items-center space-x-2">
+            <label class="text-gray-700 font-medium">{{ t('deposit.coupon') }}</label>
+          </div>
+          <Select v-model="form.couponId">
+            <SelectTrigger class="w-full">
+              <SelectValue :placeholder="t('deposit.couponPlaceholder')" />
+            </SelectTrigger>
+            <SelectContent class="w-full">
+              <SelectItem v-for="c in couponList" :key="c.id" :value="String(c.id)">
+                {{ c.code }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <!-- Quick Amount Buttons -->
@@ -146,12 +163,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { Input } from '../../components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import Button from '../../components/ui/Button.vue'
 import { useAuthStore } from '../../stores/auth'
+import Swal from 'sweetalert2'
+import ApiService from '../../services/ApiService'
 import {
   Dialog,
   DialogContent,
@@ -169,6 +189,13 @@ import {
 const { t, n } = useI18n()
 const authStore = useAuthStore()
 const user = computed(() => authStore.user)
+
+// Coupons
+const couponList = ref<any[]>([])
+const getCoupons = async (): Promise<void> => {
+  const resp = await ApiService.get('/tran/coupons')
+  couponList.value = resp.data
+}
 
 // Display value for the input field
 const displayAmount = ref('0')
@@ -201,7 +228,7 @@ const emit = defineEmits<{
 
 // Form validation schema
 const depositSchema = z.object({
-  depositAmount: z.number()
+  amount: z.number()
     .min(1, t('deposit.errors.depositAmountRequired'))
     .min(10000, t('deposit.errors.depositAmountMinimum'))
 })
@@ -210,7 +237,8 @@ type DepositForm = {
   name: string;
   bankAccountName: string;
   mobileNumber: string;
-  depositAmount: number;
+  amount: number;
+  couponId: string;
 }
 
 // Form data
@@ -223,16 +251,13 @@ const form = reactive<DepositForm>({
       )
     : user.value?.bank_account_name || '',
   mobileNumber: String(user.value?.mobile || ''),
-  depositAmount: 0
+  amount: 0,
+  couponId: ''
 })
 
 // Form state
-const errors = reactive<Partial<{
-  name: string;
-  bankAccountName: string;
-  mobileNumber: string;
-  depositAmount: string;
-}>>({})
+type FieldErrors<T> = Partial<Record<keyof T, string>>
+const errors = reactive<FieldErrors<DepositForm>>({})
 const isSubmitting = ref(false)
 
 // Handle dialog open/close
@@ -243,24 +268,24 @@ const handleOpenChange = (open: boolean): void => {
 }
 
 // Set amount from quick buttons
-const setAmount = (amount: number): void => {
-  form.depositAmount += amount
-  displayAmount.value = n(form.depositAmount)
-  errors.depositAmount = undefined
+const setAmount = (amt: number): void => {
+  form.amount += amt
+  displayAmount.value = n(form.amount)
+  errors.amount = undefined
 }
 
 // Reset amount
 const resetAmount = (): void => {
-  form.depositAmount = 0
+  form.amount = 0
   displayAmount.value = '0'
-  errors.depositAmount = undefined
+  errors.amount = undefined
 }
 
 // Watch for changes in display amount and update form
 const updateFormAmount = (): void => {
   const cleanValue = displayAmount.value.replace(/[^\d]/g, '')
-  form.depositAmount = cleanValue ? parseInt(cleanValue) : 0
-  errors.depositAmount = undefined
+  form.amount = cleanValue ? parseInt(cleanValue) : 0
+  errors.amount = undefined
 }
 
 // Validate form
@@ -290,18 +315,36 @@ const handleSubmit = async (): Promise<void> => {
   isSubmitting.value = true
 
   try {
-    console.log('Deposit request:', form)
-    // Add your deposit logic here
-    await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API call
-    console.log('Deposit request successful')
-    // Close modal or show success message
+    const payload = {
+      amount: form.amount,
+      couponId: form.couponId,
+    }
+    await ApiService.post('/tran/deposit', payload)
+    await Swal.fire({
+      icon: 'success',
+      title: t('deposit.successTitle'),
+      text: t('deposit.successMessage'),
+      timer: 1000,
+      showConfirmButton: false
+    })
     emit('close')
   } catch (error) {
     console.error('Deposit request failed:', error)
+    await Swal.fire({
+      icon: 'error',
+      title: t('deposit.errorTitle'),
+      text: t('deposit.errorMessage'),
+      timer: 1000,
+      showConfirmButton: false
+    })
   } finally {
     isSubmitting.value = false
   }
 }
+
+onMounted(() => {
+  getCoupons()
+})
 </script>
 
 <style scoped>
