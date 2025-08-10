@@ -30,22 +30,13 @@ export const useAppStore = defineStore("app", {
    */
   actions: {
     // Open Modal
-    /*openModal(modal: string) {
-      const authStore = useAuthStore();
-      const { t } = i18n.global;
-      // allow opening of login and register modal
-      if (modal === "Login" || modal === "Register" || modal === "")
-        return (this.activeModal = modal);
-      // if not authenticated, prevent open modal
-      if (!authStore.isAuthenticated)
-        return Swal.fire(t("notif.Alarm"), t("notif.LoginFirst"), "warning");
-      // authenticated allow open
+    openModal(modal: string) {
       this.activeModal = modal;
-    },*/
+    },
     // Set Tab
-    /*setTab(tab: string) {
+    setTab(tab: string) {
       this.activeTab = tab;
-    },*/
+    },
     // Get Site Settings
     async getSettings() {
       const { data } = await ApiService.get("/site");

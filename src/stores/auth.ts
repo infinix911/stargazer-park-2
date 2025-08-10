@@ -7,7 +7,7 @@ import ApiService from "../services/ApiService";
 import JwtService from "../services/JwtService";
 import SocketService from "../services/SocketService";
 
-interface IMember {
+export interface IMember {
   id: string;
   username: string;
   name: string;
@@ -28,13 +28,13 @@ interface IMember {
   shoplevel: number;
 }
 
-interface ILogin {
+export interface ILogin {
   username: string;
   password: string;
   captcha: string;
 }
 
-interface IRegForm {
+export interface IRegForm {
   username: string;
   password: string;
   confirm_pass: string;
@@ -47,7 +47,7 @@ interface IRegForm {
   captcha: number;
 }
 
-interface ILoginResp {
+export interface ILoginResp {
   success: boolean;
   msg?: string;
 }

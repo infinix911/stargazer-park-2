@@ -1,0 +1,151 @@
+/* Element Plus Dark Theme Customizations for DateRangePicker */
+
+/* Element Plus DateRangePicker Styling for Dark Theme */
+.el-date-editor {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.el-date-editor .el-input__inner {
+  background-color: transparent !important;
+  border: none !important;
+  color: white !important;
+}
+
+.el-date-editor .el-input__wrapper {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.el-date-editor .el-range-separator {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.el-date-editor .el-range-input {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.el-date-editor.is-active {
+  border-color: rgba(59, 130, 246, 0.5) !important;
+}
+
+.el-date-editor:hover {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Element Plus DateRangePicker Popover/Dropdown Styling */
+.el-picker-panel {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  z-index: 9999 !important;
+}
+
+.el-picker-panel .el-date-range-picker__header {
+  color: white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.el-picker-panel .el-date-table td {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.el-picker-panel .el-date-table td.current:not(.disabled) {
+  color: #409eff !important;
+  font-weight: bold !important;
+}
+
+.el-picker-panel .el-date-table td:hover {
+  background-color: rgba(64, 158, 255, 0.1) !important;
+  color: white !important;
+}
+
+.el-picker-panel .el-date-table td.in-range {
+  background-color: rgba(64, 158, 255, 0.2) !important;
+  color: white !important;
+}
+
+.el-picker-panel .el-date-table td.start-date {
+  background-color: #409eff !important;
+  color: white !important;
+}
+
+.el-picker-panel .el-date-table td.end-date {
+  background-color: #409eff !important;
+  color: white !important;
+}
+
+.el-picker-panel .el-date-table th {
+  color: rgba(255, 255, 255, 0.6) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.el-picker-panel .el-date-range-picker__time-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.el-picker-panel .el-button {
+  background-color: rgba(64, 158, 255, 0.8) !important;
+  border-color: rgba(64, 158, 255, 0.8) !important;
+  color: white !important;
+}
+
+.el-picker-panel .el-button:hover {
+  background-color: #409eff !important;
+  border-color: #409eff !important;
+}
+
+/* Global Element Plus popover fixes - Proper z-index without forcing visibility */
+body .el-picker-panel {
+  z-index: 9999 !important;
+  position: fixed !important;
+}
+
+body .el-popper {
+  z-index: 9999 !important;
+}
+
+/* Element Plus date picker z-index fix */
+.el-picker-panel {
+  z-index: 9999 !important;
+  position: fixed !important;
+  min-width: 600px !important;
+  min-height: 300px !important;
+}
+
+.el-popper {
+  z-index: 9999 !important;
+}
+
+.el-popper.is-dark {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Element Plus specific visibility fixes */
+.el-date-editor {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Custom DateRangePicker class styling */
+.date-picker-modern {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Ensure parent containers don't clip the popover */
+.bg-white\/5 {
+  overflow: visible !important;
+}
+
+.backdrop-blur-md {
+  position: relative !important;
+  overflow: visible !important;
+}
