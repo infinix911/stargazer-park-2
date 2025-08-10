@@ -19,7 +19,7 @@
           v-for="casino in casinoGames"
           :key="casino.id"
           :title="casino.title"
-          :korean-title="casino.koreanTitle"
+          :sub-title="casino.subTitle"
           :provider="casino.provider"
           :image-src="casino.imageSrc"
           :video-src="casino.videoSrc"
@@ -32,90 +32,70 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import GameMediaCard from './GameMediaCard.vue'
 
 const { t } = useI18n()
 
+interface Game {
+  code: string;
+  provider: string;
+  sort: number;
+  type: string;
+}
+
 interface CasinoGame {
   id: number
   title: string
-  koreanTitle: string
+  subTitle: string
   provider: string
+  type: string
+  code: string
   imageSrc: string
   videoSrc: string
   isLive: boolean
 }
+
+// Define props
+interface Props {
+  games?: Game[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  games: () => []
+})
 
 // Define emits
 const emit = defineEmits<{
   'casino-selected': [casino: CasinoGame]
 }>()
 
-// Reactive data
-const casinoGames = ref<CasinoGame[]>([
-  { 
-    id: 1, 
-    title: 'EVOLUTION', 
-    koreanTitle: '에볼루션', 
-    provider: 'Evolution',
-    imageSrc: '/images/casino/evolution.webp',
-    videoSrc: '/images/casino/evolution.webm',
-    isLive: true
-  },
-  { 
-    id: 2, 
-    title: 'PRAGMATICPLAY', 
-    koreanTitle: '프라그마틱 라이브', 
-    provider: 'Pragmatic Play Live',
-    imageSrc: '/images/casino/pragmatic.webp',
-    videoSrc: '/images/casino/pragmatic.webm',
-    isLive: true
-  },
-  { 
-    id: 3, 
-    title: 'MICROGAMING', 
-    koreanTitle: '마이크로 게이밍', 
-    provider: 'Microgaming',
-    imageSrc: '/images/casino/microgaming.webp',
-    videoSrc: '/images/casino/microgaming.webm',
-    isLive: true
-  },
-  { 
-    id: 4, 
-    title: 'ASIA GAMING', 
-    koreanTitle: '아시아 게이밍', 
-    provider: 'Asia Gaming',
-    imageSrc: '/images/casino/asiagaming.webp',
-    videoSrc: '/images/casino/asiagaming.webm',
-    isLive: true
-  },
-  { 
-    id: 5, 
-    title: 'WM CASINO', 
-    koreanTitle: 'WM카지노', 
-    provider: 'WM Casino',
-    imageSrc: '/images/casino/wmcasino.webp',
-    videoSrc: '/images/casino/wmcasino.webm',
-    isLive: true
-  },
-  { 
-    id: 6, 
-    title: 'DREAM GAMING', 
-    koreanTitle: '드림카지노', 
-    provider: 'Dream Gaming',
-    imageSrc: '/images/casino/dreamgaming.webp',
-    videoSrc: '/images/casino/dreamgaming.webm',
-    isLive: true
+// Use props data
+const casinoGames = computed(() => {
+  if (props.games && props.games.length > 0) {
+    // Transform Game data to CasinoGame format
+    return props.games.map((game, index) => ({
+      id: index + 1,
+      title: game.code,
+      subTitle: game.code,
+      provider: game.provider,
+      type: game.type,
+      code: game.code,
+      imageSrc: `/images/casino/${game.code.toLowerCase()}.webp`,
+      videoSrc: `/images/casino/${game.code.toLowerCase()}.webm`,
+      isLive: true
+    }))
   }
-])
+  return []
+})
 
-// Methods
+// Select casino
 const selectCasino = (casino: CasinoGame): void => {
   console.log(`Selected casino: ${casino.title}`)
   emit('casino-selected', casino)
 }
+
 </script>
 
 <style scoped>

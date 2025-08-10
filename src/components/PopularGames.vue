@@ -19,7 +19,7 @@
           v-for="game in popularGames"
           :key="game.id"
           :title="game.title"
-          :korean-title="game.koreanTitle"
+          :sub-title="game.koreanTitle"
           :provider="game.provider"
           :image-src="game.imageSrc"
           :video-src="game.videoSrc"

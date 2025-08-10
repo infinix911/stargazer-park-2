@@ -105,7 +105,7 @@ const handleImageError = (event: Event): void => {
 }
 
 const handleImageLoad = (event: Event): void => {
-  console.log('Image loaded successfully:', event)
+  //console.log('Image loaded successfully:', event)
 }
 
 // Define emits

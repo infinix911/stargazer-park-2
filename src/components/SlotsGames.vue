@@ -19,7 +19,7 @@
           v-for="slot in slotsGames"
           :key="slot.id"
           :title="slot.title"
-          :korean-title="slot.koreanTitle"
+          :sub-title="slot.koreanTitle"
           :provider="slot.provider"
           :image-src="slot.imageSrc"
           :video-src="slot.videoSrc"

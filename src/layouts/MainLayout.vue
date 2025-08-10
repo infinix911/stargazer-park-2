@@ -49,7 +49,7 @@ const route = useRoute()
 
 // Handle slide change from HeroSection
 const handleSlideChange = (slideIndex: number): void => {
-  console.log('MainLayout: Slide changed to:', slideIndex)
+  //console.log('MainLayout: Slide changed to:', slideIndex)
   currentSlide.value = slideIndex
 }
 

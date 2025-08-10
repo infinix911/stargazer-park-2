@@ -130,6 +130,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  // Game Launch
+  {
+    path: "/game/:provider/:code",
+    name: "casino-game",
+    component: () => import("../views/game-launch/LiveGameLaunch.vue"),
+  },
+  {
+    path: "/slot/:provider/:game/:game_id",
+    name: "slot-game",
+    component: () => import("../views/game-launch/SlotGameLaunch.vue"),
+  },
 ]
 
 const router = createRouter({
@@ -145,7 +156,7 @@ router.beforeEach(async (to, from, next) => {
   appStore.getSettings();
 
   // Public routes that don't need authentication
-  const publicRoutes = ['login-page', 'register-page', 'Error404'];
+  const publicRoutes = ['login-page', 'register-page', 'Error404', 'main-page'];
   
   // Partner routes that need special authentication
   const partnerRoutes = ['partner-dashboard', 'partner-members', 'partner-transactions', 'partner-reports'];
@@ -176,13 +187,11 @@ router.beforeEach(async (to, from, next) => {
     // Connect to Socket
     case "main-page":
       try {
-        // verify the auth allow if authenticated; otherwise return to login-page
-        const verify = await authStore.verifyAuth(true);
-        if (verify) next()
-        else next({ name: "login-page" })
+        // Allow access to home page without authentication
+        next()
       } catch (error) {
-        console.error('Auth verification failed in router:', error);
-        next({ name: "login-page" })
+        console.error('Error accessing main page:', error);
+        next()
       }
       break;
     case "Error404":
