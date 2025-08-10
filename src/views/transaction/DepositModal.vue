@@ -329,7 +329,6 @@ const handleSubmit = async (): Promise<void> => {
     })
     emit('close')
   } catch (error) {
-    console.error('Deposit request failed:', error)
     await Swal.fire({
       icon: 'error',
       title: t('deposit.errorTitle'),
