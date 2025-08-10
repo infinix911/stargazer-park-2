@@ -223,10 +223,26 @@ const handleSubmit = async (): Promise<void> => {
       })
       router.push("/");
       console.log('Login successful')
+    } else {
+      // Login failed
+      await Swal.fire({
+        icon: 'error',
+        title: t('login.errorTitle'),
+        text: t('notif.'+ resp.msg) || t('login.errorMessage'),
+        timer: 2000,
+        showConfirmButton: false
+      })
     }
 
   } catch (error) {
     console.error('Login failed:', error)
+    await Swal.fire({
+      icon: 'error',
+      title: t('login.errorTitle'),
+      text: t('login.errorMessage'),
+      timer: 1000,
+      showConfirmButton: false
+    })
   } finally {
     isSubmitting.value = false
   }

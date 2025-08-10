@@ -42,7 +42,9 @@ export default {
     },
     successTitle: 'Login Successful!',
     successMessage: 'Welcome back! You have been successfully logged in.',
-    refreshCaptchaError: 'Failed to refresh captcha'
+    refreshCaptchaError: 'Failed to refresh captcha',
+    errorTitle: 'Login Failed',
+    errorMessage: 'Invalid username, password, or captcha. Please try again.'
   },
   register: {
     title: 'Create an account',
@@ -522,5 +524,10 @@ export default {
     yesterday: "Yesterday",
     lastWeek: "Last Week",
     fifteenDays: "15 Days",
+  },
+  notif: {
+    INVALID_ACCOUNT: "Invalid password.",
+    INVALID_SECURITY_CODE: "Security code will expire if you don't log in within 2 minutes. Please refresh the page.",
+    INVALID_SECURITY_CODE_ANSWER: "Invalid security code.",
   }
 } 

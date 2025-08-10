@@ -26,7 +26,7 @@
     />
     
     <!-- Scroll to Top Button -->
-    <!-- <ScrollToTop /> -->
+    <ScrollToTop />
   </div>
 </template>
 

@@ -44,7 +44,9 @@ export default {
     },
     successTitle: '로그인 성공!',
     successMessage: '환영합니다! 성공적으로 로그인되었습니다.',
-    refreshCaptchaError: '캡차 새로고침에 실패했습니다'
+    refreshCaptchaError: '캡차 새로고침에 실패했습니다',
+    errorTitle: '로그인 실패',
+    errorMessage: '아이디, 비밀번호 또는 캡차가 올바르지 않습니다. 다시 시도해주세요.'
   },
   register: {
     title: '계정 만들기',
@@ -537,4 +539,9 @@ export default {
     fifteenDays: "15일",
   },
   search: '검색',
+  notif: {
+    INVALID_ACCOUNT: "비밀번호가 틀렸습니다.",
+    INVALID_SECURITY_CODE: "2분 이내에 로그인하지 않을시 보안코드가 만료됩니다. 페이지를 새로 고침 하십시오",
+    INVALID_SECURITY_CODE_ANSWER: "보안 코드 잘못되었습니다.",
+  }
 } 
