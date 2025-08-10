@@ -32,113 +32,66 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import GameMediaCard from './GameMediaCard.vue'
 
 const { t } = useI18n()
+
+interface Game {
+  code: string;
+  provider: string;
+  sort: number;
+  type: string;
+}
 
 interface SlotGame {
   id: number
   title: string
   koreanTitle: string
   provider: string
+  type: string
+  code: string
   imageSrc: string
   videoSrc: string
   isLive: boolean
 }
+
+// Define props
+interface Props {
+  games?: Game[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  games: () => []
+})
 
 // Define emits
 const emit = defineEmits<{
   'slot-selected': [slot: SlotGame]
 }>()
 
-// Reactive data
-const slotsGames = ref<SlotGame[]>([
-  { 
-    id: 1, 
-    title: 'PRAGMATICPLAY', 
-    koreanTitle: '프라그마틱 플레이', 
-    provider: 'Pragmatic Play',
-    imageSrc: '/images/slot/pragmatic.webp',
-    videoSrc: '/images/slot/pragmatic.webm',
-    isLive: false
-  },
-  { 
-    id: 2, 
-    title: 'BNG', 
-    koreanTitle: '분고', 
-    provider: 'BNG',
-    imageSrc: '/images/slot/bng.webp',
-    videoSrc: '/images/slot/bng.webm',
-    isLive: false
-  },
-  { 
-    id: 3, 
-    title: 'HABANERO', 
-    koreanTitle: '하바네로', 
-    provider: 'Habanero',
-    imageSrc: '/images/slot/habanero.webp',
-    videoSrc: '/images/slot/habanero.webm',
-    isLive: false
-  },
-  { 
-    id: 4, 
-    title: 'BIGTIMEGAMING', 
-    koreanTitle: '빅 타임 게이밍', 
-    provider: 'Big Time Gaming',
-    imageSrc: '/images/slot/bigtimegaming.webp',
-    videoSrc: '/images/slot/bigtimegaming.webm',
-    isLive: false
-  },
-  { 
-    id: 5, 
-    title: 'WAZDAN', 
-    koreanTitle: '와즈단', 
-    provider: 'Wazdan',
-    imageSrc: '/images/slot/wazdan.webp',
-    videoSrc: '/images/slot/wazdan.webm',
-    isLive: false
-  },
-  { 
-    id: 6, 
-    title: 'NOLIMITCITY', 
-    koreanTitle: '노리밋 시티', 
-    provider: 'Nolimit City',
-    imageSrc: '/images/slot/nolimit.webp',
-    videoSrc: '/images/slot/nolimit.webm',
-    isLive: false
-  },
-  { 
-    id: 7, 
-    title: 'REDTIGER', 
-    koreanTitle: '레드타이거', 
-    provider: 'Red Tiger',
-    imageSrc: '/images/slot/redtiger.webp',
-    videoSrc: '/images/slot/redtiger.webm',
-    isLive: false
-  },
-  { 
-    id: 8, 
-    title: 'NETENT', 
-    koreanTitle: '넷엔트', 
-    provider: 'NetEnt',
-    imageSrc: '/images/slot/netent.webp',
-    videoSrc: '/images/slot/netent.webm',
-    isLive: false
-  },
-  { 
-    id: 9, 
-    title: 'PLAYNGO', 
-    koreanTitle: '플레이앤고', 
-    provider: 'Play\'n GO',
-    imageSrc: '/images/slot/playngo.webp',
-    videoSrc: '/images/slot/playngo.webm',
-    isLive: false
+// Use props data or fallback to default data
+const slotsGames = computed(() => {
+  if (props.games && props.games.length > 0) {
+    // Transform Game data to SlotGame format
+    return props.games.map((game, index) => ({
+      id: index + 1,
+      title: game.code,
+      koreanTitle: game.code,
+      provider: game.provider,
+      type: game.type,
+      code: game.code,
+      imageSrc: `/images/slot/${game.code.toLowerCase()}.webp`,
+      videoSrc: `/images/slot/${game.code.toLowerCase()}.webm`,
+      isLive: false
+    }))
   }
-])
+  
+  return []
+})
 
-// Methods
+// Select slot
 const selectSlot = (slot: SlotGame): void => {
   console.log(`Selected slot: ${slot.title}`)
   emit('slot-selected', slot)
