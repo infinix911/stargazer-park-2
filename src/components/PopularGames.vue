@@ -15,7 +15,7 @@
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <GameMediaCard
+        <GameBannerCard
           v-for="game in popularGames"
           :key="game.id"
           :title="game.title"
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import GameMediaCard from './GameMediaCard.vue'
+import GameBannerCard from './GameBannerCard.vue'
 
 const { t } = useI18n()
 

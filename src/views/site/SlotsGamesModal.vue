@@ -8,7 +8,7 @@
       <!-- Game List -->
       <div class="py-4 overflow-y-auto max-h-[60vh]">
         <div v-if="games.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          <GameMediaCard
+          <GameBannerCard
             v-for="game in games"
             :key="game.code"
             :title="getGameTitle(game)"
@@ -44,7 +44,7 @@ import {
 import Button from '@/components/ui/Button.vue'
 import ApiService from '@/services/ApiService'
 import { ref, watch } from 'vue'
-import GameMediaCard from '@/components/GameMediaCard.vue'
+import GameBannerCard from '@/components/GameBannerCard.vue'
 import { useI18n } from 'vue-i18n'
 
 // Define props
@@ -110,7 +110,7 @@ const selectGame = (game: any): void => {
   opacity: 0;
 }
 
-/* Custom styling for GameMediaCard in modal */
+/* Custom styling for GameBannerCard in modal */
 :deep(.game-media-card) {
   height: auto !important;
 }
