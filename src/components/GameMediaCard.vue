@@ -28,7 +28,7 @@
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center">
           <!-- Game Title -->
           <div class="text-center mb-4 px-2">
-            <div class="text-white text-sm sm:text-base lg:text-xl font-bold mb-1 truncate">{{ translatedTitle }}</div>
+            <div class="text-white text-sm sm:text-base lg:text-xl font-bold mb-1 truncate">{{ title }}</div>
             <div class="text-white/80 text-xs sm:text-sm truncate">{{ provider }}</div>
           </div>
           
@@ -47,16 +47,13 @@
     
     <!-- Title  -->
     <div class="mt-2 px-1">
-      <div class="text-white text-sm sm:text-base lg:text-lg text-left font-bold truncate">{{ translatedSubTitle }}</div>
+      <div class="text-white text-sm sm:text-base lg:text-lg text-left font-bold truncate">{{ subTitle }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
+import { ref } from 'vue'
 
 interface Props {
   title: string
@@ -75,14 +72,7 @@ defineEmits<{
   click: []
 }>()
 
-// Computed properties for translations
-const translatedTitle = computed(() => {
-  return t(`games.${props.title}`) || props.title
-})
 
-const translatedSubTitle = computed(() => {
-  return t(`games.${props.subTitle}`) || props.subTitle
-})
 
 </script>
 

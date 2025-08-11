@@ -12,7 +12,7 @@
             v-for="game in games"
             :key="game.code"
             :title="getGameTitle(game)"
-            :sub-title="locale === 'ko' ? game.eng_title : game.ko_title"
+            :sub-title="locale === 'ko' ? game.ko_title : game.eng_title"
             :provider="provider"
             :image-src="game.img_url"
             :video-src="''"
