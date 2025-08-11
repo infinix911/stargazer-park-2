@@ -2,7 +2,7 @@
   <div class="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
     <div class="max-w-[1500px] mx-auto px-4 py-6">
       <div class="flex items-center gap-3">
-        <div class="p-3 bg-gradient-to-r rounded-xl shadow-lg" :class="iconGradient">
+        <div class="p-3 bg-gradient-to-r rounded-xl shadow-lg w-12 h-12 flex items-center justify-center" :class="iconGradient">
           <i :class="`${icon} text-white text-xl`"></i>
         </div>
         <div>

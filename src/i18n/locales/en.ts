@@ -546,6 +546,7 @@ export default {
   },
   search: 'Search',
   date: "Date",
+  SearchKeyword: "Enter search keyword...",
   openAll: "Open All",
   closeAll: "Close All",
   status: {

@@ -213,6 +213,15 @@
                   <template v-slot:cell-bonus="{ }">
                     <span></span>
                   </template>
+                  <!-- Member -->
+                  <template v-slot:cell-member="{ row: data }">
+                    <button 
+                      @click="openMemberPopup(data)"
+                      class="text-left text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
+                    >
+                      {{ data.member }}
+                    </button>
+                  </template>
             </KTDatatable>
             </DataTableCard>
           </div>
@@ -227,6 +236,21 @@
     :receiver="shop.receiver" 
     :type="shop.type"
     @refresh="getList" 
+  />
+  
+  <!-- Member Popup -->
+  <MemberPopup 
+    v-if="showMemberPopup" 
+    :member-id="selectedMemberData?.member_id"
+    :member-data="selectedMemberData"
+    @close="closeMemberPopup"
+  />
+
+  <!-- Add Sub Member Modal -->
+  <AddSubMember 
+    v-if="selectedModal === 'AddSubMember'"
+    @close="closeModal"
+    @refresh="getList"
   />
 </template>
 
@@ -243,6 +267,8 @@ import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import MemberPopup from "@/views/partner/profile/MemberPopup.vue";
+import AddSubMember from "@/views/partner/profile/AddSubMember.vue";
 import Swal from "sweetalert2";
 
 export interface IData {
@@ -281,8 +307,13 @@ const authStore = useAuthStore();
 // Computed
 const selectedModal = computed(() => appStore.activeModal);
 
+// Member popup state
+const showMemberPopup = ref(false);
+const selectedMemberData = ref<any>(null);
+
 // Methods
 const openModal = (modal: string) => appStore.openModal(modal);
+const closeModal = () => appStore.openModal("");
 const setActiveTab = (tab: string) => appStore.setTab(tab);
 
 // Table data
@@ -485,6 +516,16 @@ const onShopTransact = (memberId: string, member: string, wallet: string, type: 
   shop.value.receiver = { id: memberId, username: member, wallet: wallet };
   shop.value.type = type;
   openModal("ShopMoneyTransaction");
+};
+
+const openMemberPopup = (memberData: any) => {
+  selectedMemberData.value = memberData;
+  showMemberPopup.value = true;
+};
+
+const closeMemberPopup = () => {
+  showMemberPopup.value = false;
+  selectedMemberData.value = null;
 };
 
 // Point Transfer

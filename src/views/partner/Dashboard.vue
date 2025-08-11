@@ -17,7 +17,6 @@
         </label>
         <DateRangePicker
           class="w-full h-10 date-picker-modern"
-          v-model="dateRange"
           @changedate="setSelectedDate"
           initial="month"
         />
@@ -93,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref } from "vue";
+import { defineComponent, onMounted, computed, ref, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
@@ -136,7 +135,13 @@ export default defineComponent({
     DateRangePicker,
     DataTableCard,
   },
-  setup() {
+  props: {
+    memberId: {
+      type: String,
+      default: null
+    }
+  },
+  setup(props) {
     const { t } = useI18n();
     
     // Data
@@ -197,23 +202,36 @@ export default defineComponent({
 
     // Methods
     const setSelectedDate = (date: DateRange) => {
-      dateRange.value = date; // This will trigger the DateRangePicker to update
-      getList();
+      // Only update if the date actually changed to prevent recursive calls
+      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+        dateRange.value = date;
+        getList();
+      }
     };
 
     const getList = async () => {
       try {
+        // Build query parameters
+        const queryParams = `start=${dateRange.value.start}&end=${dateRange.value.end}`;
+        const memberParam = props.memberId ? `&member_id=${props.memberId}` : '';
+        
         // Fetch transaction data
         const results = await ApiService.get(
-          `/partner/dashboard?start=${dateRange.value.start}&end=${dateRange.value.end}`
+          `/partner/dashboard?${queryParams}${memberParam}`
         ).then((res) => res.data);
-        tableData.value.splice(0, tableData.value.length, ...results);
+        
+        // Clear and update table data without triggering watchers
+        tableData.value.length = 0;
+        tableData.value.push(...results);
 
         // Fetch game summary data
         const gameResults = await ApiService.get(
-          `/partner/dashboard/summary?start=${dateRange.value.start}&end=${dateRange.value.end}`
+          `/partner/dashboard/summary?${queryParams}${memberParam}`
         ).then((res) => res.data);
-        gameTableData.value.splice(0, gameTableData.value.length, ...gameResults);
+        
+        // Clear and update game table data without triggering watchers
+        gameTableData.value.length = 0;
+        gameTableData.value.push(...gameResults);
       } catch (error) {
         console.error("Dashboard API error:", error);
       }
@@ -227,6 +245,15 @@ export default defineComponent({
       }
       return "Month";
     });
+
+    // Watch for memberId changes only when it's provided as a prop
+    if (props.memberId) {
+      watch(() => props.memberId, (newMemberId, oldMemberId) => {
+        if (newMemberId && newMemberId !== oldMemberId) {
+          getList();
+        }
+      }, { immediate: false });
+    }
 
     onMounted(() => {
       getList();

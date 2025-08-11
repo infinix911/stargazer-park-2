@@ -35,6 +35,7 @@
       <GameBetHistory 
           v-if="activeTab"
           :game="activeTab.toUpperCase()" 
+          :member-id="effectiveMemberId"
           :key="activeTab"
         />
     </div>
@@ -42,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import GameBetHistory from "@/components/bet-history/GameBetHistory.vue";
 import { useI18n } from "vue-i18n";
 
@@ -51,9 +52,20 @@ export default defineComponent({
   components: {
     GameBetHistory,
   },
-  setup() {
+  props: {
+    memberId: {
+      type: String,
+      default: null
+    }
+  },
+  setup(props) {
     const { t } = useI18n();
     const activeTab = ref("casino");
+    
+    // Get memberId from props only
+    const effectiveMemberId = computed(() => {
+      return props.memberId || undefined;
+    });
     
     const gameTabs = [
       {
@@ -87,6 +99,7 @@ export default defineComponent({
       activeTab,
       gameTabs,
       setActiveTab,
+      effectiveMemberId,
     };
   },
 });

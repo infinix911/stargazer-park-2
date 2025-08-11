@@ -285,6 +285,7 @@ export default {
   transactionHistory: {
     title: '거래 내역',
     search: '검색',
+    SearchKeyword: "검색어를 입력하세요...",
     noResults: '검색 결과가 없습니다',
     columns: {
       type: '유형',
@@ -377,6 +378,7 @@ export default {
     reports: "리포트",
   },
   partner: {
+    rollType: "롤링 타입",
     processing: "처리중...",
     winningAmount: "당첨금액",
     amountAfter: "전환 후",
@@ -566,6 +568,15 @@ export default {
     INVALID_RECEIVER: "INVALID_RECEIVER",
     AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
     StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
+  },
+  commission: {
+    settings: "요율 설정",
+    typeRolling: "롤링 타입",
+    typeLosing: "루징 타입",
+    casinoRollingPercent: "카지노 롤링 %",
+    slotRollingPercent: "슬롯 롤링 %",
+    casinoLosingPercent: "카지노 루징 %",
+    slotLosingPercent: "슬롯 루징 %",
   },
   games: {
     SNOW_SNOW2: "api2all",
