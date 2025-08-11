@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="authStore.isAuthenticated">
     <DropdownMenuTrigger as-child>
       <button class="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors cursor-pointer">
         <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
@@ -89,7 +89,6 @@ import {
 import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
 import { useAuthStore } from '../../stores/auth'
-import JwtService from '../../services/JwtService'
 
 const authStore = useAuthStore()
 const user = computed(() => authStore.user);
@@ -100,6 +99,7 @@ const showPointWithdrawalModal = ref(false)
 
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
+  showPointWithdrawalModal.value = true
   console.log('Point Withdrawal clicked')
 }
 

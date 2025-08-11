@@ -130,6 +130,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  // Game Launch
+  {
+    path: "/game/:provider/:code",
+    name: "casino-game",
+    component: () => import("../views/game-launch/LiveGameLaunch.vue"),
+  },
+  {
+    path: "/slot/:provider/:game/:game_id",
+    name: "slot-game",
+    component: () => import("../views/game-launch/SlotGameLaunch.vue"),
+  },
 ]
 
 const router = createRouter({

@@ -302,7 +302,7 @@
             <!-- Deposit Button -->
             <button
               @click="handleDepositClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors"
+              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors cursor-pointer"
             >
               <img
                 src="/images/header/deposit.svg"
@@ -315,7 +315,7 @@
             <!-- Withdrawal Button -->
             <button
               @click="handleWithdrawalClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc]"
+              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc] cursor-pointer"
             >
               <img
                 src="/images/header/withdraw.svg"
@@ -346,15 +346,17 @@
 </template>
 
 <script setup lang="ts">
-// Header component with TypeScript
-import { ref, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
-import Sheet from "./ui/sheet/Sheet.vue";
-import SheetContent from "./ui/sheet/SheetContent.vue";
-import SheetTrigger from "./ui/sheet/SheetTrigger.vue";
-import DepositModal from "../views/transaction/DepositModal.vue";
-import WithdrawalModal from "../views/transaction/WithdrawalModal.vue";
+
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import Swal from 'sweetalert2'
+import Sheet from './ui/sheet/Sheet.vue'
+import SheetContent from './ui/sheet/SheetContent.vue'
+import SheetTrigger from './ui/sheet/SheetTrigger.vue'
+import DepositModal from '../views/transaction/DepositModal.vue'
+import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
+import { useAuthStore } from '../stores/auth'
 
 // Props
 interface Props {
@@ -365,7 +367,8 @@ const props = withDefaults(defineProps<Props>(), {
   isPartner: false,
 });
 
-const { t } = useI18n();
+const { t } = useI18n()
+const authStore = useAuthStore()
 const route = useRoute();
 
 // Partner Menu Configuration
@@ -465,15 +468,33 @@ const showWithdrawalModal = ref(false);
 
 // Handle deposit button click
 const handleDepositClick = (): void => {
-  showDepositModal.value = true;
-  isMobileMenuOpen.value = false; // Close mobile menu if open
-};
+  if (!authStore.isAuthenticated) {
+    Swal.fire({
+      icon: 'warning',
+      title: t('auth.loginRequired'),
+      text: t('auth.loginRequiredMessage'),
+      confirmButtonText: t('auth.loginNow')
+    })
+    return
+  }
+  showDepositModal.value = true
+  isMobileMenuOpen.value = false // Close mobile menu if open
+}
 
 // Handle withdrawal button click
 const handleWithdrawalClick = (): void => {
-  showWithdrawalModal.value = true;
-  isMobileMenuOpen.value = false; // Close mobile menu if open
-};
+  if (!authStore.isAuthenticated) {
+    Swal.fire({
+      icon: 'warning',
+      title: t('auth.loginRequired'),
+      text: t('auth.loginRequiredMessage'),
+      confirmButtonText: t('auth.loginNow')
+    })
+    return
+  }
+  showWithdrawalModal.value = true
+  isMobileMenuOpen.value = false // Close mobile menu if open
+}
 </script>
 
 <style scoped>
