@@ -23,7 +23,7 @@
           :provider="casino.provider"
           :image-src="casino.imageSrc"
           :video-src="casino.videoSrc"
-          :is-live="casino.isLive"
+
           @click="selectCasino(casino)"
         />
       </div>
@@ -54,7 +54,6 @@ interface CasinoGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props
@@ -84,7 +83,7 @@ const casinoGames = computed(() => {
       code: game.code,
       imageSrc: `/images/casino/${game.code.toLowerCase()}.webp`,
       videoSrc: `/images/casino/${game.code.toLowerCase()}.webm`,
-      isLive: true
+
     }))
   }
   return []

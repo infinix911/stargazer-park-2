@@ -53,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 
 interface Props {
   title: string
@@ -61,18 +60,13 @@ interface Props {
   provider: string
   imageSrc: string
   videoSrc?: string
-  isLive?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  isLive: true
-})
+defineProps<Props>()
 
 defineEmits<{
   click: []
 }>()
-
-
 
 </script>
 

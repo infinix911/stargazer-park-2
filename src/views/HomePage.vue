@@ -34,8 +34,7 @@ const getGames = async (): Promise<void> => {
       games.value.slotGames = lobbies.value.filter(g => g.type === 'SLOT')
       games.value.casinoGames = lobbies.value.filter(g => g.type === 'CASINO' || g.type === "HOTEL")
     }
-    //console.log('games casino', games.value.casinoGames)
-    //console.log('games slot', games.value.slotGames)
+    
   } catch (error) {
     console.error('Failed to fetch games:', error)
   }

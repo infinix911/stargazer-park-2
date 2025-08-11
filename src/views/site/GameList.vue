@@ -40,7 +40,6 @@ interface CasinoGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 interface SlotGame {
@@ -50,7 +49,6 @@ interface SlotGame {
   provider: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props

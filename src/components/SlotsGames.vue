@@ -23,7 +23,7 @@
           :provider="slot.provider"
           :image-src="slot.imageSrc"
           :video-src="slot.videoSrc"
-          :is-live="slot.isLive"
+
           @click="selectSlot(slot)"
         />
       </div>
@@ -62,7 +62,6 @@ interface SlotGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props
@@ -92,7 +91,7 @@ const slotsGames = computed(() => {
       code: game.code,
       imageSrc: `/images/slot/${game.code.toLowerCase()}.webp`,
       videoSrc: `/images/slot/${game.code.toLowerCase()}.webm`,
-      isLive: false
+
     }))
   }
   

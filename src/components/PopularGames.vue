@@ -23,7 +23,7 @@
           :provider="game.provider"
           :image-src="game.imageSrc"
           :video-src="game.videoSrc"
-          :is-live="game.isLive"
+
           @click="selectGame(game)"
         />
       </div>
@@ -45,7 +45,6 @@ interface PopularGame {
   provider: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define emits
@@ -61,8 +60,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '메가휠', 
     provider: 'Pragmatic Play Live',
     imageSrc: '/images/popular/mega-wheel.webp',
-    videoSrc: '/images/popular/mega-wheel.webm',
-    isLive: true
+    videoSrc: '/images/popular/mega-wheel.webm'
   },
   { 
     id: 2, 
@@ -70,8 +68,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '식보', 
     provider: 'Evolution',
     imageSrc: '/images/popular/sicbo.webp',
-    videoSrc: '/images/popular/sicbo.webm',
-    isLive: true
+    videoSrc: '/images/popular/sicbo.webm'
   },
   { 
     id: 3, 
@@ -79,8 +76,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '메가룰렛', 
     provider: 'Pragmatic Play Live',
     imageSrc: '/images/popular/mega-roulette.webp',
-    videoSrc: '/images/popular/mega-roulette.webm',
-    isLive: true
+    videoSrc: '/images/popular/mega-roulette.webm'
   },
   { 
     id: 4, 
@@ -88,8 +84,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '용호', 
     provider: 'Evolution',
     imageSrc: '/images/popular/dragon-tiger.webp',
-    videoSrc: '/images/popular/dragon-tiger.webm',
-    isLive: true
+    videoSrc: '/images/popular/dragon-tiger.webm'
   },
   { 
     id: 5, 
@@ -97,8 +92,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '인스턴트 룰렛', 
     provider: 'Evolution',
     imageSrc: '/images/popular/instant-roulette.webp',
-    videoSrc: '/images/popular/instant-roulette.webm',
-    isLive: true
+    videoSrc: '/images/popular/instant-roulette.webm'
   },
   { 
     id: 6, 
@@ -106,8 +100,7 @@ const popularGames = ref<PopularGame[]>([
     koreanTitle: '파워볼', 
     provider: 'Evolution',
     imageSrc: '/images/popular/power-ball.webp',
-    videoSrc: '/images/popular/power-ball.webm',
-    isLive: true
+    videoSrc: '/images/popular/power-ball.webm'
   }
 ])
 
