@@ -11,32 +11,32 @@
   <div class="max-w-[1500px] mx-auto px-4 py-6">
     <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5">
       <!-- Date Range Picker -->
-      <div class="flex-1 min-w-0 max-w-[300px]">
+      <div class="w-full lg:flex-1 lg:min-w-0 lg:max-w-[300px]">
         <DateRangePicker
-          class="w-full h-10 date-picker-modern"
+          class="w-full !h-[40px] date-picker-modern"
           v-model="dateRange"
           initial="month"
         />
       </div>
 
       <!-- Quick Action Buttons -->
-      <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
+      <div class="flex flex-wrap gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-center lg:justify-end">
         <button
           v-for="dateButton in dateButtons"
           :key="dateButton.key"
           @click="setSelectedDate(dateButton.range)"
-          class="w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          class="h-[40px] w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
         >
           {{ t(dateButton.label) }}
         </button>
         <button
           @click="getList"
           :disabled="loading"
-          class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          class="h-[40px] w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
           <i v-else class="fas fa-search mr-1"></i>
-          {{ loading ? t('loading') : t('search') }}
+          {{ loading ? t('common.loading') : t('search') }}
         </button>
       </div>
     </div>

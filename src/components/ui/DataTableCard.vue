@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
     <!-- Header -->
-    <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
+    <div class="px-2 xl:px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="p-2 rounded-lg" :class="iconBgClass" :style="iconBgStyle">
           <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
@@ -18,7 +18,7 @@
     </div>
     
     <!-- Content -->
-    <div class="px-10 pb-5 relative">
+    <div class="px-2 xl:px-10 pb-5 relative">
       <!-- Loading Overlay -->
       <div 
         v-if="loading" 
