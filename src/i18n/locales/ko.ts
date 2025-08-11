@@ -327,7 +327,7 @@ export default {
       event: '이벤트',
       deposit: '입금신청',
       withdrawal: '출금신청',
-      inquiry: '1:1 문의'
+      inquiry: '문의사항'
     },
     support: '고객 지원',
     terms: '이용약관',

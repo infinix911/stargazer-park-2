@@ -325,7 +325,7 @@ export default {
       event: 'Event',
       deposit: 'Deposit',
       withdrawal: 'Withdrawal',
-      inquiry: '1:1 Inquiry'
+      inquiry: 'Inquiries'
     },
     support: 'Support',
     terms: 'Terms of Service',
