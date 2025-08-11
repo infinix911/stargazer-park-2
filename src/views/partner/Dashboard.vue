@@ -99,6 +99,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import qs from "qs";
 
 export interface IData {
   deposit: number;
@@ -210,26 +211,31 @@ export default defineComponent({
     };
 
     const getList = async () => {
-      alert('sdf')
       try {
-        // Build query parameters
-        const queryParams = `start=${dateRange.value.start}&end=${dateRange.value.end}`;
-        const memberParam = props.memberId ? `&member_id=${props.memberId}` : '';
-        
+        // Build query parameters using qs
+        const query = qs.stringify(
+          {
+            start: dateRange.value.start,
+            end: dateRange.value.end,
+            member_id: props.memberId || undefined,
+          },
+          { addQueryPrefix: true, skipNulls: true }
+        );
+
         // Fetch transaction data
         const results = await ApiService.get(
-          `/partner/dashboard?${queryParams}${memberParam}`
+          `/partner/dashboard${query}`
         ).then((res) => res.data);
-        
+
         // Clear and update table data without triggering watchers
         tableData.value.length = 0;
         tableData.value.push(...results);
 
         // Fetch game summary data
         const gameResults = await ApiService.get(
-          `/partner/dashboard/summary?${queryParams}${memberParam}`
+          `/partner/dashboard/summary${query}`
         ).then((res) => res.data);
-        
+
         // Clear and update game table data without triggering watchers
         gameTableData.value.length = 0;
         gameTableData.value.push(...gameResults);
