@@ -3,13 +3,12 @@
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
       <BaseDialogContent 
-        class="p-0 bg-transparent fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] duration-200" 
-        style="width: 760px !important; max-width: 760px !important;"
+        class="p-0 bg-transparent fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] duration-200 w-[95vw] max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
       >
       <!-- Modal Wrapper -->
-      <div class="w-full bg-[#07102e]/5 backdrop-blur-md border border-white/50 p-8 rounded-lg overflow-hidden">
+      <div class="w-full bg-[#07102e]/5 backdrop-blur-md border border-white/50 p-4 sm:p-6 md:p-8 rounded-lg overflow-hidden">
         <!-- Modal Header with gradient -->
-        <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-8 -mt-8 mb-6 relative">
+        <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-4 sm:-mx-6 md:-mx-8 -mt-4 sm:-mt-6 md:-mt-8 mb-4 sm:mb-6 relative">
           <div class="flex items-center gap-3">
             <div class="px-3 py-2 bg-green-500/20 rounded-lg">
               <i class="fas fa-user-plus text-green-400 text-sm"></i>

@@ -259,6 +259,9 @@
     @close="closeModal"
     @refresh="getList"
   />
+
+  <PointMoneyTransfer v-if="selectedModal === 'PointMoneyTransfer'" :receiver="pointTransfer.receiver"
+  :type="pointTransfer.type" @refresh="getList" />
 </template>
 
 <script setup lang="ts">
@@ -270,6 +273,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import ShopMoneyTransactionModal from "@/components/partner/ShopMoneyTransactionModal.vue";
+import PointMoneyTransfer from "@/components/partner/PointMoneyTransfer.vue";
 import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
