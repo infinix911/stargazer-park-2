@@ -77,8 +77,8 @@ const casinoGames = computed(() => {
     // Transform Game data to CasinoGame format
     return props.games.map((game, index) => ({
       id: index + 1,
-      title: game.code,
-      subTitle: game.code,
+      title: t(`games.${game.code}`) || game.code,
+      subTitle: t(`games.${game.code}`) || game.code,
       provider: game.provider,
       type: game.type,
       code: game.code,
