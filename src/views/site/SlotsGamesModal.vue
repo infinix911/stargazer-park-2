@@ -1,11 +1,8 @@
 <template>
   <Dialog :open="open" @update:open="$emit('update:open', $event)">
-    <DialogContent class="sm:max-w-4xl max-h-[80vh] overflow-hidden">
+    <DialogContent class="sm:max-w-4xl max-h-[80vh] overflow-hidden bg-gradient-to-br from-[#fc4848]/95 via-[#fc4848]/85">
       <DialogHeader>
-        <DialogTitle>Slot Game</DialogTitle>
-        <DialogDescription>
-          Provider: {{ provider }} | Code: {{ code }}
-        </DialogDescription>
+        <DialogTitle class="text-white text-2xl text-shadow-lg font-bold font-orbitron">SLOT GAMES</DialogTitle>
       </DialogHeader>
       
       <!-- Game List -->

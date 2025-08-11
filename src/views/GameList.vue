@@ -113,7 +113,8 @@ const handleCasinoSelected = (casino: CasinoGame): void => {
 }
 
 const handleSlotSelected = (slot: SlotGame): void => {
-  console.log('Slot selected:', slot)
+  //console.log('Slot selected:', slot)
+  openGame(slot.provider)
 }
 </script>
 
