@@ -319,7 +319,7 @@ export default {
   status: {
     normal: "정상",
     new: "신규",
-    waiting: "대기",
+    waiting: "대기중",
     stopped: "중지",
     complete: "완료",
     application: "신청",
@@ -355,6 +355,7 @@ export default {
     reports: "리포트",
   },
   partner: {
+    processing: "처리중...",
     winningAmount: "당첨금액",
     amountAfter: "전환 후",
     slotButton: "슬롯 회수",
@@ -446,6 +447,11 @@ export default {
     totalDeposit: "총 입금액",
     totalWithdraw: "총 출금액",
     totalDepNWid: "입출금 차액",
+    // selectDateRange: "날짜 범위 선택",
+    // search: "검색",
+    // requestSettlement: "정산 요청",
+    // settlementRequest: "정산 요청",
+    settlementData: "정산 데이터",
     name: "이름",
     telNo: "전화번호",
     rate: "등급",
@@ -507,6 +513,20 @@ export default {
     shopMemberBalance: "매장 회원 보유금",
     rate_invalid_check_subagent: "롤링 속도는 하위 에이전트 롤링 속도보다 낮아서는 안 됩니다.",
     addPoint: "이동",
+    settlementHistory: "정산 내역",
+  },
+  notif: {
+    INVALID_RECEIVER: "INVALID_RECEIVER",
+    AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
+    StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
+  },
+  amounts: {
+    "1K": "1천",
+    "10K": "1만",
+    "100K": "10만",
+    "500K": "50만",
+    "1M": "100만",
+    reset: "초기화"
   },
   dateRange: {
     start: "부터",
@@ -517,4 +537,5 @@ export default {
     fifteenDays: "15일",
   },
   search: '검색',
+  date: "날짜"
 } 

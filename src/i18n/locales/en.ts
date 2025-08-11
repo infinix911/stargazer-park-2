@@ -7,13 +7,15 @@ export default {
     holdem: 'Hold\'em',
     deposit: 'Deposit',
     withdraw: 'Withdraw',
-    myLounge: 'My Lounge'
+    myLounge: 'My Lounge',
+    partner: 'Partner'
   },
   topBar: {
     login: 'Login',
     signup: 'Sign Up'
   },
   login: {
+    id: "User ID",
     title: 'PRODTEST2',
     subtitle: 'Login Required',
     description: 'Please log in to access the selected service',
@@ -314,7 +316,7 @@ export default {
     faq: 'FAQ',
     help: 'Help'
   },
-  PartnerMenu: {
+  partnerMenu: {
     home: "Home",
     dashboard: "Dashboard",
     member: "Member",
@@ -337,6 +339,9 @@ export default {
     reports: "Reports",
   },
   partner: {
+    processing: "Processing...",
+    winningAmount: "Winning Amount",
+    amountAfter: "Amount After",
     slotButton: "Slot Recovery",
     slotMoney: "Slot Money",
     type: "Type",
@@ -435,6 +440,11 @@ export default {
     totalDeposit: "Total Deposit",
     totalWithdraw: "Total Withdraw",
     totalDepNWid: "Deposit/Withdrawal Difference",
+    selectDateRange: "Select Date Range",
+    search: "Search",
+    requestSettlement: "Request Settlement",
+    settlementRequest: "Settlement Request",
+    settlementData: "Settlement Data",
     name: "Name",
     telNo: "Phone Number",
     rate: "Rate",
@@ -494,6 +504,20 @@ export default {
     shopMemberBalance: "Shop Member Balance",
     rate_invalid_check_subagent: "Rolling rate cannot be lower than sub agent rolling rate.",
     addPoint: "Transfer",
+    settlementHistory: "Settlement History",
+  },
+  notif: {
+    INVALID_RECEIVER: "INVALID_RECEIVER",
+    AMOUNT_GT_WALLET: "Amount cannot be greater than available balance.",
+    StoreMoneySuccess: "Store money transaction has been processed.",
+  },
+  amounts: {
+    "1K": "1K",
+    "10K": "10K",
+    "100K": "100K",
+    "500K": "500K",
+    "1M": "1M",
+    reset: "Reset"
   },
   dateRange: {
     start: "From",
@@ -502,5 +526,23 @@ export default {
     yesterday: "Yesterday",
     lastWeek: "Last Week",
     fifteenDays: "15 Days",
+  },
+  search: 'Search',
+  date: "Date",
+  status: {
+    normal: "Normal",
+    new: "New",
+    waiting: "Waiting",
+    stopped: "Stopped",
+    complete: "Complete",
+    application: "Application",
+    adminCancel: "Admin Cancel",
+    waitingForApproval: "Waiting for Approval",
+    0: "Waiting",
+    win: "Win",
+    lose: "Lose",
+    tie: "Tie Refund",
+    2: "Refund",
+    3: "Error",
   }
 } 

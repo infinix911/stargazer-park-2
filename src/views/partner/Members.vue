@@ -131,10 +131,6 @@
               icon-color="#3b82f6"
             >
                 <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
-                  <!-- Member -->
-                  <template v-slot:cell-member="{ row: data }">
-                    <span> ({{ data.nickname }})</span>
-                  </template>
                   <!-- Level -->
                   <template v-slot:cell-level="{ row: data }">
                     <span>{{ t(`partner.level${data.level}`) }}</span>
@@ -226,35 +222,28 @@
   </div>
 
   <!-- Modals -->
-  <!-- <ShopMoneyTransaction 
+  <ShopMoneyTransactionModal 
     v-if="selectedModal === 'ShopMoneyTransaction'" 
     :receiver="shop.receiver" 
     :type="shop.type"
     @refresh="getList" 
   />
-  <PointMoneyTransfer 
-    v-if="selectedModal === 'PointMoneyTransfer'" 
-    :receiver="pointTransfer.receiver"
-    :type="pointTransfer.type" 
-    @refresh="getList" 
-  /> -->
 </template>
-<script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
-// import ShopMoneyTransaction from "@/components/partner/shop/ShopMoneyTransaction.vue";
-// import PointMoneyTransfer from "@/components/partner/point/PointMoneyTransfer.vue";
+import ShopMoneyTransactionModal from "@/components/partner/ShopMoneyTransactionModal.vue";
 import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
 import Swal from "sweetalert2";
-
 
 export interface IData {
   createdAt: string;
@@ -274,6 +263,9 @@ export interface IData {
   withdrawals: number;
   shop_add: number;
   shop_deduct: number;
+  game_bal?: number;
+  wallet_game?: number;
+  shoplevel?: number;
 }
 
 export interface DateRange {
@@ -281,282 +273,246 @@ export interface DateRange {
   end: string;
 }
 
-export default defineComponent({
-  name: "MemberList",
-  components: {
-    KTDatatable,
-    DateRangePicker,
-    // ShopMoneyTransaction,
-    // PointMoneyTransfer,
-    MemberTree,
-    DataTableCard,
+// Composables
+const { t, n } = useI18n();
+const appStore = useAppStore();
+const authStore = useAuthStore();
+
+// Computed
+const selectedModal = computed(() => appStore.activeModal);
+
+// Methods
+const openModal = (modal: string) => appStore.openModal(modal);
+const setActiveTab = (tab: string) => appStore.setTab(tab);
+
+// Table data
+const tableData = ref<Array<IData>>([]);
+const tableHeaders = [
+  {
+    key: "member_count",
+    name: t("partner.lowerUserCount"),
+    text: true
   },
-  setup() {
-    // vue variables
-    const { t, n } = useI18n();
-    const appStore = useAppStore();
-    const authStore = useAuthStore();
-    const openModal = (modal: string) => appStore.openModal(modal);
-    const setActiveTab = (tab: string) => appStore.setTab(tab);
-    const selectedModal = computed(() => appStore.activeModal);
-    // table variables
-    const tableData: any = ref<Array<IData>>([]);
-    const tableHeaders = [
-      {
-        key: "member_count",
-        name: t("partner.lowerUserCount"),
-        text: true
-      },
-      {
-        key: "level",
-        name: t("partner.level"),
-        customslot: true
-      },
-      {
-        key: "member",
-        name: t("partner.member"),
-        customslot: true
-      },
-      {
-        key: "createdAt",
-        name: t("partner.regdate")
-      },
-      {
-        key: "last_login",
-        name: t("partner.lastLogin"),
-        text: true
-      },
-      {
-        key: "wallet",
-        name: t("partner.wallet"),
-        currency: true,
-      },
-      {
-        key: "wallet_point",
-        name: t("partner.walletPoint"),
-        currency: true,
-      },
-      {
-        key: "settle",
-        name: t("partner.settle"),
-        customslot: true,
-      },
-      {
-        key: "slot_money",
-        name: t("partner.slotMoney"),
-        customslot: true,
-      },
-      {
-        key: "point_transfer",
-        name: t("partner.pointTransfer"),
-        customslot: true,
-      },
-      {
-        key: "deposits",
-        name: t("partner.depAmount"),
-        currency: true,
-      },
-      {
-        key: "bonus",
-        name: t("partner.depBonus"),
-        customslot: true,
-      },
-      {
-        key: "withdrawals",
-        name: t("partner.widAmount"),
-        currency: true,
-      },
-      {
-        key: "sonic",
-        name: t("partner.depWidProfit"),
-        currency: true,
-      },
-      {
-        key: "winamt",
-        name: t("partner.winamount"),
-        currency: true,
-      },
-      {
-        key: "profit",
-        name: t("partner.betProfit"),
-        currency: true,
-      },
-    ];
+  {
+    key: "level",
+    name: t("partner.level"),
+    customslot: true
+  },
+  {
+    key: "member",
+    name: t("partner.member"),
+  },
+  {
+    key: "createdAt",
+    name: t("partner.regdate")
+  },
+  {
+    key: "last_login",
+    name: t("partner.lastLogin"),
+    text: true
+  },
+  {
+    key: "wallet",
+    name: t("partner.wallet"),
+    currency: true,
+  },
+  {
+    key: "wallet_point",
+    name: t("partner.walletPoint"),
+    currency: true,
+  },
+  {
+    key: "settle",
+    name: t("partner.settle"),
+    customslot: true,
+  },
+  {
+    key: "slot_money",
+    name: t("partner.slotMoney"),
+    customslot: true,
+  },
+  {
+    key: "point_transfer",
+    name: t("partner.pointTransfer"),
+    customslot: true,
+  },
+  {
+    key: "deposits",
+    name: t("partner.depAmount"),
+    currency: true,
+  },
+  {
+    key: "bonus",
+    name: t("partner.depBonus"),
+    customslot: true,
+  },
+  {
+    key: "withdrawals",
+    name: t("partner.widAmount"),
+    currency: true,
+  },
+  {
+    key: "sonic",
+    name: t("partner.depWidProfit"),
+    currency: true,
+  },
+  {
+    key: "winamt",
+    name: t("partner.winamount"),
+    currency: true,
+  },
+  {
+    key: "profit",
+    name: t("partner.betProfit"),
+    currency: true,
+  },
+];
 
-    const searchType = ref("ID");
-    const searchValue = ref("");
-    const searchTypes = [
-      { label: t("auth.ID"), value: "ID" },
-      { label: t("partner.nickname"), value: "NICKNAME" },
-    ];
+const searchType = ref("ID");
+const searchValue = ref("");
+const searchTypes = [
+  { label: t("login.id"), value: "ID" },
+  { label: t("partner.nickname"), value: "NICKNAME" },
+];
 
-    // Date Button Configuration
-    const dateButtons = [
-      {
-        key: "today",
-        label: "dateRange.today",
-        range: {
-          start: moment().format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "lastWeek",
-        label: "dateRange.lastWeek",
-        range: {
-          start: moment().subtract(7, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "fifteenDays",
-        label: "dateRange.fifteenDays",
-        range: {
-          start: moment().subtract(15, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-    ];
-
-    /**
-     * Filters
-     */
-    let daterange = {
-      start: moment().startOf("month").format("YYYY-MM-DD"),
+// Date Button Configuration
+const dateButtons = [
+  {
+    key: "today",
+    label: "dateRange.today",
+    range: {
+      start: moment().format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
-    const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getList();
-    };
-
-    /**
-     * Get List
-     *
-     */
-    const getList = async () => {
-      const query = qs.stringify({
-        start: daterange.start,
-        end: daterange.end,
-        type: searchType.value,
-        typeval: searchValue.value,
-      });
-
-      const results = await ApiService.get(`/partner/members?${query}`)
-        .then((res) => res.data)
-        .catch(() => []);
-      // add data
-      tableData.value.splice(0, tableData.value.length, ...results);
-      if (tableData.value.length > 0) {
-        for (const row of tableData.value) {
-          await new Promise(r => setTimeout(r, 100));
-          const gameBalance = await ApiService.post(`/partner/member/game/balance/${row.member_id}`, {})
-            .then((res) => res.data.balance)
-          row.game_bal = gameBalance;
-        }
-      }
-    };
-
-    const slotMoney = async (memberId: string) => {
-      await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {})
-        .then(() => {
-          Swal.fire(
-            t(`partner.slotMoney`),
-            t("notif.StoreMoneySuccess"),
-            "success"
-          );
-          getList();
-        })
-        .catch((e) =>
-          Swal.fire(
-            t(`partner.slotMoney`),
-            t(`notif.${e.response.data.message}`),
-            "error"
-          )
-        );
-    }
-
-    const refreshWalletBalance = async (member_id: string) => {
-      if (tableData.value.length > 0) {
-        for (const row of tableData.value) {
-          if (row.member_id === member_id) {
-            const balance = await ApiService.get(`/partner/member/game/balance/${row.member_id}`)
-            .then((res) => res.data.balance)
-
-            if(balance !== 0) {
-              row.wallet = balance;
-            }
-          }
-        }
-      }
-    }
-
-    const shop = ref({ receiver: { id: "", username: "", wallet: "" }, type: "" });
-    const onShopTransact = (memberId: string, member: string, wallet: string, type: string) => {
-      shop.value.receiver = { id: memberId, username: member, wallet: wallet };
-      shop.value.type = type;
-
-      openModal("ShopMoneyTransaction");
-    };
-
-    /**
-     * Point Transfer
-     *
-     */
-    const pointTransfer = ref({ receiver: { id: "", username: "" }, type: "" });
-    const onPointTransfer = (memberId: string, member: string, type: string) => {
-      pointTransfer.value.receiver = { id: memberId, username: member };
-      pointTransfer.value.type = type;
-
-      openModal("PointMoneyTransfer");
-    };
-
-    const onGameMoneyWithdraw = async (memberId: string) => {
-      await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {
-      })
-        .then(() =>
-          Swal.fire(
-            t("partner.gameWid"),
-            t("notif.GameWidSuccess"),
-            "success"
-          )
-        )
-        .catch((e) =>
-          Swal.fire(
-            t("partner.gameWid"),
-            t("notif.GameWidFail"),
-            "error"
-          )
-        );
-    }
-
-    return { 
-      t, n,
-      tableHeaders,
-      tableData,
-      searchType,
-      searchTypes,
-      searchValue,
-      dateButtons,
-      // Date Picker
-      setSelectedDate,
-      setActiveTab,
-      daterange,
-      openModal,
-      selectedModal,
-      getList,
-      moment,
-      // Shop Transaction
-      onShopTransact,
-      shop,
-      // Point Transfer
-      onPointTransfer,
-      pointTransfer,
-      authStore,
-      onGameMoneyWithdraw,
-      refreshWalletBalance,
-      slotMoney
-    };
+    },
   },
+  {
+    key: "lastWeek",
+    label: "dateRange.lastWeek",
+    range: {
+      start: moment().subtract(7, "days").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    },
+  },
+  {
+    key: "fifteenDays",
+    label: "dateRange.fifteenDays",
+    range: {
+      start: moment().subtract(15, "days").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    },
+  },
+];
+
+// Date range
+let daterange = {
+  start: moment().startOf("month").format("YYYY-MM-DD"),
+  end: moment().format("YYYY-MM-DD"),
+};
+
+const setSelectedDate = (date: DateRange) => {
+  daterange = date;
+  getList();
+};
+
+// Get List
+const getList = async () => {
+  const query = qs.stringify({
+    start: daterange.start,
+    end: daterange.end,
+    type: searchType.value,
+    typeval: searchValue.value,
+  });
+
+  const results = await ApiService.get(`/partner/members?${query}`)
+    .then((res) => res.data)
+    .catch(() => []);
+  
+  tableData.value.splice(0, tableData.value.length, ...results);
+  
+  if (tableData.value.length > 0) {
+    for (const row of tableData.value) {
+      await new Promise(r => setTimeout(r, 100));
+      const gameBalance = await ApiService.post(`/partner/member/game/balance/${row.member_id}`, {})
+        .then((res) => res.data.balance)
+      row.game_bal = gameBalance;
+    }
+  }
+};
+
+const slotMoney = async (memberId: string) => {
+  await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {})
+    .then(() => {
+      Swal.fire(
+        t(`partner.slotMoney`),
+        t("notif.StoreMoneySuccess"),
+        "success"
+      );
+      getList();
+    })
+    .catch((e) =>
+      Swal.fire(
+        t(`partner.slotMoney`),
+        t(`notif.${e.response.data.message}`),
+        "error"
+      )
+    );
+}
+
+const refreshWalletBalance = async (member_id: string) => {
+  if (tableData.value.length > 0) {
+    for (const row of tableData.value) {
+      if (row.member_id === member_id) {
+        const balance = await ApiService.get(`/partner/member/game/balance/${row.member_id}`)
+        .then((res) => res.data.balance)
+
+        if(balance !== 0) {
+          row.wallet = balance;
+        }
+      }
+    }
+  }
+}
+
+const shop = ref<{ 
+  receiver: { id: string; username: string; wallet: string }; 
+  type: "ADD" | "DEDUCT" 
+}>({ 
+  receiver: { id: "", username: "", wallet: "" }, 
+  type: "ADD" 
 });
+
+const onShopTransact = (memberId: string, member: string, wallet: string, type: "ADD" | "DEDUCT") => {
+  shop.value.receiver = { id: memberId, username: member, wallet: wallet };
+  shop.value.type = type;
+  openModal("ShopMoneyTransaction");
+};
+
+// Point Transfer
+const pointTransfer = ref({ receiver: { id: "", username: "" }, type: "" });
+const onPointTransfer = (memberId: string, member: string, type: string) => {
+  pointTransfer.value.receiver = { id: memberId, username: member };
+  pointTransfer.value.type = type;
+  openModal("PointMoneyTransfer");
+};
+
+const onGameMoneyWithdraw = async (memberId: string) => {
+  await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {})
+    .then(() =>
+      Swal.fire(
+        t("partner.gameWid"),
+        t("notif.GameWidSuccess"),
+        "success"
+      )
+    )
+    .catch((e) =>
+      Swal.fire(
+        t("partner.gameWid"),
+        t("notif.GameWidFail"),
+        "error"
+      )
+    );
+}
+
+// Initialize
+getList();
 </script>

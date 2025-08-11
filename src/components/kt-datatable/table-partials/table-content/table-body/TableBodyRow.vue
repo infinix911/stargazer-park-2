@@ -46,9 +46,10 @@
             <span v-if="cell.key === 'member'">
               <a
                 href="javascript:void(0);"
+                class="text-blue-400"
                 @click="openMemberInfo(item['member_id'] || '')"
                 >{{ item[cell.key] }}</a
-              >
+              > ({{ item['nickname'] }})
               </span>
 
             <!-- Agent Column -->

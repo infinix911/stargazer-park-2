@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="t('PartnerMenu.dashboard')"
+    :title="t('partnerMenu.dashboard')"
     subtitle="Transactions Overview and Game Summary"
     icon="fas fa-users"
     icon-color="green-blue"
@@ -17,6 +17,7 @@
         </label>
         <DateRangePicker
           class="w-full h-10 date-picker-modern"
+          v-model="dateRange"
           @changedate="setSelectedDate"
           initial="month"
         />
@@ -160,11 +161,11 @@ export default defineComponent({
       { key: "total_profit", name: t("partner.totalProfit"), currency: true },
     ];
 
-    // Date Range
-    let range = {
+    // Date Range - reactive ref for v-model
+    const dateRange = ref({
       start: moment().startOf("month").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
+    });
 
     // Date Button Configuration
     const dateButtons = [
@@ -196,7 +197,7 @@ export default defineComponent({
 
     // Methods
     const setSelectedDate = (date: DateRange) => {
-      range = date;
+      dateRange.value = date; // This will trigger the DateRangePicker to update
       getList();
     };
 
@@ -204,13 +205,13 @@ export default defineComponent({
       try {
         // Fetch transaction data
         const results = await ApiService.get(
-          `/partner/dashboard?start=${range.start}&end=${range.end}`
+          `/partner/dashboard?start=${dateRange.value.start}&end=${dateRange.value.end}`
         ).then((res) => res.data);
         tableData.value.splice(0, tableData.value.length, ...results);
 
         // Fetch game summary data
         const gameResults = await ApiService.get(
-          `/partner/dashboard/summary?start=${range.start}&end=${range.end}`
+          `/partner/dashboard/summary?start=${dateRange.value.start}&end=${dateRange.value.end}`
         ).then((res) => res.data);
         gameTableData.value.splice(0, gameTableData.value.length, ...gameResults);
       } catch (error) {
@@ -219,9 +220,9 @@ export default defineComponent({
     };
 
     const formatDateRange = computed(() => {
-      if (range.start && range.end) {
-        const start = moment(range.start).format("MMM DD");
-        const end = moment(range.end).format("MMM DD");
+      if (dateRange.value.start && dateRange.value.end) {
+        const start = moment(dateRange.value.start).format("MMM DD");
+        const end = moment(dateRange.value.end).format("MMM DD");
         return start === end ? start : `${start} - ${end}`;
       }
       return "Month";
@@ -237,6 +238,7 @@ export default defineComponent({
       tableData,
       gameTableHeaders,
       gameTableData,
+      dateRange,
       dateButtons,
       setSelectedDate,
       getList,
