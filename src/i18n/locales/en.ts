@@ -906,5 +906,11 @@ export default {
       "bghflgi59db7d7r2": "Blackjack VIP X",
       "oa7fpshyqfueqxuj": "Blackjack VIP Z"
     }
+  },
+  common: {
+    search: 'Search games...',
+    noResults: 'No games found',
+    tryDifferentSearch: 'Try a different search term',
+    ok: 'OK'
   }
 } 
