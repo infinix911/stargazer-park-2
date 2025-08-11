@@ -1,16 +1,16 @@
 <template>
   <div class="bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
     <!-- Header -->
-    <div class="px-2 xl:px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="p-2 rounded-lg" :class="iconBgClass" :style="iconBgStyle">
-          <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
-        </div>
-        <div>
-          <h2 class="font-semibold text-white text-sm lg:text-base">{{ title }}</h2>
-          <p class="text-xs text-gray-400">{{ subtitle }}</p>
-        </div>
-      </div>
+    <div v-if="hasHeaderContent" class="px-2 xl:px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
+             <div class="flex items-center gap-3">
+         <div v-if="title" class="p-2 rounded-lg" :class="iconBgClass" :style="iconBgStyle">
+           <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
+         </div>
+         <div>
+           <h2 v-if="title" class="font-semibold text-white text-sm lg:text-base">{{ title }}</h2>
+           <p v-if="subtitle" class="text-xs text-gray-400">{{ subtitle }}</p>
+         </div>
+       </div>
       <div class="text-xs text-gray-400">
         <i class="fas fa-table mr-1"></i>
         {{ recordCount }} records
@@ -45,15 +45,19 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 export interface Props {
-  title: string
-  subtitle: string
-  recordCount: number
-  icon: string
+  title?: string
+  subtitle?: string
+  recordCount?: number
+  icon?: string
   iconColor?: string
   loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  title: '',
+  subtitle: '',
+  recordCount: 0,
+  icon: 'fas fa-table',
   iconColor: '#3b82f6', // blue-500 as default
   loading: false
 })
@@ -107,6 +111,13 @@ const iconBgClass = computed(() => {
   }
   return bgColors[props.iconColor] || 'bg-blue-500/20'
 })
+
+// Check if header has any content to show
+const hasHeaderContent = computed(() => {
+  return props.title || props.subtitle || props.icon || props.recordCount !== undefined
+})
+
+
 </script>
 
 <style scoped>

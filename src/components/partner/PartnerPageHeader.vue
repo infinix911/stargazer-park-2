@@ -22,15 +22,12 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: true
     },
     subtitle: {
       type: String,
-      required: true
     },
     icon: {
       type: String,
-      required: true
     },
     iconColor: {
       type: String,
