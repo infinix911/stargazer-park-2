@@ -911,6 +911,9 @@ export default {
     search: 'Search games...',
     noResults: 'No games found',
     tryDifferentSearch: 'Try a different search term',
-    ok: 'OK'
+    ok: 'OK',
+    loading: 'Loading...',
+    retry: 'Retry',
+    close: 'Close'
   }
 } 
