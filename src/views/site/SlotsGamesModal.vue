@@ -1,0 +1,121 @@
+<template>
+  <Dialog :open="open" @update:open="$emit('update:open', $event)">
+    <DialogContent class="sm:max-w-4xl max-h-[80vh] overflow-hidden">
+      <DialogHeader>
+        <DialogTitle>Slot Game</DialogTitle>
+        <DialogDescription>
+          Provider: {{ provider }} | Code: {{ code }}
+        </DialogDescription>
+      </DialogHeader>
+      
+      <!-- Game List -->
+      <div class="py-4 overflow-y-auto max-h-[60vh]">
+        <div v-if="games.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <GameMediaCard
+            v-for="game in games"
+            :key="game.code"
+            :title="getGameTitle(game)"
+            :sub-title="locale === 'ko' ? game.eng_title : game.ko_title"
+            :provider="provider"
+            :image-src="game.img_url"
+            :video-src="''"
+            :is-live="false"
+            @click="selectGame(game)"
+          />
+        </div>
+      </div>
+      
+      <DialogFooter>
+        <DialogClose as-child>
+          <Button variant="outline">Close</Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</template>
+
+<script setup lang="ts">
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from '@/components/ui/dialog'
+import Button from '@/components/ui/Button.vue'
+import ApiService from '@/services/ApiService'
+import { ref, watch, computed } from 'vue'
+import GameMediaCard from '@/components/GameMediaCard.vue'
+import { useI18n } from 'vue-i18n'
+
+// Define props
+interface Props {
+  provider: string
+  code: string
+  open: boolean
+}
+
+const props = defineProps<Props>()
+const { locale } = useI18n()
+
+// Define emits
+const emit = defineEmits<{
+  'update:open': [value: boolean]
+}>()
+
+// Computed property to get the appropriate title based on locale
+const getGameTitle = (game: any): string => {
+  return locale.value === 'ko' ? game.ko_title : game.eng_title
+}
+
+// Reactive data
+const games = ref<any[]>([])
+
+// Get game list function
+const getGameList = async (): Promise<void> => {
+  try {
+    const provider = props.provider === 'KP' ? "SNOW_SLOT" : props.provider
+    const response = await ApiService.get(
+      `/site/gamelists/${provider}/${props.code}`
+    )
+    games.value = response.data
+  } catch (error) {
+    console.error('Error fetching game list:', error)
+  }
+}
+
+// Watch for changes in provider and code props
+watch([() => props.provider, () => props.code], () => {
+  getGameList();
+});
+
+// Select game function
+const selectGame = (game: any): void => {
+  console.log(`Selected game: ${game.eng_title}`)
+  // Handle game selection here
+}
+</script>
+
+<style scoped>
+/* Modal animations */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+/* Custom styling for GameMediaCard in modal */
+:deep(.game-media-card) {
+  height: auto !important;
+}
+
+:deep(.game-media-card .relative) {
+  aspect-ratio: 3/4 !important;
+}
+</style>

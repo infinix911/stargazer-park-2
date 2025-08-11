@@ -28,6 +28,13 @@
         />
       </div>
     </div>
+    
+    <!-- SlotsGamesModal -->
+    <SlotsGamesModal
+      v-model:open="showModal"
+      :provider="selectedSlot?.provider || ''"
+      :code="selectedSlot?.code || ''"
+    />
   </section>
 </template>
 
@@ -35,6 +42,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import GameMediaCard from './GameMediaCard.vue'
+import SlotsGamesModal from '../views/site/SlotsGamesModal.vue'
 
 const { t } = useI18n()
 
@@ -91,9 +99,15 @@ const slotsGames = computed(() => {
   return []
 })
 
+// Modal state
+const showModal = ref(false)
+const selectedSlot = ref<SlotGame | null>(null)
+
 // Select slot
 const selectSlot = (slot: SlotGame): void => {
   console.log(`Selected slot: ${slot.title}`)
+  selectedSlot.value = slot
+  showModal.value = true
   emit('slot-selected', slot)
 }
 </script>
