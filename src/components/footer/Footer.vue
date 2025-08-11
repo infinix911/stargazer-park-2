@@ -141,13 +141,13 @@ const handleNavClick = (section: string): void => {
       // Show SweetAlert for unauthenticated users
       if (typeof Swal !== 'undefined') {
         Swal.fire({
-          title: 'Authentication Required',
-          text: 'Please log in to access deposit functionality.',
+          title: t('auth.loginRequired'),
+          text: t('auth.depositLoginRequired'),
           icon: 'warning',
-          confirmButtonText: 'OK'
+          confirmButtonText: t('common.ok')
         })
       } else {
-        alert('Please log in to access deposit functionality.')
+        alert(t('auth.depositLoginRequired'))
       }
     }
     return
@@ -161,13 +161,13 @@ const handleNavClick = (section: string): void => {
       // Show SweetAlert for unauthenticated users
       if (typeof Swal !== 'undefined') {
         Swal.fire({
-          title: 'Authentication Required',
-          text: 'Please log in to access withdrawal functionality.',
+          title: t('auth.loginRequired'),
+          text: t('auth.withdrawalLoginRequired'),
           icon: 'warning',
-          confirmButtonText: 'OK'
+          confirmButtonText: t('common.ok')
         })
       } else {
-        alert('Please log in to access withdrawal functionality.')
+        alert(t('auth.withdrawalLoginRequired'))
       }
     }
     return
