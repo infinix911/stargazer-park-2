@@ -23,6 +23,20 @@
     <Footer 
       @open-customer-service="handleCustomerService"
       @nav-click="handleNavClick"
+      @show-deposit-modal="showDepositModal = true"
+      @show-withdrawal-modal="showWithdrawalModal = true"
+    />
+    
+    <!-- Deposit Modal -->
+    <DepositModal 
+      :open="showDepositModal"
+      @close="showDepositModal = false"
+    />
+    
+    <!-- Withdrawal Modal -->
+    <WithdrawalModal 
+      :open="showWithdrawalModal"
+      @close="showWithdrawalModal = false"
     />
     
     <!-- Scroll to Top Button -->
@@ -42,10 +56,16 @@ import HotBrandBackground from '../components/hotbrand/HotBrandBackground.vue'
 import ProviderSection from '../components/ProviderSection.vue'
 import Footer from '../components/footer/Footer.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
+import DepositModal from '../views/transaction/DepositModal.vue'
+import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
 
 // Reactive data for current slide
 const currentSlide = ref(0)
 const route = useRoute()
+
+// Modal state
+const showDepositModal = ref(false)
+const showWithdrawalModal = ref(false)
 
 // Handle slide change from HeroSection
 const handleSlideChange = (slideIndex: number): void => {

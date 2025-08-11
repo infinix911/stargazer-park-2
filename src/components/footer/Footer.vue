@@ -82,10 +82,13 @@
 <script setup lang="ts">
 // Footer component with TypeScript
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/auth'
+import Swal from 'sweetalert2'
 import NavItem from './NavItem.vue'
 import Button from '../ui/Button.vue'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 
 // Define emits
 const emit = defineEmits<{
@@ -131,9 +134,8 @@ const handleNavClick = (section: string): void => {
   }
   
   if (section === 'deposit') {
-    // Check if user is authenticated
-    const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token')
-    if (isAuthenticated) {
+    // Check if user is authenticated using auth store
+    if (authStore.isAuthenticated) {
       emit('show-deposit-modal')
     } else {
       // Show SweetAlert for unauthenticated users
@@ -152,9 +154,8 @@ const handleNavClick = (section: string): void => {
   }
   
   if (section === 'withdrawal') {
-    // Check if user is authenticated
-    const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token')
-    if (isAuthenticated) {
+    // Check if user is authenticated using auth store
+    if (authStore.isAuthenticated) {
       emit('show-withdrawal-modal')
     } else {
       // Show SweetAlert for unauthenticated users
