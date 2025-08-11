@@ -957,6 +957,10 @@ export default {
     ok: 'OK',
     loading: 'Loading...',
     retry: 'Retry',
-    close: 'Close'
+    close: 'Close',
+    CASINO: "Casino",
+    HOTEL: "Hotel",
+    SLOT: "Slot",
+    SPORT: "Sport",
   }
 } 

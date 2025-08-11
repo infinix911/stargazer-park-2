@@ -13,10 +13,12 @@
       <div class="flex items-end justify-end">
         <button
           @click="getList"
-          class="px-6 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-300 hover:to-emerald-400 transition-all duration-200 hover:scale-105 shadow-lg"
+          :disabled="loading"
+          class="px-6 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-300 hover:to-emerald-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <i class="fas fa-sync-alt mr-1"></i>
-          Refresh
+          <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+          <i v-else class="fas fa-sync-alt mr-1"></i>
+          {{ loading ? t('common.loading') : 'Refresh' }}
         </button>
       </div>
     </div>
@@ -29,8 +31,9 @@
         :record-count="tableData.length"
         icon="fas fa-circle"
         icon-color="#10b981"
+        :loading="loading"
       >
-        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
+        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading">
               <template v-slot:cell-location="{ row: data }">
                 <div class="text-center">
                   <a
@@ -86,9 +89,10 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const tableData = ref<IData[]>([]);
+    const loading = ref(false);
     
     const tableHeaders = [
-      { key: "member", name: t("partner.member"), text: true },
+      { key: "member", name: t("partner.member") },
       { key: "name", name: t("partner.nickname"), text: true },
       { key: "level", name: t("partner.level"), text: true },
       { key: "last_login", name: t("partner.lastLogin"), text: true },
@@ -100,18 +104,21 @@ export default defineComponent({
 
     const getList = async () => {
       try {
+        loading.value = true;
         const results = await ApiService.get(`/partner/members/online`)
           .then((res) => res.data)
           .catch(() => []);
         tableData.value.splice(0, tableData.value.length, ...results);
       } catch (error) {
         console.error('Failed to fetch online members:', error);
+      } finally {
+        loading.value = false;
       }
     };
 
     onMounted(getList);
 
-    return { tableHeaders, tableData, getList, t };
+    return { tableHeaders, tableData, getList, t, loading };
   },
 });
 </script>

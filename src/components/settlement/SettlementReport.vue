@@ -4,13 +4,9 @@
     <div class="flex flex-col lg:flex-row lg:items-end justify-end gap-4 w-full">
       <!-- Date Range Picker -->
       <div class="min-w-0 max-w-sm">
-        <label class="block text-sm font-medium text-gray-400 mb-2">
-          {{ t("partner.selectDateRange") }}
-        </label>
         <DateRangePicker
           class="w-full"
           v-model="daterange"
-          @changedate="setSelectedDate"
           initial="month"
           style="height: 40px"
         />
@@ -59,11 +55,13 @@
       <!-- Search Button -->
       <button
         type="button"
-        class="px-6 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl flex-shrink-0"
+        :disabled="loading"
+        class="px-6 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
         @click="getList()"
       >
-        <i class="fas fa-search mr-2"></i>
-        {{ t("search") }}
+        <i v-if="loading" class="fas fa-spinner fa-spin mr-2"></i>
+        <i v-else class="fas fa-search mr-2"></i>
+        {{ loading ? t('common.loading') : t('search') }}
       </button>
     </div>
 
@@ -74,14 +72,15 @@
       :record-count="tableData.length"
       icon="fas fa-chart-line"
       icon-color="#10b981"
+      :loading="loading"
     >
-      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" />
+      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading" />
     </DataTableCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
@@ -120,6 +119,9 @@ const daterange = ref<DateRange>({
   end: moment().format("YYYY-MM-DD"),
 });
 
+// Loading state
+const loading = ref(false);
+
 // Table headers
 const tableHeaders = [
   { key: "start_date", name: t("partner.settleStart"), text: true },
@@ -140,12 +142,15 @@ const tableHeaders = [
 
 // Methods
 const setSelectedDate = (date: DateRange) => {
-  daterange.value = date;
-  getList();
+  if (daterange.value.start !== date.start || daterange.value.end !== date.end) {
+    daterange.value.start = date.start;
+    daterange.value.end = date.end;
+  }
 };
 
 const getList = async () => {
   try {
+    loading.value = true;
     const results = await ApiService.get(
       `/partner/settlements/withdraw?game=${props.game}&start=${daterange.value.start}&end=${daterange.value.end}`
     ).then((res) => res.data);
@@ -154,8 +159,21 @@ const getList = async () => {
   } catch (error) {
     console.error("Error fetching settlement data:", error);
     tableData.value = [];
+  } finally {
+    loading.value = false;
   }
 };
+
+// Auto-refresh list when daterange changes
+watch(
+  daterange,
+  (newVal, oldVal) => {
+    if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+      getList();
+    }
+  },
+  { deep: true }
+);
 
 // Lifecycle
 getList();

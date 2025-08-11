@@ -6,9 +6,6 @@
         <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
           <!-- Search Type -->
           <div v-if="memberId === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Type
-            </label>
             <select 
               v-model="searchType" 
               class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
@@ -22,9 +19,6 @@
 
           <!-- Search Value -->
           <div v-if="memberId === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Value
-            </label>
             <input 
               v-model="searchValue" 
               type="text"
@@ -35,12 +29,9 @@
 
           <!-- Date Range Picker -->
           <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Date Range
-            </label>
             <DateRangePicker
               class="w-full date-picker-modern"
-              @changedate="setSelectedDate"
+              v-model="daterange"
               initial="week"
               style="height: 40px;"
             />
@@ -58,10 +49,12 @@
             </button>
             <button
               @click="getHistory"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+              :disabled="loading"
+              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <i class="fas fa-search mr-1"></i>
-              Search
+              <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+              <i v-else class="fas fa-search mr-1"></i>
+              {{ loading ? t('common.loading') : 'Search' }}
             </button>
           </div>
         </div>
@@ -122,12 +115,14 @@
         :record-count="tableData.length"
         icon="fas fa-dice"
         icon-color="#ef4444"
+        :loading="loading"
       >
           <KTDatatable 
             :tableHeader="tableHeaders" 
             :tableData="tableData" 
             :rowsPerPage="50"
             :total="rowsCount"
+            :loading="loading"
             @items-per-page-change="setPageLimit"
             @current-change="setPage"
           >
@@ -201,7 +196,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 import qs from "qs";
@@ -316,6 +311,15 @@ export default defineComponent({
       return gameNames[props.game as keyof typeof gameNames] || props.game;
     });
 
+    // Date range (reactive, two-way bind with DateRangePicker)
+    const daterange = ref({
+      start: moment().startOf("month").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    });
+
+    // Loading state
+    const loading = ref(false);
+
     // Pagination
     const rowsCount = ref(0);
     let pageLimit = 50;
@@ -332,22 +336,20 @@ export default defineComponent({
     };
 
     // Date range
-    let daterange = {
-      start: moment().startOf("month").format("YYYY-MM-DD"),
-      end: moment().format("YYYY-MM-DD"),
-    };
-
     const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getHistory();
+      if (daterange.value.start !== date.start || daterange.value.end !== date.end) {
+        daterange.value.start = date.start;
+        daterange.value.end = date.end;
+      }
     };
 
     const getHistory = async () => {
       try {
+        loading.value = true;
         let query = qs.stringify({
           game: props.game,
-          start: daterange.start,
-          end: daterange.end,
+          start: daterange.value.start,
+          end: daterange.value.end,
           type: searchType.value,
           typeval: searchValue.value,
           limit: pageLimit,
@@ -357,8 +359,8 @@ export default defineComponent({
         if (props.memberId) {
           query = qs.stringify({
             game: props.game,
-            start: daterange.start,
-            end: daterange.end,
+            start: daterange.value.start,
+            end: daterange.value.end,
             type: searchType.value,
             typeval: searchValue.value,
             member_id: props.memberId,
@@ -376,8 +378,21 @@ export default defineComponent({
         tableData.value.splice(0, tableData.value.length, ...results.data);
       } catch (error) {
         console.error('Failed to fetch bet history:', error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    // Auto-refresh list when daterange changes
+    watch(
+      daterange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getHistory();
+        }
+      },
+      { deep: true }
+    );
 
     return {
       t,
@@ -390,11 +405,13 @@ export default defineComponent({
       historySums,
       dateButtons,
       gameDisplayName,
+      daterange,
       setPageLimit,
       setPage,
       rowsCount,
       setSelectedDate,
       getHistory,
+      loading,
     };
   },
 });

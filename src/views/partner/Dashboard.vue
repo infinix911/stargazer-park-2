@@ -12,9 +12,6 @@
     <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5">
       <!-- Date Range Picker -->
       <div class="flex-1 min-w-0 max-w-[300px]">
-        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-          Date Range
-        </label>
         <DateRangePicker
           class="w-full h-10 date-picker-modern"
           v-model="dateRange"
@@ -34,10 +31,12 @@
         </button>
         <button
           @click="getList"
-          class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+          :disabled="loading"
+          class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <i class="fas fa-search mr-1"></i>
-          Search
+          <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+          <i v-else class="fas fa-search mr-1"></i>
+          {{ loading ? t('loading') : t('search') }}
         </button>
       </div>
     </div>
@@ -52,8 +51,9 @@
       :record-count="tableData.length"
       icon="fas fa-exchange-alt"
       icon-color="#3b82f6"
+      :loading="loading"
     >
-      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" />
+      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading" />
     </DataTableCard>
 
     <!-- Game Summary Table -->
@@ -63,12 +63,14 @@
       :record-count="gameTableData.length"
       icon="fas fa-gamepad"
       icon-color="#10b981"
+      :loading="loading"
     >
       <KTDatatable
         :tableHeader="gameTableHeaders"
         :tableData="gameTableData"
         :rowsPerPage="50"
         :isAccordion="true"
+        :loading="loading"
       >
         <!-- Dynamic Sub Tables -->
         <template v-for="(gameType, index) in gameTableData" :key="index" #[`table-sub${index}`]>
@@ -84,7 +86,7 @@
         </template>
         <!-- Main Game Type Cell -->
         <template #cell-game="{ row: data }">
-          <span>{{ t(data.game_type) }}</span>
+          <span>{{ t('common.' + data.game_type) }}</span>
         </template>
       </KTDatatable>
     </DataTableCard>
@@ -148,6 +150,7 @@ export default defineComponent({
     // Data
     const tableData = ref<Array<IData>>([]);
     const gameTableData = ref<Array<ISummaryTable>>([]);
+    const loading = ref(false);
     
     // Table Headers
     const tableHeaders = [
@@ -212,6 +215,7 @@ export default defineComponent({
 
     const getList = async () => {
       try {
+        loading.value = true;
         // Build query parameters using qs
         const query = qs.stringify(
           {
@@ -241,6 +245,8 @@ export default defineComponent({
         gameTableData.value.push(...gameResults);
       } catch (error) {
         console.error("Dashboard API error:", error);
+      } finally {
+        loading.value = false;
       }
     };
 
@@ -284,6 +290,7 @@ export default defineComponent({
       setSelectedDate,
       getList,
       formatDateRange,
+      loading,
     };
   },
 });

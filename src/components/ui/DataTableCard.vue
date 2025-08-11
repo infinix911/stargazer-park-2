@@ -18,14 +18,31 @@
     </div>
     
     <!-- Content -->
-    <div class="px-10 pb-5">
-      <slot />
+    <div class="px-10 pb-5 relative">
+      <!-- Loading Overlay -->
+      <div 
+        v-if="loading" 
+        class="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center animate-in fade-in duration-300"
+      >
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-3"></div>
+          <p class="text-white text-sm font-medium">{{ t('common.loading') }}</p>
+        </div>
+      </div>
+      
+      <!-- Content with loading animation -->
+      <div :class="{ 'opacity-50': loading, 'transition-all duration-300 ease-in-out': true }">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 export interface Props {
   title: string
@@ -33,10 +50,12 @@ export interface Props {
   recordCount: number
   icon: string
   iconColor?: string
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  iconColor: '#3b82f6' // blue-500 as default
+  iconColor: '#3b82f6', // blue-500 as default
+  loading: false
 })
 
 const iconClass = computed(() => props.icon)
@@ -89,3 +108,34 @@ const iconBgClass = computed(() => {
   return bgColors[props.iconColor] || 'bg-blue-500/20'
 })
 </script>
+
+<style scoped>
+/* Smooth loading transitions */
+.animate-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth opacity transitions */
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+.transition-opacity {
+  transition: opacity 0.3s ease-in-out;
+}
+</style>

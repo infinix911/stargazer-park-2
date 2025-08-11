@@ -63,22 +63,22 @@ export default defineComponent({
       },
       {
         key: "casino",
-        label: "partner.casino",
+        label: "common.CASINO",
         icon: "fas fa-coins"
       },
       {
         key: "hotel",
-        label: "partner.hotel", 
+        label: "common.HOTEL", 
         icon: "fas fa-building"
       },
       {
         key: "slot",
-        label: "partner.slot",
+        label: "common.SLOT",
         icon: "fas fa-gamepad"
       },
       {
         key: "sport",
-        label: "partner.sport",
+        label: "common.SPORT",
         icon: "fas fa-futbol"
       }
     ];

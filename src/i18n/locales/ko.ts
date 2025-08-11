@@ -1352,6 +1352,10 @@ export default {
     ok: '확인',
     loading: '로딩 중...',
     retry: '다시 시도',
-    close: '닫기'
+    close: '닫기',
+    CASINO: "카지노",
+    HOTEL: "호텔",
+    SLOT: "슬롯",
+    SPORT: "스포츠",
   }
 } 

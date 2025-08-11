@@ -6,9 +6,6 @@
         <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
           <!-- Member Select -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Select Member
-            </label>
             <select 
               v-model="memberId" 
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
@@ -23,12 +20,9 @@
 
           <!-- Date Range Picker -->
           <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Date Range
-            </label>
             <DateRangePicker
               class="w-full date-picker-modern"
-              @changedate="setSelectedDate"
+              v-model="dateRange"
               initial="month"
               style="height: 40px;"
             />
@@ -46,10 +40,12 @@
             </button>
             <button
               @click="getList"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+              :disabled="loading"
+              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <i class="fas fa-search mr-1"></i>
-              Search
+              <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+              <i v-else class="fas fa-search mr-1"></i>
+              {{ loading ? t('common.loading') : 'Search' }}
             </button>
           </div>
         </div>
@@ -64,8 +60,9 @@
         :record-count="tableData.length"
         icon="fas fa-chart-bar"
         icon-color="#eab308"
+        :loading="loading"
       >
-          <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
+          <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading">
             <!-- Tie Amount (always 0 for now) -->
             <template v-slot:cell-tieamt="{}">
               <div class="text-center">
@@ -82,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, watch } from "vue";
 import moment from "moment";
 import qs from "qs";
 import { useI18n } from "vue-i18n";
@@ -185,14 +182,20 @@ export default defineComponent({
       return gameNames[props.game as keyof typeof gameNames] || props.game;
     });
 
-    let daterange = {
+    // Date range (reactive, two-way bind with DateRangePicker)
+    const dateRange = ref({
       start: moment().startOf("month").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
+    });
+
+    // Loading state
+    const loading = ref(false);
 
     const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getList();
+      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+        dateRange.value.start = date.start;
+        dateRange.value.end = date.end;
+      }
     };
 
     const getMembers = async () => {
@@ -208,17 +211,18 @@ export default defineComponent({
 
     const getList = async () => {
       try {
+        loading.value = true;
         let query = qs.stringify({
           game: props.game,
-          start: daterange.start,
-          end: daterange.end,
+          start: dateRange.value.start,
+          end: dateRange.value.end,
         });
 
         if (memberId.value !== "") {
           query = qs.stringify({
             game: props.game,
-            start: daterange.start,
-            end: daterange.end,
+            start: dateRange.value.start,
+            end: dateRange.value.end,
             member_id: memberId.value,
           });
         }
@@ -230,8 +234,21 @@ export default defineComponent({
         tableData.value.splice(0, tableData.value.length, ...results);
       } catch (error) {
         console.error('Failed to fetch game statistics:', error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    // Auto-refresh list when dateRange changes
+    watch(
+      dateRange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getList();
+        }
+      },
+      { deep: true }
+    );
 
     onMounted(() => {
       getMembers();
@@ -244,9 +261,11 @@ export default defineComponent({
       members,
       dateButtons,
       gameDisplayName,
+      dateRange,
       setSelectedDate,
       getList,
       t,
+      loading,
     };
   },
 });

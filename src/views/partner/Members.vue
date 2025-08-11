@@ -1,48 +1,45 @@
 <template>
   <!-- Page Header -->
-  <div class="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-[1800px] mx-auto px-4 py-6">
-      <div class="flex items-center gap-3">
-        <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg">
-          <i class="fas fa-users text-white text-xl"></i>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold text-white">{{ t("partnerMenu.member") }}</h1>
-          <p class="text-sm text-gray-400">Member Management and Analytics</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <PartnerPageHeader 
+    :title="t('partnerMenu.member')"
+    subtitle="Member Management and Analytics"
+    icon="fas fa-users"
+    icon-color="green-blue"
+  />
 
   <div class="max-w-[1800px] mx-auto">
     <!-- Controls Section -->
     <div class="w-full mx-auto px-4 py-6">
-      <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end lg:justify-between w-full">
+      <div
+        class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end lg:justify-between w-full"
+      >
         <!-- Add Member Button - Left Side -->
         <div class="flex items-end">
-          <button 
+          <button
             @click="openModal('AddSubMember')"
             class="px-6 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg"
-            style="height: 40px;"
+            style="height: 40px"
           >
             <i class="fas fa-user-plus mr-2"></i>
             {{ t("partner.tab.addSubMember") }}
           </button>
         </div>
-        
+
         <!-- Search Controls - Right Side -->
         <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
           <!-- Search Type -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Type
-            </label>
-            <select 
-              v-model="searchType" 
+            <select
+              v-model="searchType"
               class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px;"
+              style="height: 40px"
             >
-              <option v-for="option in searchTypes" :key="option.value" :value="option.value" class="bg-gray-800 text-white">
+              <option
+                v-for="option in searchTypes"
+                :key="option.value"
+                :value="option.value"
+                class="bg-gray-800 text-white"
+              >
                 {{ option.label }}
               </option>
             </select>
@@ -50,28 +47,21 @@
 
           <!-- Search Value -->
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Value
-            </label>
-            <input 
-              v-model="searchValue" 
-              :placeholder="t('SearchKeyword')" 
+            <input
+              v-model="searchValue"
               type="text"
               class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
           <!-- Date Range Picker -->
           <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Date Range
-            </label>
             <DateRangePicker
               class="w-full h-10 date-picker-modern"
-              @changedate="setSelectedDate"
+              v-model="dateRange"
               initial="month"
-              style="height: 40px;"
+              style="height: 40px"
             />
           </div>
 
@@ -87,10 +77,12 @@
             </button>
             <button
               @click="getList"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+              :disabled="loading"
+              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <i class="fas fa-search mr-1"></i>
-              Search
+              <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+              <i v-else class="fas fa-search mr-1"></i>
+              {{ loading ? t('common.loading') : t('search') }}
             </button>
           </div>
         </div>
@@ -103,8 +95,12 @@
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
           <!-- Member Tree Sidebar -->
           <div class="xl:col-span-1">
-            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden">
-              <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10">
+            <div
+              class="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden"
+            >
+              <div
+                class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10"
+              >
                 <div class="flex items-center gap-3">
                   <div class="p-2 bg-purple-500/20 rounded-lg">
                     <i class="fas fa-sitemap text-purple-400 text-sm"></i>
@@ -124,105 +120,120 @@
           <!-- Member Table -->
           <div class="xl:col-span-3">
             <DataTableCard
-              title="Member List"
-              subtitle="Member Management"
+              :title="t('partnerMenu.memberList')"
+              subtitle="Members Management"
               :record-count="tableData.length"
               icon="fas fa-users"
               icon-color="#3b82f6"
+              :loading="loading"
             >
-                <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
-                  <!-- Level -->
-                  <template v-slot:cell-level="{ row: data }">
-                    <span>{{ t(`partner.level${data.level}`) }}</span>
-                  </template>
-                  <!-- Wallet -->
-                  <template v-slot:cell-wallet="{ row: data }">
-                    <div class="space-y-1">
-                      <div class="text-white">{{ n(Number(data.wallet)) }}</div>
-                      <button 
-                        type="button" 
-                        class="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
-                        @click="refreshWalletBalance(data.member_id)"
-                      >
-                        <i class="fas fa-sync-alt"></i>
-                      </button>
-                    </div>
-                  </template>
-                  <!-- Shop Transaction -->
-                  <template v-slot:cell-settle="{ row: data }">
-                    <div v-if="data.shoplevel === 2 && data.member_id !== authStore.user.id" class="flex gap-1">
-                      <button 
-                        type="button" 
-                        class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30 whitespace-nowrap"
-                        @click="onShopTransact(data.member_id, data.member, data.wallet, 'ADD')"
-                      >
-                        <i class="fas fa-plus mr-1.5"></i>
-                        {{ t("partner.add") }}
-                      </button>
-                      <button 
-                        type="button" 
-                        class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-red-400/30 whitespace-nowrap"
-                        @click="onShopTransact(data.member_id, data.member, data.wallet, 'DEDUCT')"
-                      >
-                        <i class="fas fa-minus mr-1.5"></i>
-                        {{ t("partner.subtract") }}
-                      </button>
-                    </div>
-                    <div v-else></div>
-                  </template>
-                  <!-- Game Money Dep Wid -->
-                  <template v-slot:cell-game_money="{ row: data }">
-                    <div class="space-y-1">
-                      <button 
-                        v-if="data.game_bal <= 0" 
-                        type="button" 
-                        class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
-                        @click="onGameMoneyWithdraw(data.member_id)"
-                      >
-                        {{ t("partner.subtract") }}
-                      </button>
-                      <div v-if="data.game_bal" class="text-white">{{ n(Number(data.game_bal)) }}</div>
-                    </div>
-                  </template>
-                  <!-- Slot Money -->
-                  <template v-slot:cell-slot_money="{ row: data }">
-                    <div v-if="data.wallet_game > 0" class="space-y-1">
-                      <button 
-                        type="button" 
-                        class="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
-                        @click="slotMoney(data.member_id)"
-                      >
-                        <i class="fas fa-check-circle mr-1"></i>
-                        {{ t("partner.slotButton") }}
-                      </button>
-                      <div class="text-white">{{ n(Number(data.wallet_game)) }}</div>
-                    </div>
-                    <div v-else></div>
-                  </template>
-                  <!-- Point Transfer -->
-                  <template v-slot:cell-point_transfer="{ row: data }">
-                    <button 
-                      type="button" 
-                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30 whitespace-nowrap"
-                      @click="onPointTransfer(data.member_id, data.member, 'ADD')"
+              <KTDatatable
+                :tableHeader="tableHeaders"
+                :tableData="tableData"
+                :rowsPerPage="50"
+                :loading="loading"
+              >
+                <!-- Level -->
+                <template v-slot:cell-level="{ row: data }">
+                  <span>{{ t(`partner.level${data.level}`) }}</span>
+                </template>
+                <!-- Wallet -->
+                <template v-slot:cell-wallet="{ row: data }">
+                  <div class="space-y-1">
+                    <div class="text-white">{{ n(Number(data.wallet)) }}</div>
+                    <button
+                      type="button"
+                      class="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                      @click="refreshWalletBalance(data.member_id)"
                     >
-                      <i class="fas fa-exchange-alt mr-1.5"></i>
-                      {{ t("partner.addPoint") }}
+                      <i class="fas fa-sync-alt"></i>
                     </button>
-                  </template>
-                  <template v-slot:cell-bonus="{ }">
-                    <span></span>
-                  </template>
-                  <!-- Member -->
-                  <template v-slot:cell-member="{ row: data }">
-                    <button 
-                      @click="openMemberPopup(data)"
-                      class="text-left text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
+                  </div>
+                </template>
+                <!-- Shop Transaction -->
+                <template v-slot:cell-settle="{ row: data }">
+                  <div
+                    v-if="data.shoplevel === 2 && data.member_id !== authStore.user.id"
+                    class="flex gap-1"
+                  >
+                    <button
+                      type="button"
+                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30 whitespace-nowrap"
+                      @click="
+                        onShopTransact(data.member_id, data.member, data.wallet, 'ADD')
+                      "
                     >
-                      {{ data.member }}
+                      <i class="fas fa-plus mr-1.5"></i>
+                      {{ t("partner.add") }}
                     </button>
-                  </template>
-            </KTDatatable>
+                    <button
+                      type="button"
+                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-red-400/30 whitespace-nowrap"
+                      @click="
+                        onShopTransact(data.member_id, data.member, data.wallet, 'DEDUCT')
+                      "
+                    >
+                      <i class="fas fa-minus mr-1.5"></i>
+                      {{ t("partner.subtract") }}
+                    </button>
+                  </div>
+                  <div v-else></div>
+                </template>
+                <!-- Game Money Dep Wid -->
+                <template v-slot:cell-game_money="{ row: data }">
+                  <div class="space-y-1">
+                    <button
+                      v-if="data.game_bal <= 0"
+                      type="button"
+                      class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
+                      @click="onGameMoneyWithdraw(data.member_id)"
+                    >
+                      {{ t("partner.subtract") }}
+                    </button>
+                    <div v-if="data.game_bal" class="text-white">
+                      {{ n(Number(data.game_bal)) }}
+                    </div>
+                  </div>
+                </template>
+                <!-- Slot Money -->
+                <template v-slot:cell-slot_money="{ row: data }">
+                  <div v-if="data.wallet_game > 0" class="space-y-1">
+                    <button
+                      type="button"
+                      class="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                      @click="slotMoney(data.member_id)"
+                    >
+                      <i class="fas fa-check-circle mr-1"></i>
+                      {{ t("partner.slotButton") }}
+                    </button>
+                    <div class="text-white">{{ n(Number(data.wallet_game)) }}</div>
+                  </div>
+                  <div v-else></div>
+                </template>
+                <!-- Point Transfer -->
+                <template v-slot:cell-point_transfer="{ row: data }">
+                  <button
+                    type="button"
+                    class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30 whitespace-nowrap"
+                    @click="onPointTransfer(data.member_id, data.member, 'ADD')"
+                  >
+                    <i class="fas fa-exchange-alt mr-1.5"></i>
+                    {{ t("partner.addPoint") }}
+                  </button>
+                </template>
+                <template v-slot:cell-bonus="{}">
+                  <span></span>
+                </template>
+                <!-- Member -->
+                <template v-slot:cell-member="{ row: data }">
+                  <button
+                    @click="openMemberPopup(data)"
+                    class="text-left text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
+                  >
+                    {{ data.member }}
+                  </button>
+                </template>
+              </KTDatatable>
             </DataTableCard>
           </div>
         </div>
@@ -231,23 +242,23 @@
   </div>
 
   <!-- Modals -->
-  <ShopMoneyTransactionModal 
-    v-if="selectedModal === 'ShopMoneyTransaction'" 
-    :receiver="shop.receiver" 
+  <ShopMoneyTransactionModal
+    v-if="selectedModal === 'ShopMoneyTransaction'"
+    :receiver="shop.receiver"
     :type="shop.type"
-    @refresh="getList" 
+    @refresh="getList"
   />
-  
+
   <!-- Member Popup -->
-  <MemberPopup 
-    v-if="showMemberPopup" 
+  <MemberPopup
+    v-if="showMemberPopup"
     :member-id="selectedMemberData?.member_id"
     :member-data="selectedMemberData"
     @close="closeMemberPopup"
   />
 
   <!-- Add Sub Member Modal -->
-  <AddSubMember 
+  <AddSubMember
     v-if="selectedModal === 'AddSubMember'"
     @close="closeModal"
     @refresh="getList"
@@ -255,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
@@ -270,6 +281,7 @@ import DataTableCard from "@/components/ui/DataTableCard.vue";
 import MemberPopup from "@/views/partner/profile/MemberPopup.vue";
 import AddSubMember from "@/views/partner/profile/AddSubMember.vue";
 import Swal from "sweetalert2";
+import PartnerPageHeader from "@/components/partner/PartnerPageHeader.vue";
 
 export interface IData {
   createdAt: string;
@@ -311,6 +323,9 @@ const selectedModal = computed(() => appStore.activeModal);
 const showMemberPopup = ref(false);
 const selectedMemberData = ref<any>(null);
 
+// Loading state
+const loading = ref(false);
+
 // Methods
 const openModal = (modal: string) => appStore.openModal(modal);
 const closeModal = () => appStore.openModal("");
@@ -322,12 +337,12 @@ const tableHeaders = [
   {
     key: "member_count",
     name: t("partner.lowerUserCount"),
-    text: true
+    text: true,
   },
   {
     key: "level",
     name: t("partner.level"),
-    customslot: true
+    customslot: true,
   },
   {
     key: "member",
@@ -335,12 +350,12 @@ const tableHeaders = [
   },
   {
     key: "createdAt",
-    name: t("partner.regdate")
+    name: t("partner.regdate"),
   },
   {
     key: "last_login",
     name: t("partner.lastLogin"),
-    text: true
+    text: true,
   },
   {
     key: "wallet",
@@ -434,85 +449,105 @@ const dateButtons = [
   },
 ];
 
-// Date range
-let daterange = {
+// Date range (reactive, two-way bind with DateRangePicker)
+const dateRange = ref({
   start: moment().startOf("month").format("YYYY-MM-DD"),
   end: moment().format("YYYY-MM-DD"),
-};
+});
 
 const setSelectedDate = (date: DateRange) => {
-  daterange = date;
-  getList();
+  if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+    dateRange.value.start = date.start;
+    dateRange.value.end = date.end;
+  }
 };
 
 // Get List
 const getList = async () => {
-  const query = qs.stringify({
-    start: daterange.start,
-    end: daterange.end,
-    type: searchType.value,
-    typeval: searchValue.value,
-  });
+  try {
+    loading.value = true;
+    const query = qs.stringify({
+      start: dateRange.value.start,
+      end: dateRange.value.end,
+      type: searchType.value,
+      typeval: searchValue.value,
+    });
 
-  const results = await ApiService.get(`/partner/members?${query}`)
-    .then((res) => res.data)
-    .catch(() => []);
-  
-  tableData.value.splice(0, tableData.value.length, ...results);
-  
-  if (tableData.value.length > 0) {
-    for (const row of tableData.value) {
-      await new Promise(r => setTimeout(r, 100));
-      const gameBalance = await ApiService.post(`/partner/member/game/balance/${row.member_id}`, {})
-        .then((res) => res.data.balance)
-      row.game_bal = gameBalance;
+    const results = await ApiService.get(`/partner/members?${query}`)
+      .then((res) => res.data)
+      .catch(() => []);
+
+    tableData.value.splice(0, tableData.value.length, ...results);
+
+    if (tableData.value.length > 0) {
+      for (const row of tableData.value) {
+        await new Promise((r) => setTimeout(r, 100));
+        const gameBalance = await ApiService.post(
+          `/partner/member/game/balance/${row.member_id}`,
+          {}
+        ).then((res) => res.data.balance);
+        row.game_bal = gameBalance;
+      }
     }
+  } catch (error) {
+    console.error("Error fetching members:", error);
+  } finally {
+    loading.value = false;
   }
 };
+
+// Auto-refresh list when dateRange changes (align with Dashboard.vue)
+watch(
+  dateRange,
+  (newVal, oldVal) => {
+    if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+      getList();
+    }
+  },
+  { deep: true }
+);
 
 const slotMoney = async (memberId: string) => {
   await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {})
     .then(() => {
-      Swal.fire(
-        t(`partner.slotMoney`),
-        t("notif.StoreMoneySuccess"),
-        "success"
-      );
+      Swal.fire(t(`partner.slotMoney`), t("notif.StoreMoneySuccess"), "success");
       getList();
     })
     .catch((e) =>
-      Swal.fire(
-        t(`partner.slotMoney`),
-        t(`notif.${e.response.data.message}`),
-        "error"
-      )
+      Swal.fire(t(`partner.slotMoney`), t(`notif.${e.response.data.message}`), "error")
     );
-}
+};
 
 const refreshWalletBalance = async (member_id: string) => {
   if (tableData.value.length > 0) {
     for (const row of tableData.value) {
       if (row.member_id === member_id) {
-        const balance = await ApiService.get(`/partner/member/game/balance/${row.member_id}`)
-        .then((res) => res.data.balance)
+        const balance = await ApiService.get(
+          `/partner/member/game/balance/${row.member_id}`
+        ).then((res) => res.data.balance);
 
-        if(balance !== 0) {
+        if (balance !== 0) {
           row.wallet = balance;
         }
       }
     }
   }
-}
+};
 
-const shop = ref<{ 
-  receiver: { id: string; username: string; wallet: string }; 
-  type: "ADD" | "DEDUCT" 
-}>({ 
-  receiver: { id: "", username: "", wallet: "" }, 
-  type: "ADD" 
+const shop = ref<{
+  receiver: { id: string; username: string; wallet: string };
+  type: "ADD" | "DEDUCT";
+}>({
+  receiver: { id: "", username: "", wallet: "" },
+  type: "ADD",
 });
 
-const onShopTransact = (memberId: string, member: string, wallet: string, type: "ADD" | "DEDUCT") => {
+const onShopTransact = (
+  memberId: string,
+  member: string,
+  wallet: string,
+  type: "ADD" | "DEDUCT"
+) => {
   shop.value.receiver = { id: memberId, username: member, wallet: wallet };
   shop.value.type = type;
   openModal("ShopMoneyTransaction");
@@ -538,21 +573,9 @@ const onPointTransfer = (memberId: string, member: string, type: string) => {
 
 const onGameMoneyWithdraw = async (memberId: string) => {
   await ApiService.post(`/partner/member/game/withdrawal/${memberId}`, {})
-    .then(() =>
-      Swal.fire(
-        t("partner.gameWid"),
-        t("notif.GameWidSuccess"),
-        "success"
-      )
-    )
-    .catch((e) =>
-      Swal.fire(
-        t("partner.gameWid"),
-        t("notif.GameWidFail"),
-        "error"
-      )
-    );
-}
+    .then(() => Swal.fire(t("partner.gameWid"), t("notif.GameWidSuccess"), "success"))
+    .catch((e) => Swal.fire(t("partner.gameWid"), t("notif.GameWidFail"), "error"));
+};
 
 // Initialize
 getList();

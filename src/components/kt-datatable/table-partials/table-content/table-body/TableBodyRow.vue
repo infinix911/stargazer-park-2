@@ -49,7 +49,7 @@
                 class="text-blue-400"
                 @click="openMemberInfo(item['member_id'] || '')"
                 >{{ item[cell.key] }}</a
-              > ({{ item['nickname'] }})
+              > <span v-if="item['nickname']">({{ item['nickname'] }})</span>
               </span>
 
             <!-- Agent Column -->
@@ -242,10 +242,10 @@ export default defineComponent({
 
     const gameNameClass = (game: string): string => {
       const rowColor: Record<string, string> = {};
-      rowColor[t("header.Casino")] = "bg-row-blue";
-      rowColor[t("header.Slot")] = "bg-row-blue";
-      rowColor[t("header.Hotel")] = "bg-row-orange";
-      rowColor[t("header.Sport")] = "bg-row-red";
+      rowColor[t("common.CASINO")] = "bg-row-blue";
+      rowColor[t("common.SLOT")] = "bg-row-blue";
+      rowColor[t("common.HOTEL")] = "bg-row-orange";
+      rowColor[t("common.SPORT")] = "bg-row-red";
 
       return rowColor[game] || "";
     }
