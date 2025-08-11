@@ -43,7 +43,7 @@ import {
 } from '@/components/ui/dialog'
 import Button from '@/components/ui/Button.vue'
 import ApiService from '@/services/ApiService'
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import GameMediaCard from '@/components/GameMediaCard.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -62,7 +62,7 @@ const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
 
-// Computed property to get the appropriate title based on locale
+// Get the appropriate title based on locale
 const getGameTitle = (game: any): string => {
   return locale.value === 'ko' ? game.ko_title : game.eng_title
 }
@@ -88,10 +88,13 @@ watch([() => props.provider, () => props.code], () => {
   getGameList();
 });
 
-// Select game function
-const selectGame = (game: any): void => {
-  console.log(`Selected game: ${game.eng_title}`)
-  // Handle game selection here
+// Select game
+const selectGame = (game: any): void => {  
+  window.open(
+    `/slot/${props.provider}/${props.code}/${game.code}`,
+    "SlotWindow",
+    "height=400;width=600"
+  );
 }
 </script>
 
