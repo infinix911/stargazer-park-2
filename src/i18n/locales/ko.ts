@@ -555,6 +555,8 @@ export default {
   },
   search: '검색',
   date: "날짜",
+  openAll: "모두 열기",
+  closeAll: "모두 닫기",
   notif: {
     Alarm: "알림",
     INVALID_ACCOUNT: "비밀번호가 틀렸습니다.",
