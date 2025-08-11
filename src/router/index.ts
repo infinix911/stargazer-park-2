@@ -21,12 +21,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/casino",
         name: "casino-page",
-        component: () => import("../views/CasinoPage.vue"),
+        component: () => import("../views/site/CasinoPage.vue"),
       },
       {
         path: "/slot",
         name: "slot-page",
-        component: () => import("../views/SlotPage.vue"),
+        component: () => import("../views/site/SlotPage.vue"),
       },
     ],
   },

@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useAppStore } from '../stores/app'
-import { useAuthStore } from '../stores/auth'
-import ApiService from '../services/ApiService'
-import CasinoGames from '../components/CasinoGames.vue'
-import SlotsGames from '../components/SlotsGames.vue'
+import { useAppStore } from '../../stores/app'
+import { useAuthStore } from '../../stores/auth'
+import ApiService from '../../services/ApiService'
+import CasinoGames from '../../components/CasinoGames.vue'
+import SlotsGames from '../../components/SlotsGames.vue'
 
 interface Game {
   code: string;

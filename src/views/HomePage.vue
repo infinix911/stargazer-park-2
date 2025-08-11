@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import ApiService from '../services/ApiService'
-import GameList from './GameList.vue'
+import GameList from './site/GameList.vue'
 
 interface Game {
   code: string;
