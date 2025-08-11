@@ -91,6 +91,8 @@ const { t } = useI18n()
 const emit = defineEmits<{
   'open-customer-service': []
   'nav-click': [section: string]
+  'show-deposit-modal': []
+  'show-withdrawal-modal': []
 }>()
 
 // Methods
@@ -104,6 +106,18 @@ const handleNavClick = (section: string): void => {
   console.log(`Navigation clicked: ${section}`)
   
   // Handle navigation for specific sections
+  if (section === 'casino') {
+    // Navigate to casino page
+    window.location.href = '/casino'
+    return
+  }
+  
+  if (section === 'slots') {
+    // Navigate to slot page
+    window.location.href = '/slot'
+    return
+  }
+  
   if (section === 'notice') {
     // Navigate to notifications page
     window.location.href = '/notifications'
@@ -113,6 +127,48 @@ const handleNavClick = (section: string): void => {
   if (section === 'inquiry') {
     // Navigate to inquiries page
     window.location.href = '/inquiries'
+    return
+  }
+  
+  if (section === 'deposit') {
+    // Check if user is authenticated
+    const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token')
+    if (isAuthenticated) {
+      emit('show-deposit-modal')
+    } else {
+      // Show SweetAlert for unauthenticated users
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: 'Authentication Required',
+          text: 'Please log in to access deposit functionality.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        })
+      } else {
+        alert('Please log in to access deposit functionality.')
+      }
+    }
+    return
+  }
+  
+  if (section === 'withdrawal') {
+    // Check if user is authenticated
+    const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token')
+    if (isAuthenticated) {
+      emit('show-withdrawal-modal')
+    } else {
+      // Show SweetAlert for unauthenticated users
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: 'Authentication Required',
+          text: 'Please log in to access withdrawal functionality.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        })
+      } else {
+        alert('Please log in to access withdrawal functionality.')
+      }
+    }
     return
   }
   

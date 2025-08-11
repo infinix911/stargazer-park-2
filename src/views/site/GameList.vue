@@ -2,12 +2,14 @@
   <div>
     <!-- Casino Games Section -->
     <CasinoGames 
+      v-if="!showOnlySlots"
       :games="games.casinoGames"
       @casino-selected="handleCasinoSelected"
     />
     
     <!-- Slots Games Section -->
     <SlotsGames 
+      v-if="!showOnlyCasino"
       :games="games.slotGames"
       @slot-selected="handleSlotSelected"
     />
@@ -57,9 +59,14 @@ interface Props {
     slotGames: Game[];
     casinoGames: Game[];
   }
+  showOnlyCasino?: boolean
+  showOnlySlots?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  showOnlyCasino: false,
+  showOnlySlots: false
+})
 const appStore = useAppStore()
 const authStore = useAuthStore()
 const settings = computed(() => appStore.settings as any);
