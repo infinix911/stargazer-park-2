@@ -21,12 +21,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/casino",
         name: "casino-page",
-        component: () => import("../views/CasinoPage.vue"),
+        component: () => import("../views/site/CasinoPage.vue"),
       },
       {
         path: "/slot",
         name: "slot-page",
-        component: () => import("../views/SlotPage.vue"),
+        component: () => import("../views/site/SlotPage.vue"),
       },
     ],
   },
@@ -59,12 +59,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/notifications",
         name: "notifications-page",
-        component: () => import("../views/NotificationsPage.vue"),
+        component: () => import("../views/notifications/NotificationsPage.vue"),
       },
       {
         path: "/inquiries",
         name: "inquiries-page",
-        component: () => import("../views/InquiriesPage.vue"),
+        component: () => import("../views/inquiries/InquiriesPage.vue"),
       },
       {
         path: "/transaction-history",

@@ -2,12 +2,14 @@
   <div>
     <!-- Casino Games Section -->
     <CasinoGames 
+      v-if="!showOnlySlots"
       :games="games.casinoGames"
       @casino-selected="handleCasinoSelected"
     />
     
     <!-- Slots Games Section -->
     <SlotsGames 
+      v-if="!showOnlyCasino"
       :games="games.slotGames"
       @slot-selected="handleSlotSelected"
     />
@@ -16,11 +18,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useAppStore } from '../stores/app'
-import { useAuthStore } from '../stores/auth'
-import ApiService from '../services/ApiService'
-import CasinoGames from '../components/CasinoGames.vue'
-import SlotsGames from '../components/SlotsGames.vue'
+import { useAppStore } from '../../stores/app'
+import { useAuthStore } from '../../stores/auth'
+import ApiService from '../../services/ApiService'
+import CasinoGames from '../../components/CasinoGames.vue'
+import SlotsGames from '../../components/SlotsGames.vue'
 
 interface Game {
   code: string;
@@ -38,7 +40,6 @@ interface CasinoGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 interface SlotGame {
@@ -48,7 +49,6 @@ interface SlotGame {
   provider: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props
@@ -57,9 +57,14 @@ interface Props {
     slotGames: Game[];
     casinoGames: Game[];
   }
+  showOnlyCasino?: boolean
+  showOnlySlots?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  showOnlyCasino: false,
+  showOnlySlots: false
+})
 const appStore = useAppStore()
 const authStore = useAuthStore()
 const settings = computed(() => appStore.settings as any);
@@ -113,7 +118,8 @@ const handleCasinoSelected = (casino: CasinoGame): void => {
 }
 
 const handleSlotSelected = (slot: SlotGame): void => {
-  console.log('Slot selected:', slot)
+  //console.log('Slot selected:', slot)
+  openGame(slot.provider)
 }
 </script>
 

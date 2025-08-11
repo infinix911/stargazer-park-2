@@ -15,7 +15,7 @@
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <GameMediaCard
+        <GameBannerCard
           v-for="slot in slotsGames"
           :key="slot.id"
           :title="slot.title"
@@ -23,18 +23,26 @@
           :provider="slot.provider"
           :image-src="slot.imageSrc"
           :video-src="slot.videoSrc"
-          :is-live="slot.isLive"
+
           @click="selectSlot(slot)"
         />
       </div>
     </div>
+    
+    <!-- SlotsGamesModal -->
+    <SlotsGamesModal
+      v-model:open="showModal"
+      :provider="selectedSlot?.provider || ''"
+      :code="selectedSlot?.code || ''"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import GameMediaCard from './GameMediaCard.vue'
+import GameBannerCard from './GameBannerCard.vue'
+import SlotsGamesModal from '../views/site/SlotsGamesModal.vue'
 
 const { t } = useI18n()
 
@@ -54,7 +62,6 @@ interface SlotGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props
@@ -77,23 +84,29 @@ const slotsGames = computed(() => {
     // Transform Game data to SlotGame format
     return props.games.map((game, index) => ({
       id: index + 1,
-      title: game.code,
-      koreanTitle: game.code,
+      title: t(`games.${game.code}`) || game.code,
+      koreanTitle: t(`games.${game.code}`) || game.code,
       provider: game.provider,
       type: game.type,
       code: game.code,
       imageSrc: `/images/slot/${game.code.toLowerCase()}.webp`,
       videoSrc: `/images/slot/${game.code.toLowerCase()}.webm`,
-      isLive: false
+
     }))
   }
   
   return []
 })
 
+// Modal state
+const showModal = ref(false)
+const selectedSlot = ref<SlotGame | null>(null)
+
 // Select slot
 const selectSlot = (slot: SlotGame): void => {
   console.log(`Selected slot: ${slot.title}`)
+  selectedSlot.value = slot
+  showModal.value = true
   emit('slot-selected', slot)
 }
 </script>

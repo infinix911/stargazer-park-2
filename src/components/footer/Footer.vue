@@ -27,11 +27,6 @@
             @click="handleNavClick('slots')"
           />
           <NavItem 
-            icon="♠️" 
-            :label="t('footer.nav.holdem')" 
-            @click="handleNavClick('holdem')"
-          />
-          <NavItem 
             icon="👤" 
             :label="t('footer.nav.wallet')" 
             @click="handleNavClick('wallet')"
@@ -40,11 +35,6 @@
             icon="📢" 
             :label="t('footer.nav.notice')" 
             @click="handleNavClick('notice')"
-          />
-          <NavItem 
-            icon="🎉" 
-            :label="t('footer.nav.event')" 
-            @click="handleNavClick('event')"
           />
           <NavItem 
             icon="💳" 
@@ -92,15 +82,20 @@
 <script setup lang="ts">
 // Footer component with TypeScript
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/auth'
+import Swal from 'sweetalert2'
 import NavItem from './NavItem.vue'
 import Button from '../ui/Button.vue'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 
 // Define emits
 const emit = defineEmits<{
   'open-customer-service': []
   'nav-click': [section: string]
+  'show-deposit-modal': []
+  'show-withdrawal-modal': []
 }>()
 
 // Methods
@@ -114,6 +109,18 @@ const handleNavClick = (section: string): void => {
   console.log(`Navigation clicked: ${section}`)
   
   // Handle navigation for specific sections
+  if (section === 'casino') {
+    // Navigate to casino page
+    window.location.href = '/casino'
+    return
+  }
+  
+  if (section === 'slots') {
+    // Navigate to slot page
+    window.location.href = '/slot'
+    return
+  }
+  
   if (section === 'notice') {
     // Navigate to notifications page
     window.location.href = '/notifications'
@@ -123,6 +130,46 @@ const handleNavClick = (section: string): void => {
   if (section === 'inquiry') {
     // Navigate to inquiries page
     window.location.href = '/inquiries'
+    return
+  }
+  
+  if (section === 'deposit') {
+    // Check if user is authenticated using auth store
+    if (authStore.isAuthenticated) {
+      emit('show-deposit-modal')
+    } else {
+      // Show SweetAlert for unauthenticated users
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: t('auth.loginRequired'),
+          text: t('auth.depositLoginRequired'),
+          icon: 'warning',
+          confirmButtonText: t('common.ok')
+        })
+      } else {
+        alert(t('auth.depositLoginRequired'))
+      }
+    }
+    return
+  }
+  
+  if (section === 'withdrawal') {
+    // Check if user is authenticated using auth store
+    if (authStore.isAuthenticated) {
+      emit('show-withdrawal-modal')
+    } else {
+      // Show SweetAlert for unauthenticated users
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: t('auth.loginRequired'),
+          text: t('auth.withdrawalLoginRequired'),
+          icon: 'warning',
+          confirmButtonText: t('common.ok')
+        })
+      } else {
+        alert(t('auth.withdrawalLoginRequired'))
+      }
+    }
     return
   }
   

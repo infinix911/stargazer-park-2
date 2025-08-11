@@ -195,7 +195,7 @@ import {
   getPaginationRowModel,
   type ColumnDef
 } from '@tanstack/vue-table'
-import ContactUsModal from './inquiries/ContactUsModal.vue'
+import ContactUsModal from './ContactUsModal.vue'
 
 const { t } = useI18n()
 

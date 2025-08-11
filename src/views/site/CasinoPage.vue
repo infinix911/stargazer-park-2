@@ -1,14 +1,17 @@
 <template>
-  <!-- Game List Section -->
-  <GameList 
-    :games="games"
-  />
+  <div class="min-h-screen bg-[#101010]">
+    <!-- Game List Section -->
+    <GameList 
+      :games="games"
+      :show-only-casino="true"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import ApiService from '../services/ApiService'
-import GameList from './site/GameList.vue'
+import ApiService from '../../services/ApiService'
+import GameList from './GameList.vue'
 
 interface Game {
   code: string;
@@ -34,7 +37,6 @@ const getGames = async (): Promise<void> => {
       games.value.slotGames = lobbies.value.filter(g => g.type === 'SLOT')
       games.value.casinoGames = lobbies.value.filter(g => g.type === 'CASINO' || g.type === "HOTEL")
     }
-    
   } catch (error) {
     console.error('Failed to fetch games:', error)
   }
@@ -44,6 +46,4 @@ const getGames = async (): Promise<void> => {
 onMounted(() => {
   getGames()
 })
-
 </script>
-

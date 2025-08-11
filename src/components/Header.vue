@@ -271,7 +271,7 @@
                 />
                 <span class="hidden xl:inline">{{ t("header.slots") }}</span>
               </router-link>
-              <a
+              <!-- <a
                 href="#"
                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
               >
@@ -281,7 +281,7 @@
                   class="w-4 h-4 lg:w-6 lg:h-6 filter brightness-0 invert"
                 />
                 <span class="hidden xl:inline">{{ t("header.holdem") }}</span>
-              </a>
+              </a> -->
               <a
                 href="/partner/dashboard"
                 class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"

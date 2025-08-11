@@ -15,7 +15,7 @@
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <GameMediaCard
+        <GameBannerCard
           v-for="casino in casinoGames"
           :key="casino.id"
           :title="casino.title"
@@ -23,7 +23,7 @@
           :provider="casino.provider"
           :image-src="casino.imageSrc"
           :video-src="casino.videoSrc"
-          :is-live="casino.isLive"
+
           @click="selectCasino(casino)"
         />
       </div>
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import GameMediaCard from './GameMediaCard.vue'
+import GameBannerCard from './GameBannerCard.vue'
 
 const { t } = useI18n()
 
@@ -54,7 +54,6 @@ interface CasinoGame {
   code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
 
 // Define props
@@ -77,14 +76,14 @@ const casinoGames = computed(() => {
     // Transform Game data to CasinoGame format
     return props.games.map((game, index) => ({
       id: index + 1,
-      title: game.code,
-      subTitle: game.code,
+      title: t(`games.${game.code}`) || game.code,
+      subTitle: t(`games.${game.code}`) || game.code,
       provider: game.provider,
       type: game.type,
       code: game.code,
       imageSrc: `/images/casino/${game.code.toLowerCase()}.webp`,
       videoSrc: `/images/casino/${game.code.toLowerCase()}.webm`,
-      isLive: true
+
     }))
   }
   return []
