@@ -27,11 +27,6 @@
             @click="handleNavClick('slots')"
           />
           <NavItem 
-            icon="♠️" 
-            :label="t('footer.nav.holdem')" 
-            @click="handleNavClick('holdem')"
-          />
-          <NavItem 
             icon="👤" 
             :label="t('footer.nav.wallet')" 
             @click="handleNavClick('wallet')"
@@ -40,11 +35,6 @@
             icon="📢" 
             :label="t('footer.nav.notice')" 
             @click="handleNavClick('notice')"
-          />
-          <NavItem 
-            icon="🎉" 
-            :label="t('footer.nav.event')" 
-            @click="handleNavClick('event')"
           />
           <NavItem 
             icon="💳" 

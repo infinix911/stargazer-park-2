@@ -59,12 +59,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/notifications",
         name: "notifications-page",
-        component: () => import("../views/NotificationsPage.vue"),
+        component: () => import("../views/notifications/NotificationsPage.vue"),
       },
       {
         path: "/inquiries",
         name: "inquiries-page",
-        component: () => import("../views/InquiriesPage.vue"),
+        component: () => import("../views/inquiries/InquiriesPage.vue"),
       },
       {
         path: "/transaction-history",
