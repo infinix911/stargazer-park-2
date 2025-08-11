@@ -9,12 +9,12 @@
     :start-placeholder="t('dateRange.start')"
     :end-placeholder="t('dateRange.end')"
     :shortcuts="shortcuts"
-    :change="emitSelectedDates()"
+    @change="onChange"
   >
   </el-date-picker>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 
@@ -23,11 +23,11 @@ export default defineComponent({
   emits: ["changedate", "update:modelValue"],
   props: {
     initial: { type: String },
-    modelValue: { type: Object, default: null }, // Add v-model support
+    modelValue: { type: Object, default: null }, // v-model support
   },
   setup(props, { emit }) {
     const { t } = useI18n();
-    
+
     // Initialize daterange based on props.modelValue or initial prop
     const getInitialDateRange = () => {
       if (props.modelValue) {
@@ -36,7 +36,7 @@ export default defineComponent({
           moment(props.modelValue.end).toDate(),
         ];
       }
-      
+
       if (props.initial) {
         if (props.initial === "month") {
           return [
@@ -66,21 +66,27 @@ export default defineComponent({
           }
         }
       }
-      
+
       return [new Date(), new Date()];
     };
 
     const daterange = ref(getInitialDateRange());
+    const syncingFromProps = ref(false);
 
     // Watch for external changes to modelValue
     watch(
       () => props.modelValue,
       (newValue) => {
         if (newValue) {
+          syncingFromProps.value = true;
           daterange.value = [
             moment(newValue.start).toDate(),
             moment(newValue.end).toDate(),
           ];
+          // Small timeout to ensure Element Plus internal state settles
+          setTimeout(() => {
+            syncingFromProps.value = false;
+          }, 0);
         }
       },
       { deep: true }
@@ -114,14 +120,20 @@ export default defineComponent({
         })(),
       },
     ]);
+
     const emitSelectedDates = () => {
       const selectedDates = daterange.value;
       const start = moment(selectedDates[0]).format("YYYY-MM-DD");
       const end = moment(selectedDates[1]).format("YYYY-MM-DD");
       const dateRange = { start, end };
-      
+
       emit("changedate", dateRange);
       emit("update:modelValue", dateRange); // Emit for v-model
+    };
+
+    const onChange = () => {
+      if (syncingFromProps.value) return;
+      emitSelectedDates();
     };
 
     return {
@@ -129,6 +141,7 @@ export default defineComponent({
       daterange,
       shortcuts,
       emitSelectedDates,
+      onChange,
     };
   },
 });

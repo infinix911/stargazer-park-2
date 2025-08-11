@@ -17,7 +17,7 @@
         </label>
         <DateRangePicker
           class="w-full h-10 date-picker-modern"
-          @changedate="setSelectedDate"
+          v-model="dateRange"
           initial="month"
         />
       </div>
@@ -201,15 +201,16 @@ export default defineComponent({
     ];
 
     // Methods
+    // setSelectedDate is now only used by dateButtons
     const setSelectedDate = (date: DateRange) => {
-      // Only update if the date actually changed to prevent recursive calls
       if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
-        dateRange.value = date;
-        getList();
+        dateRange.value.start = date.start;
+        dateRange.value.end = date.end;
       }
     };
 
     const getList = async () => {
+      alert('sdf')
       try {
         // Build query parameters
         const queryParams = `start=${dateRange.value.start}&end=${dateRange.value.end}`;
@@ -254,6 +255,13 @@ export default defineComponent({
         }
       }, { immediate: false });
     }
+
+    // Add watcher for dateRange to trigger getList
+    watch(dateRange, (newVal, oldVal) => {
+      if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+        getList();
+      }
+    }, { deep: true });
 
     onMounted(() => {
       getList();
