@@ -16,7 +16,7 @@
           </div>
           <div class="flex-1 min-w-0">
             <h1 class="text-sm sm:text-xl lg:text-2xl font-bold text-white truncate">
-              {{ userdata.username }}
+              {{ userdata?.username }}
             </h1>
             <p class="text-xs sm:text-sm text-gray-400 truncate">ID: {{ memberId }}</p>
           </div>
