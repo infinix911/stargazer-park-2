@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#0a0e1a] via-[#1a1f2e] to-[#0a0e1a]">
+  <div class="min-h-screen">
     <!-- Page Header -->
     <PartnerPageHeader
       :title="t('partnerMenu.settlementHistory')"
@@ -13,13 +13,13 @@
       <!-- Game Type Tabs -->
       <div class="mb-6 w-full">
         <div class="border-b border-white/20">
-          <nav class="flex space-x-8">
+          <nav class="flex space-x-2 lg:space-x-8">
             <button
               v-for="tab in gameTabs"
               :key="tab.key"
               @click="setActiveTab(tab.key)"
               :class="[
-                'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200',
+                'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200 text-xs lg:text-base',
                 activeTab === tab.key
                   ? 'border-blue-500 text-blue-400'
                   : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300',

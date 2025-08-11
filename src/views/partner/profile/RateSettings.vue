@@ -10,7 +10,7 @@
 
     <!-- KTDataTable -->
     <form @submit.prevent="updateRate">
-      <div class="space-y-4">
+      <div class="space-y-4 px-2 xl:px-0">
         <KTDataTable
           :table-header="tableHeaders"
           :table-data="tableData || []"
@@ -150,7 +150,7 @@ export default defineComponent({
       tableData.value = [
         {
           idx: 0,
-          game_name: t("header.Casino"),
+          game_name: t("common.CASINO"),
           point_type: 1,
           no: "#1",
           losing: props.userdata.pct_lose_casino,
@@ -158,7 +158,7 @@ export default defineComponent({
         },
         {
           idx: 1,
-          game_name: t("header.Slot"),
+          game_name: t("common.SLOT"),
           point_type: 2,
           no: "#2",
           losing: props.userdata.pct_lose_slot,
@@ -166,7 +166,7 @@ export default defineComponent({
         },
         {
           idx: 2,
-          game_name: t("header.Hotel"),
+          game_name: t("common.HOTEL"),
           point_type: 3,
           no: "#3",
           losing: props.userdata.pct_lose_hotel,
@@ -174,7 +174,7 @@ export default defineComponent({
         },
         {
           idx: 3,
-          game_name: t("header.Sport"),
+          game_name: t("common.SPORT"),
           point_type: 4,
           no: "#4",
           losing: props.userdata.pct_lose_sport,
@@ -237,10 +237,6 @@ export default defineComponent({
      *
      */
      const updateRate = async () => {
-      // if (!rates.value?.rolling || !rates.value?.losing) {
-      //   Swal.fire(t("partner.changeRate"), t("notif.INVALID_RATE"), "error");
-      //   return;
-      // }
       if (rates.value?.rolling[0] && rates.value.rolling[0] < 0) {
         Swal.fire(t("partner.changeRate"), t("notif.INVALID_RATE"), "error");
         return;

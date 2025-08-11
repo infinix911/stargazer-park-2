@@ -2,12 +2,12 @@
   <div class="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
     <div class="max-w-[1500px] mx-auto px-4 py-6">
       <div class="flex items-center gap-3">
-        <div class="p-3 bg-gradient-to-r rounded-xl shadow-lg w-12 h-12 flex items-center justify-center" :class="iconGradient">
-          <i :class="`${icon} text-white text-xl`"></i>
+        <div class="p-3 bg-gradient-to-r rounded-xl shadow-lg w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center" :class="iconGradient">
+          <i :class="`${icon} text-white text-md lg:text-xl`"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold text-white">{{ title }}</h1>
-          <p class="text-sm text-gray-400">{{ subtitle }}</p>
+          <h1 class="text-md lg:text-2xl font-bold text-white">{{ title }}</h1>
+          <p class="text-xs lg:text-sm text-gray-400">{{ subtitle }}</p>
         </div>
       </div>
     </div>

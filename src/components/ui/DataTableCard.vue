@@ -7,7 +7,7 @@
           <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
         </div>
         <div>
-          <h2 class="text-lg font-semibold text-white">{{ title }}</h2>
+          <h2 class="font-semibold text-white text-sm lg:text-base">{{ title }}</h2>
           <p class="text-xs text-gray-400">{{ subtitle }}</p>
         </div>
       </div>

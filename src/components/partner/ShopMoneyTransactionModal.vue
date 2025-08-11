@@ -7,7 +7,7 @@
       >
         <!-- Modal Header with gradient -->
         <div
-          class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-8 -mt-8 mb-6"
+          class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-8 -mt-8 mb-6 relative"
         >
           <div class="flex items-center gap-3">
             <div class="px-3 py-2 bg-blue-500/20 rounded-lg">
@@ -23,6 +23,15 @@
               </p>
             </div>
           </div>
+          
+          <!-- Custom Close Button -->
+          <button
+            type="button"
+            @click="handleClose"
+            class="custom-close-button absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-200 group"
+          >
+            <X class="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </button>
         </div>
 
         <!-- Transaction Form -->
@@ -154,7 +163,7 @@ import { Input } from "@/components/ui/input";
 import Button from "@/components/ui/Button.vue";
 
 // Icons
-import { User, Users, Wallet, ArrowUpDown, DollarSign } from "lucide-vue-next";
+import { User, Users, Wallet, ArrowUpDown, DollarSign, X } from "lucide-vue-next";
 
 const { t, n } = useI18n();
 const authStore = useAuthStore();
@@ -315,6 +324,12 @@ const handleSubmit = async (): Promise<void> => {
 
 // Handle close
 const handleClose = (): void => {
-  appStore.openModal("");
+  // Close the popup window
+  if (window.opener) {
+    window.close();
+  } else {
+    // Fallback for modal usage
+    appStore.openModal("");
+  }
 };
 </script>

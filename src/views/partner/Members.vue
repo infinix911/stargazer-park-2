@@ -14,11 +14,10 @@
         class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end lg:justify-between w-full"
       >
         <!-- Add Member Button - Left Side -->
-        <div class="flex items-end">
+        <div class="flex justify-center lg:justify-start items-end">
           <button
             @click="openModal('AddSubMember')"
-            class="px-6 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg"
-            style="height: 40px"
+            class="px-6 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg h-[40px] w-full sm:w-auto"
           >
             <i class="fas fa-user-plus mr-2"></i>
             {{ t("partner.tab.addSubMember") }}
@@ -26,13 +25,12 @@
         </div>
 
         <!-- Search Controls - Right Side -->
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
+        <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end">
           <!-- Search Type -->
-          <div class="flex-shrink-0">
+          <div class="w-full sm:w-32 lg:w-32">
             <select
               v-model="searchType"
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option
                 v-for="option in searchTypes"
@@ -46,39 +44,37 @@
           </div>
 
           <!-- Search Value -->
-          <div class="flex-shrink-0">
+          <div class="w-full sm:w-48 lg:w-48">
             <input
               v-model="searchValue"
               type="text"
-              class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
 
           <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full h-10 date-picker-modern"
+              class="w-full !h-[40px] date-picker-modern"
               v-model="dateRange"
               initial="month"
-              style="height: 40px"
             />
           </div>
 
           <!-- Quick Date Buttons -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
+          <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
             <button
               v-for="dateButton in dateButtons"
               :key="dateButton.key"
               @click="setSelectedDate(dateButton.range)"
-              class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+              class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
               {{ t(dateButton.label) }}
             </button>
             <button
               @click="getList"
               :disabled="loading"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              class="h-[40px] flex-1 sm:w-20 sm:flex-initial rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
               <i v-else class="fas fa-search mr-1"></i>

@@ -17,7 +17,7 @@
             :key="tab.key"
             @click="setActiveTab(tab.key)"
             :class="[
-              'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200',
+              'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200 text-xs lg:text-base',
               activeTab === tab.key 
                 ? 'border-blue-500 text-blue-400' 
                 : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Game Content -->
-    <div class="w-full mx-auto px-4 pb-8">
+    <div class="w-full mx-auto xl:px-4 pb-8">
       <GameBetHistory 
           v-if="activeTab"
           :game="activeTab.toUpperCase()" 

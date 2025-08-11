@@ -1,49 +1,45 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-900 to-black">
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+    <!-- Casino Banner Background Accent -->
+    <div 
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-8 pointer-events-none"
+      style="background-image: url('/images/banner/casino.webp')"
+    ></div>
     <!-- Page Header -->
     <div class="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
       <div class="max-w-[1500px] mx-auto px-4 py-6">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1 sm:gap-3">
           <div
-            class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg"
+            class="p-1.5 sm:p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg sm:rounded-xl shadow-lg"
           >
-            <i class="fas fa-user text-white text-xl"></i>
+            <i class="fas fa-user text-white text-sm sm:text-xl"></i>
           </div>
-          <div>
-            <h1 class="text-2xl font-bold text-white">
-              {{ memberData?.member || "Member Profile" }}
+          <div class="flex-1 min-w-0">
+            <h1 class="text-sm sm:text-xl lg:text-2xl font-bold text-white truncate">
+              {{ userdata.username }}
             </h1>
-            <p class="text-sm text-gray-400">Member ID: {{ memberId }}</p>
-          </div>
-          <div class="ml-auto">
-            <button
-              @click="$emit('close')"
-              class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all duration-200 border border-white/20"
-            >
-              <i class="fas fa-arrow-left mr-2"></i>
-              Back to Members
-            </button>
+            <p class="text-xs sm:text-sm text-gray-400 truncate">ID: {{ memberId }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Content Area -->
-    <div class="max-w-[1500px] mx-auto px-4 py-6 w-full">
+    <div class="max-w-[1500px] mx-auto xl:px-4 py-6 w-full">
       <!-- SummaryProfile -->
-      <div v-if="userdata" class="mb-8">
+      <div v-if="userdata" class="mb-8 px-2 xl:px-0">
         <SummaryProfile :userdata="userdata" />
       </div>
 
       <!-- Tabs -->
       <div class="mb-6 w-full">
-        <div class="flex space-x-1 border-b border-white/10 w-full">
+        <div class="flex space-x-0.5 sm:space-x-1 border-b border-white/10 w-full px-1 sm:px-0">
           <button
             v-for="tab in tabs"
             :key="tab.key"
             @click="setActiveTab(tab.key)"
             :class="[
-              'flex-1 px-6 py-3 text-sm font-medium rounded-t-lg transition-all duration-200 whitespace-nowrap',
+              'flex-1 px-1 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-sm font-medium rounded-t-md sm:rounded-t-lg transition-all duration-200 whitespace-nowrap',
               activeTab === tab.key
                 ? 'text-blue-400 bg-white/5 border-b-2 border-blue-400'
                 : 'text-gray-400 hover:text-white hover:bg-white/5',
@@ -57,7 +53,6 @@
       <!-- Tab Content -->
       <div class="space-y-6 w-full">
         <div v-if="activeTab === 'details'" class="space-y-6 w-full">
-          <!-- <div class="bg-gradient-to-r from-gray-800/50 to-gray-900/50 rounded-xl p-6 border border-white/10 w-full"> -->
           <Dashboard :member-id="memberId" />
         </div>
 
@@ -147,13 +142,11 @@ const getData = async () => {
 
   try {
     loading.value = true;
-    const response = await ApiService.get(`/partner/member/info/${memberId.value}`);
-    console.log(response);
+    const response = await ApiService.get(`/partner/member/info/${memberId.value}`); 
 
     userdata.value = response.data;
   } catch (error) {
     console.error("Error fetching member data:", error);
-    // You could show a toast notification here
   } finally {
     loading.value = false;
   }
@@ -181,12 +174,6 @@ onMounted(() => {
   }
 });
 
-/**
- * Close page
- */
-const closePage = () => {
-  emit("close");
-};
 </script>
 
 <style scoped>

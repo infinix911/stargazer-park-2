@@ -119,7 +119,7 @@
           <!-- Member Information (shown when not shop member) -->
           <div v-if="!form.isshop" class="space-y-4">
             <h3 class="text-lg font-semibold text-white border-b border-white/10 pb-2">
-              {{ t("register.bankInformation") }}
+              {{ t("register.accountInformation") }}
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -260,7 +260,7 @@
               @click="handleClose"
               class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all duration-200 border border-white/20"
             >
-              Cancel
+              {{ t("changePassword.cancel") }}
             </button>
             <button
               type="submit"

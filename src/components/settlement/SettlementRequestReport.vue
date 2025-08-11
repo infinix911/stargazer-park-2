@@ -1,52 +1,51 @@
 <template>
   <div class="space-y-6">
     <!-- Header Section with Date Picker and Actions -->
-    <div class="">
-      <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6 mt-10">
-        <!-- Request Withdrawal Button -->
-        <button
-          @click="requestWithdrawal"
-          class="px-6 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
-        >
-          <i class="fas fa-paper-plane mr-2"></i>
-          {{ t("partnerMenu.settlementRequest") }}
-        </button>
+      <div class="my-8 flex flex-col lg:flex-row gap-4 items-stretch lg:items-end lg:justify-between w-full">
+        <!-- Request Withdrawal Button - Left Side -->
+        <div class="flex justify-center lg:justify-start items-end">
+          <button
+            @click="requestWithdrawal"
+            class="px-6 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg h-[40px] w-full sm:w-auto"
+          >
+            <i class="fas fa-paper-plane mr-2"></i>
+            {{ t("partnerMenu.settlementRequest") }}
+          </button>
+        </div>
 
-        <!-- Date Picker and Search -->
-        <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4">
-          <div class="min-w-0 max-w-sm">
+        <!-- Date Controls - Right Side -->
+        <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end">
+          <!-- Date Range Picker -->
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full"
+              class="w-full !h-[40px] date-picker-modern"
               v-model="daterange"
               initial="month"
-              style="height: 40px"
             />
           </div>
           
           <!-- Quick Date Buttons -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
+          <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
             <button
               v-for="dateButton in dateButtons"
               :key="dateButton.key"
               @click="setSelectedDate(dateButton.range)"
-              class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+              class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
             >
               {{ t(dateButton.label) }}
             </button>
             <button
               @click="getList"
               :disabled="loading"
-              class="px-6 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl self-end disabled:opacity-50 disabled:cursor-not-allowed"
+              class="h-[40px] flex-1 sm:w-20 sm:flex-initial rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <i v-if="loading" class="fas fa-spinner fa-spin mr-2"></i>
-              <i v-else class="fas fa-search mr-2"></i>
+              <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+              <i v-else class="fas fa-search mr-1"></i>
               {{ loading ? t('common.loading') : t('search') }}
             </button>
           </div>
         </div>
       </div>
-    </div>
-
     <!-- Settlement Data Table -->
     <DataTableCard
       :title="`${game} ${t('partnerMenu.settlementRequest')}`"

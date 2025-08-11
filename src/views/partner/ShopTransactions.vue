@@ -10,14 +10,14 @@
   <div class="max-w-[1500px] mx-auto">
     <!-- Controls Section -->
     <div class="w-full mx-auto px-4 py-6" v-if="authStore.user.shoplevel < 2">
-      <div class="flex items-end justify-end">
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
+      <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end justify-end">
+        <!-- Search Fields Row -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial">
           <!-- Transaction Type -->
-          <div class="flex-shrink-0">
+          <div class="w-full sm:w-32 lg:w-32">
             <select
               v-model="tranType"
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option
                 v-for="option in tranTypes"
@@ -31,46 +31,44 @@
           </div>
 
           <!-- Store Member -->
-          <div class="flex-shrink-0">
+          <div class="w-full sm:w-48 lg:w-48">
             <input
               v-model="receiver"
               type="text"
-              class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px"
+              placeholder="Store Member"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
 
           <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full date-picker-modern"
+              class="w-full !h-[40px] date-picker-modern"
               v-model="dateRange"
               initial="month"
-              style="height: 40px"
             />
           </div>
+        </div>
 
-          <!-- Quick Date Buttons -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-            <button
-              v-for="dateButton in dateButtons"
-              :key="dateButton.key"
-              @click="setSelectedDate(dateButton.range)"
-              class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
-            >
-              {{ t(dateButton.label) }}
-            </button>
-            <button
-              @click="getList"
-              :disabled="loading"
-              class="w-20 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg text-xs disabled:opacity-50 disabled:cursor-not-allowed"
-              style="height: 40px"
-            >
-              <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
-              <i v-else class="fas fa-search mr-1"></i>
-              {{ loading ? t('common.loading') : 'Search' }}
-            </button>
-          </div>
+        <!-- Quick Date Buttons -->
+        <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
+          <button
+            v-for="dateButton in dateButtons"
+            :key="dateButton.key"
+            @click="setSelectedDate(dateButton.range)"
+            class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          >
+            {{ t(dateButton.label) }}
+          </button>
+          <button
+            @click="getList"
+            :disabled="loading"
+            class="h-[40px] flex-1 sm:w-20 sm:flex-initial bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+            <i v-else class="fas fa-search mr-1"></i>
+            {{ loading ? t('common.loading') : t('search') }}
+          </button>
         </div>
       </div>
     </div>
