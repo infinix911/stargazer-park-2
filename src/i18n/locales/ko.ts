@@ -1407,6 +1407,9 @@ export default {
     PGSOFT: "PG소프트",
     GENESIS: "제네시스"
   },
+  notice: {
+    CloseToday: '오늘 팝업 열지 않기'
+  },
   common: {
     search: '게임 검색...',
     noResults: '게임을 찾을 수 없습니다',

@@ -41,6 +41,9 @@
     
     <!-- Scroll to Top Button -->
     <ScrollToTop />
+
+    <!-- Notice Popup -->
+    <NoticePopup />
   </div>
 </template>
 
@@ -58,6 +61,7 @@ import Footer from '../components/footer/Footer.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
 import DepositModal from '../views/transaction/DepositModal.vue'
 import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
+import NoticePopup from '@/views/notifications/NoticePopup.vue'
 
 // Reactive data for current slide
 const currentSlide = ref(0)
@@ -72,11 +76,6 @@ const handleSlideChange = (slideIndex: number): void => {
   //console.log('MainLayout: Slide changed to:', slideIndex)
   currentSlide.value = slideIndex
 }
-
-// Event handlers for layout interactions
-// const handleGameSelected = (game: GameSelectedEvent): void => {
-//   console.log('Hot brand game selected:', game)
-// }
 
 const handleCustomerService = (): void => {
   console.log('Opening customer service...')

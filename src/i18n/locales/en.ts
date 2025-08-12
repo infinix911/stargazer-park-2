@@ -1001,6 +1001,9 @@ export default {
       "oa7fpshyqfueqxuj": "Blackjack VIP Z"
     }
   },
+  notice: {
+    CloseToday: 'Close Today'
+  },
   common: {
     search: 'Search games...',
     noResults: 'No games found',
