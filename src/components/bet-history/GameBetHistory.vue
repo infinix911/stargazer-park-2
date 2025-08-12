@@ -286,14 +286,14 @@
                     {{ t("status.0") }}
                   </span>
                   <span
-                    v-else-if="bet.state === 1 && bet.winamount > 0"
+                    v-else-if="bet.state === 1 && Number(bet.winamount) > 0"
                     class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-500/20 text-green-300 border border-green-500/30 rounded-full"
                   >
                     <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
                     {{ t("status.win") }}
                   </span>
                   <span
-                    v-else-if="bet.state === 1 && bet.winamount <= 0"
+                    v-else-if="bet.state === 1 && Number(bet.winamount) <= 0"
                     class="inline-flex items-center px-2 py-1 text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30 rounded-full"
                   >
                     <div class="w-2 h-2 bg-red-400 rounded-full mr-1"></div>
@@ -591,6 +591,8 @@ export interface IData {
   state: number;
   updatedAt: string;
   winamount: string;
+  pre_acc: string;
+  after_acc: string;
 }
 
 export interface DateRange {
