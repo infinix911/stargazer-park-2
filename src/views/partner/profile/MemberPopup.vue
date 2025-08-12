@@ -69,14 +69,7 @@
         </div>
 
         <div v-else-if="activeTab === 'depWidHistory'" class="space-y-6 w-full">
-          <div
-            class="bg-gradient-to-r from-gray-800/50 to-gray-900/50 rounded-xl p-6 border border-white/10 w-full"
-          >
-            <h3 class="text-xl font-semibold text-white mb-4">
-              Deposit/Withdrawal History Tab
-            </h3>
-            <p class="text-gray-400">This tab will contain transaction history.</p>
-          </div>
+          <Transactions :member_id="memberId" />
         </div>
       </div>
     </div>
@@ -93,9 +86,9 @@ import Dashboard from "../Dashboard.vue";
 import Betting from "../Betting.vue";
 import Coupons from "./Coupons.vue";
 import RateSettings from "./RateSettings.vue";
+import Transactions from "@/views/partner/Transactions.vue";
 import type { IMember } from "@/interface/IMember";
 
-// Removed IMember interface, now imported from shared interface file
 
 interface Props {
   memberData?: any;
@@ -124,7 +117,7 @@ const tabs = [
   { key: "betHistory", label: t("partnerMenu.betting") },
   { key: "rateSettings", label: t("partner.tab.rateSettings") },
   { key: "coupons", label: t("deposit.coupon") },
-  // { key: 'depWidHistory',  label: t('partner.tab.transactionHistory') }
+  { key: 'depWidHistory',  label: t('partner.tab.transactionHistory') }
 ];
 
 /**
