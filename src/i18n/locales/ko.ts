@@ -9,6 +9,8 @@ export default {
     withdraw: '출금신청',
     myLounge: '마이 라운지',
     partner: '파트너',
+    Inquiry: '문의사항',
+    AccountInquiry: '계좌 문의'
   },
   topBar: {
     login: '로그인',
@@ -277,6 +279,39 @@ export default {
       "4": "운영자 메세지",
       "8": "운영자 취소",
       "9": "운영자 메세지"
+    },
+    InquiryRead: "문의사항이 성공적으로 읽음으로 표시되었습니다",
+    InquiryDeletedSuccess: "문의사항이 성공적으로 삭제되었습니다",
+    InquirySentSuccess: "은행 문의가 성공적으로 전송되었습니다"
+  },
+  viewInquiry: {
+    title: '문의사항 상세보기',
+    description: '문의사항의 전체 정보를 확인하세요',
+    fields: {
+      title: '문의 제목',
+      status: '현재 상태',
+      date: '작성일',
+      message: '문의 내용',
+      reply: '관리자 답변',
+      lastUpdated: '최종 수정일'
+    },
+    buttons: {
+      close: '모달 닫기'
+    },
+    states: {
+      "0": "검토 대기",
+      "1": "조사 중", 
+      "2": "처리 중",
+      "3": "완료됨",
+      "4": "관리자 응답",
+      "8": "취소됨",
+      "9": "관리자 공지"
+    },
+    messages: {
+      loading: '문의사항 세부정보를 불러오는 중...',
+      error: '문의사항 세부정보를 불러오는데 실패했습니다',
+      noReply: '아직 답변이 제공되지 않았습니다',
+      noMessage: '메시지 내용을 사용할 수 없습니다'
     }
   },
   contactUs: {
@@ -553,7 +588,8 @@ export default {
     INVALID_ACCOUNT: "비밀번호가 틀렸습니다.",
     INVALID_SECURITY_CODE: "2분 이내에 로그인하지 않을시 보안코드가 만료됩니다. 페이지를 새로 고침 하십시오",
     INVALID_SECURITY_CODE_ANSWER: "보안 코드 잘못되었습니다.",
-    AUTO_LOGGED_OUT: "세션이 만료되었습니다. 연결이 종료되었습니다."
+    AUTO_LOGGED_OUT: "세션이 만료되었습니다. 연결이 종료되었습니다.",
+    Close: "닫기"
   },
   games: {
     SNOW_SNOW2: "api2all",

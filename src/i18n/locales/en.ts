@@ -7,7 +7,9 @@ export default {
     holdem: 'Hold\'em',
     deposit: 'Deposit',
     withdraw: 'Withdraw',
-    myLounge: 'My Lounge'
+    myLounge: 'My Lounge',
+    Inquiry: 'Inquiry',
+    AccountInquiry: 'Account Inquiry'
   },
   topBar: {
     login: 'Login',
@@ -275,6 +277,39 @@ export default {
       "4": "Operator Message",
       "8": "Operator Cancelled",
       "9": "Operator Message"
+    },
+    InquiryRead: "Inquiry marked as read successfully",
+    InquiryDeletedSuccess: "Inquiry deleted successfully",
+    InquirySentSuccess: "Bank inquiry sent successfully"
+  },
+  viewInquiry: {
+    title: 'View Inquiry Details',
+    description: 'Review the complete information about your inquiry',
+    fields: {
+      title: 'Inquiry Title',
+      status: 'Current Status',
+      date: 'Created Date',
+      message: 'Inquiry Message',
+      reply: 'Admin Reply',
+      lastUpdated: 'Last Modified'
+    },
+    buttons: {
+      close: 'Close'
+    },
+    states: {
+      "0": "Pending Review",
+      "1": "Under Investigation", 
+      "2": "In Progress",
+      "3": "Completed",
+      "4": "Admin Response",
+      "8": "Cancelled",
+      "9": "Admin Notice"
+    },
+    messages: {
+      loading: 'Loading inquiry details...',
+      error: 'Failed to load inquiry details',
+      noReply: 'No reply has been provided yet',
+      noMessage: 'No message content available'
     }
   },
   contactUs: {
@@ -539,7 +574,8 @@ export default {
     INVALID_ACCOUNT: "Invalid password.",
     INVALID_SECURITY_CODE: "Security code will expire if you don't log in within 2 minutes. Please refresh the page.",
     INVALID_SECURITY_CODE_ANSWER: "Invalid security code.",
-    AUTO_LOGGED_OUT: "Your session has expired, and the connection has been terminated."
+    AUTO_LOGGED_OUT: "Your session has expired, and the connection has been terminated.",
+    Close: "Close"
   },
   games: {
     SNOW_SNOW2: "api2all",

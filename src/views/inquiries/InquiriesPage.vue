@@ -7,6 +7,13 @@
       @submit="handleContactUsSubmit"
     />
     
+    <!-- View Inquiry Modal -->
+    <ViewInquiryModal
+      :open="showViewInquiryModal"
+      :inquiry="selectedInquiry"
+      @close="showViewInquiryModal = false"
+    />
+    
     <!-- Inquiries Section -->
     <div class="py-12">
       <div class="max-w-[1660px] mx-auto px-4">
@@ -37,7 +44,7 @@
             {{ t('inquiries.buttons.bankInquiry') }}
           </button>
           <button 
-            @click="handleDelete"
+            @click="handleDeleteInquiry(false)"
             class="bg-[#ef4444] hover:bg-[#dc2626] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
@@ -45,13 +52,13 @@
             {{ t('inquiries.buttons.delete') }}
           </button>
           <button 
-            @click="handleDeleteAll"
+            @click="handleDeleteInquiry(true)"
             class="bg-[#f97316] hover:bg-[#ea580c] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
             {{ t('inquiries.buttons.deleteAll') }}
           </button>
           <button 
-            @click="handleRead"
+            @click="handleReadInquiry(false)"
             class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
@@ -59,7 +66,7 @@
             {{ t('inquiries.buttons.read') }}
           </button>
           <button 
-            @click="handleReadAll"
+            @click="handleReadInquiry(true)"
             class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
             {{ t('inquiries.buttons.readAll') }}
@@ -213,6 +220,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ApiService from '@/services/ApiService'
+import SocketService from '@/services/SocketService'
+import Swal from 'sweetalert2'
 import {
   useVueTable,
   getCoreRowModel,
@@ -220,6 +229,7 @@ import {
   type ColumnDef
 } from '@tanstack/vue-table'
 import ContactUsModal from './ContactUsModal.vue'
+import ViewInquiryModal from './ViewInquiryModal.vue'
 
 const { t } = useI18n()
 
@@ -227,7 +237,7 @@ interface Inquiry {
   id: number;
   title: string;
   body: string;
-  reply: string;
+  reply: {};
   state: number;
   createdAt: string;
   updatedAt: string;
@@ -261,6 +271,8 @@ const selectAll = ref(false)
 
 // Modal state
 const showContactUsModal = ref(false)
+const showViewInquiryModal = ref(false)
+const selectedInquiry = ref<Inquiry | null>(null)
 
 // State mapping function
 const getStateText = (state: number): string => {
@@ -321,7 +333,6 @@ const toggleSelectAll = () => {
 
 // Action handlers
 const handleContactUs = () => {
-  console.log('Opening contact us modal')
   showContactUsModal.value = true
 }
 
@@ -342,58 +353,150 @@ const handleContactUsSubmit = (data: { title: string; body: string }) => {
   showContactUsModal.value = false
 }
 
-const handleBankInquiry = () => {
-  console.log('Opening bank inquiry modal/page')
-  // Implement bank inquiry functionality
-}
-
-const handleDelete = () => {
-  console.log('Deleting selected inquiries:', selectedInquiries.value)
-  // Implement delete functionality
-  inquiries.value = inquiries.value.filter(inquiry => !selectedInquiries.value.includes(inquiry.id))
-  selectedInquiries.value = []
-  selectAll.value = false
-}
-
-const handleDeleteAll = () => {
-  console.log('Deleting all inquiries')
-  // Implement delete all functionality
-  if (confirm('Are you sure you want to delete all inquiries?')) {
-    inquiries.value = []
-    selectedInquiries.value = []
-    selectAll.value = false
+const handleBankInquiry = async () => {
+  try {
+    const data = {
+      title: "DEPOSIT_ACCOUNT_REQUEST",
+      body: "DEPOSIT_ACCOUNT_REQUEST",
+    };
+    
+    const resp = await ApiService.post("/inquiry", data);
+    
+    if (resp.data.message !== "MESSAGE_SENT") {
+      return Swal.fire({
+        icon: "error",
+        title: t("header.AccountInquiry"),
+        text: t("notif." + resp.data.message),
+        confirmButtonColor: "#FF0000",
+        confirmButtonText: t("notif.Close"),
+      });
+    }
+    
+    Swal.fire({
+      icon: "success",
+      title: t("header.AccountInquiry"),
+      text: t("inquiry.InquirySentSuccess"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    
+    getInquiry();
+    return;
+  } catch (error: any) {
+    
+    return Swal.fire({
+      icon: "error",
+      title: t("header.AccountInquiry"),
+      text: t("notif." + (error.response?.data?.message || "UNKNOWN_ERROR")),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
   }
 }
 
-const handleRead = () => {
-  console.log('Marking selected inquiries as read:', selectedInquiries.value)
-  // Implement mark as read functionality
-  inquiries.value = inquiries.value.map(inquiry => {
-    if (selectedInquiries.value.includes(inquiry.id)) {
-      return { ...inquiry, state: 3 } // Member Confirmed
-    }
-    return inquiry
-  })
-  selectedInquiries.value = []
-  selectAll.value = false
-}
+const handleDeleteInquiry = async (isAll: boolean) => {
+  let ids = inquiries.value.filter((i) => i.state === 3).map((obj) => obj.id);
 
-const handleReadAll = () => {
-  console.log('Marking all inquiries as read')
-  // Implement mark all as read functionality
-  inquiries.value = inquiries.value.map(inquiry => ({
-    ...inquiry,
-    state: 3 // Member Confirmed
-  }))
-  selectedInquiries.value = []
-  selectAll.value = false
-}
+  if (!isAll) ids = selectedInquiries.value;
+  
+  await ApiService.patch(`/inquiry`, {
+    inquiryIds: ids,
+  })
+  .then(() => {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryDeletedSuccess"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  })
+  .catch((e) => {
+    Swal.fire({
+      icon: "error",
+      title: t("header.Inquiry"),
+      text: t("notif." + e.response.data.message),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  });
+
+  getInquiry();
+};
+
+const handleReadInquiry = async (isAll: boolean) => {
+  let ids = inquiries.value.filter((i) => i.state !== 3).map((obj) => Number(obj.id));
+
+  if (!isAll) ids = selectedInquiries.value;
+
+  if (ids.length === 0) {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryRead"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    return;
+  }
+
+  await ApiService.patch(`/inquiry/read`, {
+    inquiryIds: ids,
+  })
+  .then(() => {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryRead"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    selectedInquiries.value = [];
+    SocketService.socket.emit("members_init");
+  })
+  .catch((e) => {
+    Swal.fire({
+      icon: "error",
+      title: t("header.Inquiry"),
+      text: t("notif." + e.response.data.message),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  });
+
+  getInquiry();
+};
 
 // Handle inquiry click
-const openInquiry = (inquiry: Inquiry) => {
+const openInquiry = async (inquiry: Inquiry) => {
   console.log('Opening inquiry:', inquiry)
-  // Add your inquiry opening logic here
-  // This could open a modal, navigate to a detail page, etc.
+  selectedInquiry.value = inquiry
+  showViewInquiryModal.value = true
+  
+  // Mark as read if applicable
+  await selectInquiry(inquiry)
+}
+
+// Select inquiry and mark as read if applicable
+const selectInquiry = async (row: any) => {
+  if (row.state === 2 || row.state === 4 || row.state === 8) {
+    try {
+      await ApiService.patch(`/inquiry/read`, {
+        inquiryIds: [parseInt(row.id)],
+      });
+      SocketService.socket.emit("members_init");
+    } catch (error: any) {
+      console.error('Error marking inquiry as read:', error);
+      
+      Swal.fire({
+        icon: "error",
+        title: t("header.Inquiry"),
+        text: t("notif." + (error.response?.data?.message || "UNKNOWN_ERROR")),
+        confirmButtonColor: "#FF0000",
+        confirmButtonText: t("notif.Close"),
+      });
+    }
+  }
 }
 
 // Fetch inquiries on component mount
