@@ -17,42 +17,34 @@
         <!-- Center - Navigation Icons -->
         <div class="flex flex-wrap items-center justify-center gap-2 lg:gap-4 max-w-full lg:max-w-none">
           <NavItem 
-            icon="🎰" 
             :label="t('footer.nav.casino')" 
             @click="handleNavClick('casino')"
           />
           <NavItem 
-            icon="🎲" 
             :label="t('footer.nav.slots')" 
             @click="handleNavClick('slots')"
           />
           <NavItem 
-            icon="👤" 
             :label="t('footer.nav.wallet')" 
             @click="handleNavClick('wallet')"
           />
           <NavItem 
-            icon="📊" 
             :label="t('footer.nav.transactions')" 
             @click="handleNavClick('transactions')"
           />
           <NavItem 
-            icon="📢" 
             :label="t('footer.nav.notice')" 
             @click="handleNavClick('notice')"
           />
           <NavItem 
-            icon="💳" 
             :label="t('footer.nav.deposit')" 
             @click="handleNavClick('deposit')"
           />
           <NavItem 
-            icon="💰" 
             :label="t('footer.nav.withdrawal')" 
             @click="handleNavClick('withdrawal')"
           />
           <NavItem 
-            icon="❓" 
             :label="t('footer.nav.inquiry')" 
             @click="handleNavClick('inquiry')"
           />
@@ -97,8 +89,6 @@ const authStore = useAuthStore()
 
 // Define emits
 const emit = defineEmits<{
-  'open-customer-service': []
-  'nav-click': [section: string]
   'show-deposit-modal': []
   'show-withdrawal-modal': []
 }>()
@@ -106,8 +96,6 @@ const emit = defineEmits<{
 // Methods
 const openCustomerService = (): void => {
   console.log('Opening customer service...')
-  // Open customer service chat or modal
-  emit('open-customer-service')
 }
 
 const handleNavClick = (section: string): void => {
@@ -182,13 +170,10 @@ const handleNavClick = (section: string): void => {
       }
     }
     return
-  }
-  
-  emit('nav-click', section)
+  }  
 }
 
 const navigateToHome = (): void => {
-  console.log('Navigating to home...')
   window.location.href = '/'
 }
 </script>

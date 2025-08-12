@@ -19,10 +19,7 @@
     </main>
 
     <!-- Footer -->
-    <Footer 
-      @open-customer-service="handleCustomerService"
-      @nav-click="handleNavClick"
-    />
+    <Footer />
   </div>
 </template>
 
@@ -35,14 +32,6 @@ import Footer from '../components/footer/Footer.vue'
 
 const route = useRoute()
 
-// Event handlers for layout interactions
-const handleCustomerService = (): void => {
-  console.log('Opening customer service...')
-}
-
-const handleNavClick = (section: string): void => {
-  console.log('Footer navigation clicked:', section)
-}
 </script>
 
 <style scoped>

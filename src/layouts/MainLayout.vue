@@ -20,9 +20,7 @@
     <ProviderSection />
     
     <!-- Footer -->
-    <Footer 
-      @open-customer-service="handleCustomerService"
-      @nav-click="handleNavClick"
+    <Footer
       @show-deposit-modal="showDepositModal = true"
       @show-withdrawal-modal="showWithdrawalModal = true"
     />
@@ -55,7 +53,6 @@ import TopBar from '../components/topbar/TopBar.vue'
 import Header from '../components/Header.vue'
 import HeroSection from '../components/HeroSection.vue'
 import HotBrandBackground from '../components/hotbrand/HotBrandBackground.vue'
-//import HotBrands from '../components/HotBrands.vue'
 import ProviderSection from '../components/ProviderSection.vue'
 import Footer from '../components/footer/Footer.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
@@ -77,11 +74,4 @@ const handleSlideChange = (slideIndex: number): void => {
   currentSlide.value = slideIndex
 }
 
-const handleCustomerService = (): void => {
-  console.log('Opening customer service...')
-}
-
-const handleNavClick = (section: string): void => {
-  console.log('Footer navigation clicked:', section)
-}
 </script>
