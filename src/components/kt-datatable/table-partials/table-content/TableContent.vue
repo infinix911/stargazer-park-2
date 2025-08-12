@@ -51,7 +51,7 @@
       <template v-else>
         <tr class="odd">
           <td :colspan="header.length" class="dataTables_empty">
-            {{ emptyTableText }}
+            {{ t("common.noDataFound") }}
           </td>
         </tr>
       </template>

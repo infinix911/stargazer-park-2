@@ -1360,9 +1360,9 @@ export default {
     SPORT: "스포츠",
     searchfilters: "검색 필터",
     records: "기록",
-    showMore: "Show More",
-    showLess: "Show Less",
-    noDataFound: "No Data Found",
-    refresh: "refresh"
+    showMore: "더 보기",
+    showLess: "접기",
+    noDataFound: "데이터가 없습니다",
+    refresh: "새로고침"
   }
 } 

@@ -246,11 +246,11 @@
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-400">{{ t('partner.totalBetAmount') }}</span>
-                <span class="text-sm font-bold text-blue-400">{{ Number(game.betamt)?.toLocaleString() || '0' }}</span>
+                <span class="text-sm font-bold text-blue-400">{{ Number(game.betamt) || 0 }}</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-400">{{ t('partner.totalWinAmount') }}</span>
-                <span class="text-sm font-bold text-green-400">{{ Number(game.winamt)?.toLocaleString() || '0' }}</span>
+                <span class="text-sm font-bold text-green-400">{{ Number(game.winamt) || 0 }}</span>
               </div>
             </div>
             
@@ -258,12 +258,12 @@
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-400">{{ t('partner.rollAmount') }}</span>
-                <span class="text-sm font-bold text-yellow-300">{{ Number(game.rollamt)?.toLocaleString() || '0' }}</span>
+                <span class="text-sm font-bold text-yellow-300">{{ Number(game.rollamt) || 0 }}</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-400">{{ t('partner.totalProfit') }}</span>
                                   <span class="text-sm font-bold" :class="Number(game.total_profit) >= 0 ? 'text-green-400' : 'text-red-400'">
-                    {{ Number(game.total_profit) >= 0 ? '+' : '' }}{{ Number(game.total_profit)?.toLocaleString() || '0' }}
+                    {{ Number(game.total_profit) >= 0 ? '+' : '' }}{{ Number(game.total_profit) || 0 }}
                   </span>
               </div>
             </div>
@@ -286,21 +286,21 @@
                   <div class="grid grid-cols-2 gap-3 text-xs">
                     <div class="flex items-center justify-between">
                       <span class="text-gray-400">{{ t('partner.betAmount') }}</span>
-                      <span class="text-white">{{ Number(subGame.betamt)?.toLocaleString() || '0' }}</span>
+                      <span class="text-white">{{ Number(subGame.betamt) || 0 }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                       <span class="text-gray-400">{{ t('partner.winAmount') }}</span>
-                      <span class="text-white">{{ Number(subGame.winamt)?.toLocaleString() || '0' }}</span>
+                      <span class="text-white">{{ Number(subGame.winamt) || 0 }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                       <span class="text-gray-400">{{ t('partner.profit') }}</span>
                                               <span class="text-white" :class="Number(subGame.profit) >= 0 ? 'text-green-400' : 'text-red-400'">
-                          {{ Number(subGame.profit) >= 0 ? '+' : '' }}{{ Number(subGame.profit)?.toLocaleString() || '0' }}
+                          {{ Number(subGame.profit) >= 0 ? '+' : '' }}{{ Number(subGame.profit) || 0 }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
                       <span class="text-gray-400">{{ t('partner.rollAmount') }}</span>
-                      <span class="text-white">{{ Number(subGame.rollamt)?.toLocaleString() || '0' }}</span>
+                      <span class="text-white">{{ Number(subGame.rollamt) || 0 }}</span>
                     </div>
                   </div>
                 </div>
