@@ -326,7 +326,13 @@ export default {
     submit: '제출',
     submitting: '제출 중...',
     cancel: '취소',
-    successMessage: '문의사항이 성공적으로 제출되었습니다'
+    successMessage: '문의사항이 성공적으로 제출되었습니다',
+    validation: {
+      titleRequired: '제목을 입력해주세요',
+      titleMinLength: '제목은 최소 3자 이상이어야 합니다',
+      messageRequired: '메시지를 입력해주세요',
+      messageMinLength: '메시지는 최소 10자 이상이어야 합니다'
+    }
   },
   transactionHistory: {
     title: '거래 내역',

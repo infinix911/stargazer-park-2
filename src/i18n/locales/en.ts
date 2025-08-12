@@ -324,7 +324,13 @@ export default {
     submit: 'Submit',
     submitting: 'Submitting...',
     cancel: 'Cancel',
-    successMessage: 'Your inquiry has been submitted successfully'
+    successMessage: 'Your inquiry has been submitted successfully',
+    validation: {
+      titleRequired: 'Title is required',
+      titleMinLength: 'Title must be at least 3 characters',
+      messageRequired: 'Message is required',
+      messageMinLength: 'Message must be at least 10 characters'
+    }
   },
   transactionHistory: {
     title: 'Transaction History',

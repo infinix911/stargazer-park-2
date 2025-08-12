@@ -27,7 +27,14 @@
               :placeholder="t('contactUs.fields.titlePlaceholder')"
               class="bg-transparent border-none text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-lg"
               required
+              @input="errors.title = ''"
             />
+          </div>
+          <div v-if="errors.title" class="text-red-600 text-sm mt-1 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ errors.title }}
           </div>
         </div>
 
@@ -44,7 +51,14 @@
               rows="6"
               class="w-full bg-transparent border-none text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 resize-none text-lg leading-relaxed"
               required
+              @input="errors.body = ''"
             ></textarea>
+          </div>
+          <div v-if="errors.body" class="text-red-600 text-sm mt-1 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            {{ errors.body }}
           </div>
         </div>
 
@@ -78,6 +92,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { z } from 'zod'
 import {
   Dialog,
   DialogContent,
@@ -96,6 +111,18 @@ import Swal from 'sweetalert2'
 
 const { t } = useI18n()
 
+// Zod validation schema
+const contactFormSchema = z.object({
+  title: z.string()
+    .min(1, t('contactUs.validation.titleRequired'))
+    .min(3, t('contactUs.validation.titleMinLength')),
+  body: z.string()
+    .min(1, t('contactUs.validation.messageRequired'))
+    .min(10, t('contactUs.validation.messageMinLength'))
+})
+
+type ContactFormData = z.infer<typeof contactFormSchema>
+
 // Props
 interface Props {
   open: boolean
@@ -110,7 +137,13 @@ const emit = defineEmits<{
 }>()
 
 // Form data
-const form = reactive({
+const form = reactive<ContactFormData>({
+  title: '',
+  body: ''
+})
+
+// Form errors
+const errors = reactive({
   title: '',
   body: ''
 })
@@ -119,8 +152,42 @@ const form = reactive({
 const isSubmitting = ref(false)
 
 // Methods
+const validateForm = (): boolean => {
+  // Clear previous errors
+  errors.title = ''
+  errors.body = ''
+  
+  const result = contactFormSchema.safeParse({
+    title: form.title.trim(),
+    body: form.body.trim()
+  })
+  
+  if (!result.success) {
+    const zodError = result.error as any
+    if (zodError.errors) {
+      zodError.errors.forEach((err: any) => {
+        if (err.path.includes('title')) {
+          errors.title = err.message
+        }
+        if (err.path.includes('body')) {
+          errors.body = err.message
+        }
+      })
+    }
+    return false
+  }
+  
+  return true
+}
+
+const clearErrors = () => {
+  errors.title = ''
+  errors.body = ''
+}
+
 const handleSubmit = async () => {
-  if (!form.title.trim() || !form.body.trim()) {
+  // Validate form
+  if (!validateForm()) {
     return
   }
   
@@ -143,9 +210,10 @@ const handleSubmit = async () => {
       confirmButtonText: t("notif.Close"),
     })
     
-    // Reset form
+    // Reset form and errors
     form.title = ''
     form.body = ''
+    clearErrors()
     
     // Close modal
     emit('close')
