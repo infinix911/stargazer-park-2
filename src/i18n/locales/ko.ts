@@ -1362,6 +1362,7 @@ export default {
     records: "기록",
     showMore: "Show More",
     showLess: "Show Less",
-    noDataFound: "No Data Found"
+    noDataFound: "No Data Found",
+    refresh: "refresh"
   }
 } 

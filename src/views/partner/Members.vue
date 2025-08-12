@@ -99,36 +99,36 @@
               <div
                 class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10"
               >
-                                 <div class="flex items-center justify-between">
-                   <div class="flex items-center gap-3">
-                     <div class="p-2 bg-purple-500/20 rounded-lg">
-                       <i class="fas fa-sitemap text-purple-400 text-sm"></i>
-                     </div>
-                     <div>
-                       <h2 class="text-lg font-semibold text-white">Member Tree</h2>
-                       <p class="text-xs text-gray-400">Organization Structure</p>
-                     </div>
-                   </div>
-                   
-                   <!-- Mobile Accordion Toggle -->
-                   <div class="lg:hidden">
-                     <button
-                       @click="toggleMemberTreeAccordion"
-                       class="p-2 text-gray-400 hover:text-white transition-colors"
-                     >
-                       <i
-                         class="fas fa-chevron-down transition-transform duration-200"
-                         :class="{
-                           'rotate-180': isMemberTreeExpanded
-                         }"
-                       ></i>
-                     </button>
-                   </div>
-                 </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="p-2 bg-purple-500/20 rounded-lg">
+                      <i class="fas fa-sitemap text-purple-400 text-sm"></i>
+                    </div>
+                    <div>
+                      <h2 class="text-lg font-semibold text-white">Member Tree</h2>
+                      <p class="text-xs text-gray-400">Organization Structure</p>
+                    </div>
+                  </div>
+
+                  <!-- Mobile Accordion Toggle -->
+                  <div class="lg:hidden">
+                    <button
+                      @click="toggleMemberTreeAccordion"
+                      class="p-2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <i
+                        class="fas fa-chevron-down transition-transform duration-200"
+                        :class="{
+                          'rotate-180': isMemberTreeExpanded,
+                        }"
+                      ></i>
+                    </button>
+                  </div>
+                </div>
 
                 <!-- Add Accordion in Mobile -->
               </div>
-              <div class="p-4" :class="{ 'hidden': !isMemberTreeExpanded }">
+              <div class="p-4" :class="{ hidden: !isMemberTreeExpanded }">
                 <MemberTree />
               </div>
             </div>
@@ -335,15 +335,16 @@
                     </div>
                   </div>
 
-                  <!-- Second Row: wallet, wallet_point, settle -->
-                  <div class="grid grid-cols-2 gap-4 mb-4 pb-3 border-b border-white/10">
-                    <!-- Wallet & Wallet Points -->
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between">
+                  <!-- Second Row: wallet, wallet_point -->
+                  <div
+                    class="flex items-center justify-between pb-3 border-b border-white/10 w-full"
+                  >
+                    <div class="flex items-center gap-4 w-full">
+                      <div class="flex items-center gap-2">
                         <span class="text-xs text-gray-400">{{
                           t("partner.wallet")
                         }}</span>
-                        <div class="flex items-center gap-2">
+                        <div class="inline-flex items-center gap-2">
                           <span class="text-sm font-bold text-white">{{
                             member.wallet?.toLocaleString() || "0"
                           }}</span>
@@ -356,7 +357,7 @@
                           </button>
                         </div>
                       </div>
-                      <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-2">
                         <span class="text-xs text-gray-400">{{
                           t("partner.walletPoint")
                         }}</span>
@@ -365,11 +366,16 @@
                         }}</span>
                       </div>
                     </div>
+                  </div>
 
+                  <!-- Third Row: slot_money, slot_money -->
+                  <div
+                    class="grid grid-cols-3 gap-2 mb-4 pb-3 border-b border-white/10 pt-3"
+                  >
                     <!-- Settle Actions -->
                     <div class="space-y-3">
                       <div class="text-right">
-                        <span class="text-xs text-gray-400">{{
+                        <span class="text-xs text-gray-400 text-nowrap">{{
                           t("partner.settle")
                         }}</span>
                         <div
@@ -377,7 +383,7 @@
                             member.shoplevel === 2 &&
                             member.member_id !== authStore.user.id
                           "
-                          class="flex gap-1 mt-1 justify-end"
+                          class="flex flex-col gap-1 mt-1 justify-end"
                         >
                           <button
                             type="button"
@@ -412,20 +418,14 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <!-- Third Row: slot_money, slot_money -->
-                  <div class="grid grid-cols-2 gap-4 mb-4 pb-3 border-b border-white/10">
                     <!-- Slot Money -->
                     <div class="space-y-2">
                       <div class="text-center">
                         <span class="text-xs text-gray-400">{{
                           t("partner.slotMoney")
                         }}</span>
-                        <div
-                          v-if="member.wallet_game && member.wallet_game > 0"
-                          class="mt-1 flex gap-2"
-                        >
+                        <!-- .wallet_game && member.wallet_game > 0 -->
+                        <div v-if="member" class="mt-1">
                           <button
                             type="button"
                             class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
@@ -451,7 +451,7 @@
                         <div class="mt-1">
                           <button
                             type="button"
-                            class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30"
+                            class="px-3 w-full py-1 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30"
                             @click="
                               onPointTransfer(member.member_id, member.member, 'ADD')
                             "
