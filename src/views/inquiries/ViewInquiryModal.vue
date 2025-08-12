@@ -145,7 +145,7 @@
         <Button
           variant="outline"
           @click="$emit('close')"
-          class="px-8 py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
+          class="cursor-pointer px-8 py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
         >
           {{ t('viewInquiry.buttons.close') }}
         </Button>

@@ -324,7 +324,9 @@ export default {
       messagePlaceholder: '문의 내용을 자세히 설명해 주세요...'
     },
     submit: '제출',
-    submitting: '제출 중...'
+    submitting: '제출 중...',
+    cancel: '취소',
+    successMessage: '문의사항이 성공적으로 제출되었습니다'
   },
   transactionHistory: {
     title: '거래 내역',

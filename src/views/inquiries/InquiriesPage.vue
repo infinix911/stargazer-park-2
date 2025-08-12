@@ -4,7 +4,6 @@
     <ContactUsModal
       :open="showContactUsModal"
       @close="showContactUsModal = false"
-      @submit="handleContactUsSubmit"
     />
     
     <!-- View Inquiry Modal -->
@@ -334,23 +333,6 @@ const toggleSelectAll = () => {
 // Action handlers
 const handleContactUs = () => {
   showContactUsModal.value = true
-}
-
-const handleContactUsSubmit = (data: { title: string; body: string }) => {
-  console.log('Contact us form submitted:', data)
-  // Here you would typically send the data to your backend
-  // For now, we'll add it to the inquiries list
-  const newInquiry: Inquiry = {
-    id: inquiries.value.length + 1,
-    title: data.title,
-    body: data.body,
-    reply: '',
-    state: 0,
-    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updatedAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }
-  inquiries.value.unshift(newInquiry)
-  showContactUsModal.value = false
 }
 
 const handleBankInquiry = async () => {

@@ -322,7 +322,9 @@ export default {
       messagePlaceholder: 'Describe your inquiry in detail...'
     },
     submit: 'Submit',
-    submitting: 'Submitting...'
+    submitting: 'Submitting...',
+    cancel: 'Cancel',
+    successMessage: 'Your inquiry has been submitted successfully'
   },
   transactionHistory: {
     title: 'Transaction History',
