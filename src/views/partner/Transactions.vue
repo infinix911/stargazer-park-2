@@ -53,7 +53,6 @@
             <input
               v-model="searchValue"
               type="text"
-              placeholder="Search value"
               class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
