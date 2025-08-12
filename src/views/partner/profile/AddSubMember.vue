@@ -536,8 +536,7 @@ const validationSchema = computed(() => {
       bank_name: z.string().min(1, t("register.errors.bankNameRequired")),
       bank_account_name: z
         .string()
-        .min(1, t("register.errors.bankAccountNameRequired"))
-        .regex(/[^0-9.]/g, t("register.errors.bankAccountNameFormat")),
+        .min(1, t("register.errors.bankAccountNameRequired")),
       bank_account: z
         .string()
         .min(1, t("register.errors.bankAccountRequired"))
