@@ -266,6 +266,15 @@ export default {
       memberRead: 'MEMBER READ',
       unread: 'UNREAD',
       replied: 'REPLIED'
+    },
+    states: {
+      "0": "Unanswered",
+      "1": "Waiting for Reply",
+      "2": "Confirmed",
+      "3": "Member Confirmed",
+      "4": "Operator Message",
+      "8": "Operator Cancelled",
+      "9": "Operator Message"
     }
   },
   contactUs: {

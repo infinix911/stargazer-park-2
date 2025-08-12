@@ -7,7 +7,6 @@
       @submit="handleContactUsSubmit"
     />
     
-
     <!-- Inquiries Section -->
     <div class="py-12">
       <div class="max-w-[1660px] mx-auto px-4">
@@ -67,8 +66,29 @@
           </button>
         </div>
 
+        <!-- Loading State -->
+        <div v-if="loading" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span class="ml-3 text-gray-600">{{ t('common.loading') }}</span>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="text-center text-red-600">
+            <p>{{ error }}</p>
+            <button 
+              @click="getInquiry" 
+              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {{ t('common.retry') }}
+            </button>
+          </div>
+        </div>
+
         <!-- Inquiries Table -->
-        <div class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
+        <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
@@ -119,8 +139,8 @@
                     :key="cell.id"
                     class="px-6 py-4 text-sm border-b border-gray-200 text-center"
                     :class="{
-                      'text-gray-900': cell.column.id !== 'status',
-                      'text-blue-400': cell.column.id === 'status'
+                      'text-gray-900': cell.column.id !== 'state',
+                      'text-blue-400': cell.column.id === 'state'
                     }"
                   >
                     <div 
@@ -131,15 +151,18 @@
                       {{ cell.getValue() }}
                     </div>
                     <div 
-                      v-else-if="cell.column.id === 'status'"
+                      v-else-if="cell.column.id === 'state'"
                       class="inline-block px-3 py-1 rounded-full text-xs font-medium"
                       :class="{
-                        'bg-blue-600 text-white': cell.getValue() === 'MEMBER READ',
-                        'bg-gray-600 text-white': cell.getValue() === 'UNREAD',
-                        'bg-green-600 text-white': cell.getValue() === 'REPLIED'
+                        'bg-blue-600 text-white': cell.row.original.state === 3,
+                        'bg-gray-600 text-white': cell.row.original.state === 0,
+                        'bg-yellow-600 text-white': cell.row.original.state === 1,
+                        'bg-green-600 text-white': cell.row.original.state === 2,
+                        'bg-purple-600 text-white': cell.row.original.state === 4 || cell.row.original.state === 9,
+                        'bg-red-600 text-white': cell.row.original.state === 8
                       }"
                     >
-                      {{ cell.getValue() }}
+                      {{ getStateText(cell.row.original.state) }}
                     </div>
                     <div v-else class="text-gray-900">
                       {{ cell.getValue() }}
@@ -187,8 +210,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ApiService from '@/services/ApiService'
 import {
   useVueTable,
   getCoreRowModel,
@@ -200,37 +224,36 @@ import ContactUsModal from './ContactUsModal.vue'
 const { t } = useI18n()
 
 interface Inquiry {
-  id: number
-  title: string
-  date: string
-  status: 'MEMBER READ' | 'UNREAD' | 'REPLIED'
-  content?: string
+  id: number;
+  title: string;
+  body: string;
+  reply: string;
+  state: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-// Sample inquiries data
-const inquiries = ref<Inquiry[]>([
-  {
-    id: 1,
-    title: '예금주성 이용불가 안내',
-    date: '2025-01-22 17:45:44',
-    status: 'MEMBER READ',
-    content: 'Sample inquiry content about bank account holder name issue.'
-  },
-  {
-    id: 2,
-    title: '입금 확인 요청',
-    date: '2025-01-20 14:30:22',
-    status: 'REPLIED',
-    content: 'Request for deposit confirmation.'
-  },
-  {
-    id: 3,
-    title: '계정 보안 문의',
-    date: '2025-01-18 09:15:30',
-    status: 'UNREAD',
-    content: 'Inquiry about account security measures.'
+// Inquiries data from API
+const inquiries = ref<Inquiry[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+// Fetch inquiries from API
+const getInquiry = async (): Promise<void> => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await ApiService.get('/inquiry')
+    inquiries.value = response.data || []
+  } catch (err) {
+    console.error('Error fetching inquiries:', err)
+    error.value = 'Failed to load inquiries'
+    // Fallback
+    inquiries.value = []
+  } finally {
+    loading.value = false
   }
-])
+}
 
 // Selection state
 const selectedInquiries = ref<number[]>([])
@@ -238,6 +261,11 @@ const selectAll = ref(false)
 
 // Modal state
 const showContactUsModal = ref(false)
+
+// State mapping function
+const getStateText = (state: number): string => {
+  return t(`inquiries.states.${state}`) || `State ${state}`
+}
 
 // Column definitions
 const columns = computed<ColumnDef<Inquiry>[]>(() => [
@@ -247,14 +275,21 @@ const columns = computed<ColumnDef<Inquiry>[]>(() => [
     size: 400
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'createdAt',
     header: t('inquiries.columns.date'),
-    size: 180
+    size: 180,
+    cell: ({ getValue }) => {
+      const date = getValue() as string
+      return new Date(date).toLocaleDateString()
+    }
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'state',
     header: t('inquiries.columns.status'),
-    size: 120
+    size: 120,
+    cell: ({ row }) => {
+      return getStateText(row.original.state)
+    }
   }
 ])
 
@@ -297,9 +332,11 @@ const handleContactUsSubmit = (data: { title: string; body: string }) => {
   const newInquiry: Inquiry = {
     id: inquiries.value.length + 1,
     title: data.title,
-    date: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    status: 'UNREAD',
-    content: data.body
+    body: data.body,
+    reply: '',
+    state: 0,
+    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    updatedAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
   }
   inquiries.value.unshift(newInquiry)
   showContactUsModal.value = false
@@ -333,7 +370,7 @@ const handleRead = () => {
   // Implement mark as read functionality
   inquiries.value = inquiries.value.map(inquiry => {
     if (selectedInquiries.value.includes(inquiry.id)) {
-      return { ...inquiry, status: 'MEMBER READ' as const }
+      return { ...inquiry, state: 3 } // Member Confirmed
     }
     return inquiry
   })
@@ -346,7 +383,7 @@ const handleReadAll = () => {
   // Implement mark all as read functionality
   inquiries.value = inquiries.value.map(inquiry => ({
     ...inquiry,
-    status: 'MEMBER READ' as const
+    state: 3 // Member Confirmed
   }))
   selectedInquiries.value = []
   selectAll.value = false
@@ -358,4 +395,9 @@ const openInquiry = (inquiry: Inquiry) => {
   // Add your inquiry opening logic here
   // This could open a modal, navigate to a detail page, etc.
 }
+
+// Fetch inquiries on component mount
+onMounted(() => {
+  getInquiry()
+})
 </script>

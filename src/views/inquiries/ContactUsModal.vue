@@ -81,7 +81,7 @@ interface Props {
   open: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 // Emits
 const emit = defineEmits<{
