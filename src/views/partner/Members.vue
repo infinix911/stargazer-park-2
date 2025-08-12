@@ -99,17 +99,36 @@
               <div
                 class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10"
               >
-                <div class="flex items-center gap-3">
-                  <div class="p-2 bg-purple-500/20 rounded-lg">
-                    <i class="fas fa-sitemap text-purple-400 text-sm"></i>
-                  </div>
-                  <div>
-                    <h2 class="text-lg font-semibold text-white">Member Tree</h2>
-                    <p class="text-xs text-gray-400">Organization Structure</p>
-                  </div>
-                </div>
+                                 <div class="flex items-center justify-between">
+                   <div class="flex items-center gap-3">
+                     <div class="p-2 bg-purple-500/20 rounded-lg">
+                       <i class="fas fa-sitemap text-purple-400 text-sm"></i>
+                     </div>
+                     <div>
+                       <h2 class="text-lg font-semibold text-white">Member Tree</h2>
+                       <p class="text-xs text-gray-400">Organization Structure</p>
+                     </div>
+                   </div>
+                   
+                   <!-- Mobile Accordion Toggle -->
+                   <div class="lg:hidden">
+                     <button
+                       @click="toggleMemberTreeAccordion"
+                       class="p-2 text-gray-400 hover:text-white transition-colors"
+                     >
+                       <i
+                         class="fas fa-chevron-down transition-transform duration-200"
+                         :class="{
+                           'rotate-180': isMemberTreeExpanded
+                         }"
+                       ></i>
+                     </button>
+                   </div>
+                 </div>
+
+                <!-- Add Accordion in Mobile -->
               </div>
-              <div class="p-4">
+              <div class="p-4" :class="{ 'hidden': !isMemberTreeExpanded }">
                 <MemberTree />
               </div>
             </div>
@@ -403,7 +422,10 @@
                         <span class="text-xs text-gray-400">{{
                           t("partner.slotMoney")
                         }}</span>
-                        <div v-if="member.wallet_game && member.wallet_game > 0" class="mt-1 flex gap-2">
+                        <div
+                          v-if="member.wallet_game && member.wallet_game > 0"
+                          class="mt-1 flex gap-2"
+                        >
                           <button
                             type="button"
                             class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
@@ -642,6 +664,7 @@ const selectedMemberData = ref<any>(null);
 
 // Mobile state
 const expandedMembers = ref<string[]>([]);
+const isMemberTreeExpanded = ref(true); // Start expanded on mobile
 
 // Loading state
 const loading = ref(false);
@@ -893,6 +916,10 @@ const toggleMemberExpand = (memberId: string) => {
   }
 };
 
+const toggleMemberTreeAccordion = () => {
+  isMemberTreeExpanded.value = !isMemberTreeExpanded.value;
+};
+
 // Point Transfer
 const pointTransfer = ref({
   receiver: { id: "", username: "" },
@@ -917,6 +944,8 @@ getList();
 const exposed = {
   expandedMembers,
   toggleMemberExpand,
+  toggleMemberTreeAccordion,
+  isMemberTreeExpanded,
   moment,
 };
 </script>
