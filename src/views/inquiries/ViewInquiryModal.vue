@@ -62,13 +62,14 @@
           </div>
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 shadow-sm">
             <QuillEditor
-              v-if="messageContent"
-              v-model:content="messageContent"
+              v-if="processedBody"
+              :content="processedBody"
+              :readOnly="true"
+              :key="props.inquiry.id"
               :options="editorOptions"
               contentType="html"
               theme="snow"
               toolbar="false"
-              readOnly
               class="bg-transparent text-gray-900"
             />
             <div v-else class="text-gray-500 italic text-center py-4">
@@ -83,14 +84,15 @@
             <Reply class="w-5 h-5 text-green-600" />
             <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.reply') }}</label>
           </div>
-          <div v-if="props.inquiry.reply && replyContent" class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 shadow-sm">
+          <div v-if="props.inquiry.reply" class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 shadow-sm">
             <QuillEditor
-              v-model:content="replyContent"
+              :content="processedReply"
+              :readOnly="true"
+              :key="props.inquiry.id"
               :options="editorOptions"
               contentType="html"
               theme="snow"
               toolbar="false"
-              readOnly
               class="bg-transparent text-gray-900"
             />
           </div>
@@ -183,7 +185,7 @@ interface Inquiry {
   id: number;
   title: string;
   body: string;
-  reply: {};
+  reply: string;
   state: number;
   createdAt: string;
   updatedAt: string;
@@ -206,10 +208,6 @@ defineEmits<{
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-// QuillEditor content
-const messageContent = ref('')
-const replyContent = ref('')
-
 // QuillEditor options
 const editorOptions = {
   readOnly: true,
@@ -219,118 +217,120 @@ const editorOptions = {
   }
 }
 
+// Computed properties to process content
+const processedBody = computed(() => {
+  if (!props.inquiry?.body) return ''
+    
+  if (typeof props.inquiry.body === 'string') {
+    return props.inquiry.body
+  }
+  
+  // If it's an object (Quill Delta), convert to HTML
+  if (typeof props.inquiry.body === 'object' && props.inquiry.body !== null) {
+    const bodyObj = props.inquiry.body as any
+    
+    if (bodyObj.ops && Array.isArray(bodyObj.ops)) {
+      let htmlContent = ''
+      bodyObj.ops.forEach((op: any) => {
+        if (op.insert && typeof op.insert === 'string') {
+          let text = op.insert
+          const attributes = op.attributes || {}
+          
+          // Apply formatting
+          if (attributes.bold) text = `<strong>${text}</strong>`
+          if (attributes.italic) text = `<em>${text}</em>`
+          if (attributes.underline) text = `<u>${text}</u>`
+          if (attributes.color) text = `<span style="color: ${attributes.color}">${text}</span>`
+          
+          // Handle newlines
+          text = text.replace(/\n/g, '<br>')
+          htmlContent += text
+        }
+      })
+      return htmlContent
+    }
+  }
+  
+  return ''
+})
+
+const processedReply = computed(() => {
+  if (!props.inquiry?.reply) return ''
+    
+  if (typeof props.inquiry.reply === 'string') {
+    // Try to parse as JSON first
+    try {
+      const parsedReply = JSON.parse(props.inquiry.reply)
+      
+      // If it's a Quill Delta object
+      if (parsedReply.ops && Array.isArray(parsedReply.ops)) {
+        let htmlContent = ''
+        parsedReply.ops.forEach((op: any) => {
+          if (op.insert && typeof op.insert === 'string') {
+            let text = op.insert
+            const attributes = op.attributes || {}
+            
+            // Apply formatting
+            if (attributes.bold) text = `<strong>${text}</strong>`
+            if (attributes.italic) text = `<em>${text}</em>`
+            if (attributes.underline) text = `<u>${text}</u>`
+            if (attributes.color) text = `<span style="color: ${attributes.color}">${text}</span>`
+            
+            // Handle newlines
+            text = text.replace(/\n/g, '<br>')
+            htmlContent += text
+          }
+        })
+        return htmlContent
+      }
+      
+      // If it's not Quill Delta, return the parsed object as string
+      return JSON.stringify(parsedReply, null, 2)
+    } catch (error) {
+      // If it's not valid JSON, return as plain string
+      return props.inquiry.reply
+    }
+  }
+  
+  // If it's already an object
+  if (typeof props.inquiry.reply === 'object' && props.inquiry.reply !== null) {
+    const replyObj = props.inquiry.reply as any
+    if (replyObj.ops && Array.isArray(replyObj.ops)) {
+      let htmlContent = ''
+      replyObj.ops.forEach((op: any) => {
+        if (op.insert && typeof op.insert === 'string') {
+          let text = op.insert
+          const attributes = op.attributes || {}
+          
+          // Apply formatting
+          if (attributes.bold) text = `<strong>${text}</strong>`
+          if (attributes.italic) text = `<em>${text}</em>`
+          if (attributes.underline) text = `<u>${text}</u>`
+          if (attributes.color) text = `<span style="color: ${attributes.color}">${text}</span>`
+          
+          // Handle newlines
+          text = text.replace(/\n/g, '<br>')
+          htmlContent += text
+        }
+      })
+      return htmlContent
+    }
+  }
+  
+  return ''
+})
+
 // Methods
 const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleString()
 }
 
-// Watch for inquiry changes and update content
+// Watch for inquiry changes
 watch(() => props.inquiry, (newInquiry) => {
   if (newInquiry) {
-    // Handle message content
-    if (newInquiry.body) {
-      if (typeof newInquiry.body === 'string') {
-        messageContent.value = newInquiry.body
-      } else {
-        // If body is an object, try to extract content
-        const bodyObj = newInquiry.body as any
-        if (bodyObj.ops && Array.isArray(bodyObj.ops)) {
-          // Handle Quill Delta format - convert to HTML
-          const delta = bodyObj.ops
-          let htmlContent = ''
-          delta.forEach((op: any) => {
-            if (op.insert) {
-              if (typeof op.insert === 'string') {
-                let text = op.insert
-                let attributes = op.attributes || {}
-                
-                // Apply formatting based on attributes
-                if (attributes.bold) {
-                  text = `<strong>${text}</strong>`
-                }
-                if (attributes.italic) {
-                  text = `<em>${text}</em>`
-                }
-                if (attributes.underline) {
-                  text = `<u>${text}</u>`
-                }
-                if (attributes.color) {
-                  text = `<span style="color: ${attributes.color}">${text}</span>`
-                }
-                
-                // Handle newlines
-                text = text.replace(/\n/g, '<br>')
-                htmlContent += text
-              }
-            }
-          })
-          messageContent.value = htmlContent
-        } else if (bodyObj.content) {
-          messageContent.value = bodyObj.content
-        } else if (bodyObj.html) {
-          messageContent.value = bodyObj.html
-        } else {
-          // If it's a plain object, try to extract meaningful content
-          messageContent.value = JSON.stringify(bodyObj, null, 2)
-        }
-      }
-    } else {
-      messageContent.value = ''
-    }
-
-    // Handle reply content
-    if (newInquiry.reply) {
-      if (typeof newInquiry.reply === 'string') {
-        replyContent.value = newInquiry.reply
-      } else {
-        // If reply is an object, try to extract content
-        const replyObj = newInquiry.reply as any
-        if (replyObj.ops && Array.isArray(replyObj.ops)) {
-          // Handle Quill Delta format - convert to HTML
-          const delta = replyObj.ops
-          let htmlContent = ''
-          delta.forEach((op: any) => {
-            if (op.insert) {
-              if (typeof op.insert === 'string') {
-                let text = op.insert
-                let attributes = op.attributes || {}
-                
-                // Apply formatting based on attributes
-                if (attributes.bold) {
-                  text = `<strong>${text}</strong>`
-                }
-                if (attributes.italic) {
-                  text = `<em>${text}</em>`
-                }
-                if (attributes.underline) {
-                  text = `<u>${text}</u>`
-                }
-                if (attributes.color) {
-                  text = `<span style="color: ${attributes.color}">${text}</span>`
-                }
-                
-                // Handle newlines
-                text = text.replace(/\n/g, '<br>')
-                htmlContent += text
-              }
-            }
-          })
-          replyContent.value = htmlContent
-        } else if (replyObj.content) {
-          replyContent.value = replyObj.content
-        } else if (replyObj.html) {
-          replyContent.value = replyObj.html
-        } else {
-          // If it's a plain object, try to extract meaningful content
-          replyContent.value = JSON.stringify(replyObj, null, 2)
-        }
-      }
-    } else {
-      replyContent.value = ''
-    }
-  } else {
-    messageContent.value = ''
-    replyContent.value = ''
+    console.log('Inquiry loaded:', newInquiry)
+    console.log('Body type:', typeof newInquiry.body, 'Body content:', newInquiry.body)
+    console.log('Reply type:', typeof newInquiry.reply, 'Reply content:', newInquiry.reply)
   }
 }, { immediate: true })
 
@@ -340,8 +340,6 @@ watch(() => props.open, (isOpen) => {
     // Reset state when modal closes
     error.value = null
     loading.value = false
-    messageContent.value = ''
-    replyContent.value = ''
   }
 })
 </script>
