@@ -213,7 +213,8 @@ export default {
       pointAmountExceedsPoints: 'Point amount cannot exceed your available points',
       pointAmountExceedsBalance: 'Point amount cannot exceed your balance',
       pointAmountMinimum: 'Minimum withdrawal amount is 10,000'
-    }
+    },
+    AMOUNT_GT: "Amount cannot be greater than actual points",
   },
   sections: {
     casino: 'Casino',

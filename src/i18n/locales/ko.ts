@@ -215,7 +215,8 @@ export default {
       pointAmountExceedsPoints: '출금 금액이 보유 포인트를 초과할 수 없습니다',
       pointAmountExceedsBalance: '출금 금액이 잔액을 초과할 수 없습니다',
       pointAmountMinimum: '최소 출금 금액은 10,000원입니다'
-    }
+    },
+    AMOUNT_GT: "금액이 실제 적립금보다 크면 안 됩니다.",
   },
   sections: {
     casino: '카지노',
