@@ -68,8 +68,8 @@
       </CarouselContent>
 
       <!-- Navigation Arrows -->
-      <CarouselPrevious class="carousel-nav-btn absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-500/50 hover:bg-opacity-90 border-0 z-20 rounded-[20px] shadow-lg transition-all duration-200 w-20 h-20" />
-      <CarouselNext class="carousel-nav-btn absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-500/50 hover:bg-opacity-90 border-0 z-20 rounded-[20px] shadow-lg transition-all duration-200 w-20 h-20" />
+      <!-- <CarouselPrevious class="carousel-nav-btn absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-500/50 hover:bg-opacity-90 border-0 z-[50] rounded-[20px] shadow-lg transition-all duration-200 w-20 h-20" />
+      <CarouselNext class="carousel-nav-btn absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-500/50 hover:bg-opacity-90 border-0 z-[50] rounded-[20px] shadow-lg transition-all duration-200 w-20 h-20" /> -->
     </Carousel>
   </section>
 </template>
@@ -105,7 +105,7 @@ const handleImageError = (event: Event): void => {
 }
 
 const handleImageLoad = (event: Event): void => {
-  console.log('Image loaded successfully:', event)
+  //console.log('Image loaded successfully:', event)
 }
 
 // Define emits

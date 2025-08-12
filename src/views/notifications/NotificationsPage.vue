@@ -11,12 +11,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
               </svg>
             </div>
-            <span class="text-gray-900">{{ $t('notifications.title') }}</span>
+            <span class="text-gray-900">{{ t('notifications.title') }}</span>
           </h2>
         </div>
 
+        <!-- Loading State -->
+        <div v-if="loading" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span class="ml-3 text-gray-600">{{ t('common.loading') }}</span>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="text-center text-red-600">
+            <p>{{ error }}</p>
+            <button 
+              @click="fetchNotices" 
+              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {{ t('common.retry') }}
+            </button>
+          </div>
+        </div>
+
         <!-- Notifications Table -->
-        <div class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
+        <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
@@ -28,7 +49,7 @@
                     :class="{
                       'text-left': header.id === 'id',
                       'text-center': header.id === 'title',
-                      'text-right': header.id === 'date'
+                      'text-right': header.id === 'createdAt'
                     }"
                   >
                     <div 
@@ -41,7 +62,7 @@
                       :class="{
                         'justify-start': header.id === 'id',
                         'justify-center': header.id === 'title',
-                        'justify-end': header.id === 'date'
+                        'justify-end': header.id === 'createdAt'
                       }"
                     >
                       {{ header.column.columnDef.header }}
@@ -63,7 +84,7 @@
                     :class="{
                       'text-left': cell.column.id === 'id',
                       'text-center': cell.column.id === 'title',
-                      'text-right': cell.column.id === 'date'
+                      'text-right': cell.column.id === 'createdAt'
                     }"
                   >
                     <div 
@@ -115,12 +136,20 @@
         </div>
       </div>
     </div>
+
+    <!-- Notifications Modal -->
+    <NotificationsModal 
+      v-model:open="showModal" 
+      :notice="selectedNotice" 
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ApiService from '@/services/ApiService'
+import NotificationsModal from './NotificationsModal.vue'
 import {
   useVueTable,
   getCoreRowModel,
@@ -131,57 +160,40 @@ import {
 const { t } = useI18n()
 
 interface Notice {
-  id: number
+  id: string
   title: string
-  date: string
-  content?: string
+  body: {}
+  createdAt: string
+  imgsrc: string
+  popup: boolean
+  type: string
 }
 
-// Sample notices data
-const notices = ref<Notice[]>([
-  {
-    id: 1,
-    title: '필공지사항 (필독)',
-    date: '2023-12-06',
-    content: 'Important notice that must be read by all users.'
-  },
-  {
-    id: 2,
-    title: '※은행점검시간 및 입출금 규정※',
-    date: '2023-10-12',
-    content: 'Bank inspection time and deposit/withdrawal regulations.'
-  },
-  {
-    id: 3,
-    title: '카지노 및 슬롯 이용규정안내',
-    date: '2023-09-11',
-    content: 'Casino and slot usage regulations guide.'
-  },
-  {
-    id: 4,
-    title: '※입출금 내역 관련 공지※',
-    date: '2023-07-28',
-    content: 'Notice regarding deposit/withdrawal details.'
-  },
-  {
-    id: 5,
-    title: '은행 점검',
-    date: '2023-06-10',
-    content: 'Bank inspection notice.'
-  },
-  {
-    id: 6,
-    title: '※미처리, 환급 안내 ※',
-    date: '2022-08-11',
-    content: 'Unprocessed and refund guide.'
-  },
-  {
-    id: 7,
-    title: '카지노 양방 및 악성배팅 제재안내',
-    date: '2022-04-27',
-    content: 'Casino two-way betting and malicious betting sanctions guide.'
+// Notices data from API
+const notices = ref<Notice[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+// Modal state
+const showModal = ref(false)
+const selectedNotice = ref<Notice | null>(null)
+
+// Fetch notices
+const fetchNotices = async (): Promise<void> => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await ApiService.get('/site/notices')
+    notices.value = response.data || []
+  } catch (err) {
+    console.error('Error fetching notices:', err)
+    error.value = 'Failed to load notices'
+    // Fallback
+    notices.value = []
+  } finally {
+    loading.value = false
   }
-])
+}
 
 // Column definitions
 const columns = computed<ColumnDef<Notice>[]>(() => [
@@ -196,9 +208,13 @@ const columns = computed<ColumnDef<Notice>[]>(() => [
     size: 600
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'createdAt',
     header: t('notifications.columns.date'),
-    size: 120
+    size: 120,
+    cell: ({ getValue }) => {
+      const date = getValue() as string
+      return new Date(date).toLocaleDateString()
+    }
   }
 ])
 
@@ -222,7 +238,12 @@ const table = useVueTable({
 // Handle notice click
 const openNotice = (notice: Notice) => {
   console.log('Opening notice:', notice)
-  // Add your notice opening logic here
-  // This could open a modal, navigate to a detail page, etc.
+  selectedNotice.value = notice
+  showModal.value = true
 }
+
+// Fetch notices on component mount
+onMounted(() => {
+  fetchNotices()
+})
 </script>

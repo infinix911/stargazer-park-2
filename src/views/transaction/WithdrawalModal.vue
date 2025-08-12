@@ -4,10 +4,10 @@
       <!-- Form Title -->
       <DialogHeader class="text-center mb-8">
         <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
-          {{ $t('withdrawal.title') }}
+          {{ t('withdrawal.title') }}
         </DialogTitle>
         <DialogDescription class="text-gray-600 mt-2">
-          {{ $t('withdrawal.description') }}
+          {{ t('withdrawal.description') }}
         </DialogDescription>
       </DialogHeader>
 
@@ -17,62 +17,59 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <Building2 class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankName') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankName') }}</label>
           </div>
           <Input
             v-model="form.bankName"
             type="text"
-            :placeholder="$t('withdrawal.bankNamePlaceholder')"
-            :class="{ 'border-red-500': errors.bankName }"
+            :placeholder="t('withdrawal.bankNamePlaceholder')"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.bankName" class="text-red-400 text-sm">{{ errors.bankName }}</p>
         </div>
 
         <!-- Bank Account Name Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankAccountName') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccountName') }}</label>
           </div>
           <Input
             v-model="form.bankAccountName"
             type="text"
-            :placeholder="$t('withdrawal.bankAccountNamePlaceholder')"
-            :class="{ 'border-red-500': errors.bankAccountName }"
+            :placeholder="t('withdrawal.bankAccountNamePlaceholder')"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.bankAccountName" class="text-red-400 text-sm">{{ errors.bankAccountName }}</p>
         </div>
 
         <!-- Bank Account Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.bankAccount') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccount') }}</label>
           </div>
           <Input
             v-model="form.bankAccount"
             type="text"
-            :placeholder="$t('withdrawal.bankAccountPlaceholder')"
-            :class="{ 'border-red-500': errors.bankAccount }"
+            :placeholder="t('withdrawal.bankAccountPlaceholder')"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            readonly
           />
-          <p v-if="errors.bankAccount" class="text-red-400 text-sm">{{ errors.bankAccount }}</p>
         </div>
 
         <!-- Balance Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <Wallet class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.balance') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.balance') }}</label>
           </div>
           <Input
             v-model="form.balance"
             type="text"
-            :placeholder="$t('withdrawal.balancePlaceholder')"
-            disabled
-            class="bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
+            :placeholder="t('withdrawal.balancePlaceholder')"
+            readonly
+            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
           />
         </div>
 
@@ -80,16 +77,17 @@
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
             <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ $t('withdrawal.withdrawalAmount') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('withdrawal.withdrawalAmount') }}</label>
           </div>
           <Input
-            v-model="form.withdrawalAmount"
-            type="number"
-            :placeholder="$t('withdrawal.withdrawalAmountPlaceholder')"
-            :class="{ 'border-red-500': errors.withdrawalAmount }"
+            v-model="displayAmount"
+            type="text"
+            :placeholder="t('withdrawal.withdrawalAmountPlaceholder')"
+            :class="{ 'border-red-500': errors.amount }"
             class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            @input="handleNumberInput"
           />
-          <p v-if="errors.withdrawalAmount" class="text-red-400 text-sm">{{ errors.withdrawalAmount }}</p>
+          <p v-if="errors.amount" class="text-red-400 text-sm">{{ errors.amount }}</p>
         </div>
 
         <!-- Quick Amount Buttons -->
@@ -143,7 +141,7 @@
               variant="outline"
               :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
             >
-              {{ $t('withdrawal.reset') }}
+              {{ t('withdrawal.reset') }}
             </Button>
           </div>
         </div>
@@ -154,8 +152,8 @@
           class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ $t('withdrawal.withdrawing') }}</span>
-          <span v-else>{{ $t('withdrawal.withdraw') }}</span>
+          <span v-if="isSubmitting">{{ t('withdrawal.withdrawing') }}</span>
+          <span v-else>{{ t('withdrawal.withdraw') }}</span>
         </Button>
       </form>
     </DialogContent>
@@ -163,10 +161,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { Input } from '../../components/ui/input'
+import ApiService from '../../services/ApiService'
+import Swal from 'sweetalert2'
 import Button from '../../components/ui/Button.vue'
 import {
   Dialog,
@@ -183,7 +183,11 @@ import {
   DollarSign
 } from 'lucide-vue-next'
 
-const { t } = useI18n()
+const { t, n } = useI18n()
+import { computed } from 'vue'
+import { useAuthStore } from '../../stores/auth'
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 
 // Props
 interface Props {
@@ -199,18 +203,9 @@ const emit = defineEmits<{
   close: []
 }>()
 
-// Form validation schema
+// Form validation schema (only validate editable amount)
 const withdrawalSchema = z.object({
-  bankName: z.string()
-    .min(1, t('withdrawal.errors.bankNameRequired')),
-  bankAccountName: z.string()
-    .min(1, t('withdrawal.errors.bankAccountNameRequired')),
-  bankAccount: z.string()
-    .min(1, t('withdrawal.errors.bankAccountRequired'))
-    .regex(/^[0-9]+$/, t('withdrawal.errors.bankAccountFormat')),
-  balance: z.string()
-    .min(1, t('withdrawal.errors.balanceRequired')),
-  withdrawalAmount: z.string()
+  amount: z.string()
     .min(1, t('withdrawal.errors.withdrawalAmountRequired'))
     .refine((val) => {
       const amount = parseFloat(val)
@@ -227,16 +222,44 @@ const withdrawalSchema = z.object({
     }, t('withdrawal.errors.withdrawalAmountMinimum'))
 })
 
-type WithdrawalForm = z.infer<typeof withdrawalSchema>
+type WithdrawalForm = {
+  bankName: string;
+  bankAccountName: string;
+  bankAccount: string;
+  balance: string;
+  amount: string;
+}
 
 // Form data
 const form = reactive<WithdrawalForm>({
-  bankName: '',
-  bankAccountName: '',
-  bankAccount: '',
-  balance: '',
-  withdrawalAmount: '0'
+  bankName: String(user.value?.bank_name || ''),
+  bankAccountName: user.value?.bank_account_name?.includes('[')
+    ? user.value.bank_account_name.substring(
+        0,
+        user.value.bank_account_name.indexOf('['),
+      )
+    : user.value?.bank_account_name || '',
+  bankAccount: String(user.value?.bank_account || ''),
+  balance: n(Number(user.value?.wallet || 0)),
+  amount: '0'
 })
+
+// Display value for input (formatted)
+const displayAmount = ref('0')
+
+// Sync display to form.amount on change
+watch(displayAmount, () => {
+  const clean = displayAmount.value.replace(/[^\d]/g, '')
+  form.amount = clean || '0'
+  errors.amount = undefined
+})
+
+// Only allow numeric input
+const handleNumberInput = (event: Event): void => {
+  const target = event.target as HTMLInputElement
+  const value = target.value.replace(/[^\d]/g, '')
+  displayAmount.value = value
+}
 
 // Form state
 const errors = reactive<Partial<WithdrawalForm>>({})
@@ -250,15 +273,19 @@ const handleOpenChange = (open: boolean): void => {
 }
 
 // Set amount from quick buttons
-const setAmount = (amount: number): void => {
-  form.withdrawalAmount = amount.toString()
-  errors.withdrawalAmount = undefined
+const setAmount = (amt: number): void => {
+  const current = parseInt(form.amount || '0') || 0
+  const next = current + amt
+  form.amount = next.toString()
+  displayAmount.value = n(next)
+  errors.amount = undefined
 }
 
 // Reset amount
 const resetAmount = (): void => {
-  form.withdrawalAmount = '0'
-  errors.withdrawalAmount = undefined
+  form.amount = '0'
+  displayAmount.value = '0'
+  errors.amount = undefined
 }
 
 // Validate form
@@ -288,14 +315,23 @@ const handleSubmit = async (): Promise<void> => {
   isSubmitting.value = true
 
   try {
-    console.log('Withdrawal request:', form)
-    // Add your withdrawal logic here
-    await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API call
-    console.log('Withdrawal request successful')
-    // Close modal or show success message
+    await ApiService.post('/tran/withdraw', { amount: form.amount })
+    await Swal.fire({
+      icon: 'success',
+      title: t('withdrawal.successTitle'),
+      text: t('withdrawal.successMessage'),
+      timer: 1000,
+      showConfirmButton: false
+    })
     emit('close')
   } catch (error) {
-    console.error('Withdrawal request failed:', error)
+    await Swal.fire({
+      icon: 'error',
+      title: t('withdrawal.errorTitle'),
+      text: t('withdrawal.errorMessage'),
+      timer: 1000,
+      showConfirmButton: false
+    })
   } finally {
     isSubmitting.value = false
   }

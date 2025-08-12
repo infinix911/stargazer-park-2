@@ -19,7 +19,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <span class="text-gray-900">{{ $t('inquiries.title') }}</span>
+            <span class="text-gray-900">{{ t('inquiries.title') }}</span>
           </h2>
         </div>
 
@@ -29,13 +29,13 @@
             @click="handleContactUs"
             class="bg-[#22c55e] hover:bg-[#16a34a] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
-            {{ $t('inquiries.buttons.contactUs') }}
+            {{ t('inquiries.buttons.contactUs') }}
           </button>
           <button 
             @click="handleBankInquiry"
             class="bg-[#8b5cf6] hover:bg-[#7c3aed] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
-            {{ $t('inquiries.buttons.bankInquiry') }}
+            {{ t('inquiries.buttons.bankInquiry') }}
           </button>
           <button 
             @click="handleDelete"
@@ -43,13 +43,13 @@
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ $t('inquiries.buttons.delete') }}
+            {{ t('inquiries.buttons.delete') }}
           </button>
           <button 
             @click="handleDeleteAll"
             class="bg-[#f97316] hover:bg-[#ea580c] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
-            {{ $t('inquiries.buttons.deleteAll') }}
+            {{ t('inquiries.buttons.deleteAll') }}
           </button>
           <button 
             @click="handleRead"
@@ -57,13 +57,13 @@
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ $t('inquiries.buttons.read') }}
+            {{ t('inquiries.buttons.read') }}
           </button>
           <button 
             @click="handleReadAll"
             class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
-            {{ $t('inquiries.buttons.readAll') }}
+            {{ t('inquiries.buttons.readAll') }}
           </button>
         </div>
 
@@ -195,7 +195,7 @@ import {
   getPaginationRowModel,
   type ColumnDef
 } from '@tanstack/vue-table'
-import ContactUsModal from './inquiries/ContactUsModal.vue'
+import ContactUsModal from './ContactUsModal.vue'
 
 const { t } = useI18n()
 

@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="authStore.isAuthenticated">
     <DropdownMenuTrigger as-child>
       <button class="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors cursor-pointer">
         <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
@@ -20,7 +20,8 @@
           <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
           </svg>
-          <span class="text-gray-600 font-medium">Level 1</span>
+          <span class="text-gray-600 font-medium">{{ `LV.${user.level}` }}</span>
+          <span class="text-gray-600 font-medium">{{ user.name }} 님</span>
         </div>
       </DropdownMenuLabel>
 
@@ -75,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,6 +88,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
+import { useAuthStore } from '../../stores/auth'
+
+const authStore = useAuthStore()
+const user = computed(() => authStore.user);
 
 // Modal state
 const showChangePasswordModal = ref(false)
@@ -94,8 +99,8 @@ const showPointWithdrawalModal = ref(false)
 
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
-  console.log('Point Withdrawal clicked')
   showPointWithdrawalModal.value = true
+  console.log('Point Withdrawal clicked')
 }
 
 const handlePointHistory = () => {
@@ -104,12 +109,14 @@ const handlePointHistory = () => {
 }
 
 const handleChangePassword = () => {
-  console.log('Change Password clicked')
   showChangePasswordModal.value = true
 }
 
-const handleLogout = () => {
-  console.log('Logout clicked')
-  // Add logout logic here
+const handleLogout = async () => {
+  try {
+    await authStore.logout()
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
 }
 </script>

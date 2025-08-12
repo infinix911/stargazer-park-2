@@ -10,134 +10,103 @@
               class="w-8 h-8 filter brightness-0 invert-1"
             />
           </div>
-          <span>{{ $t('sections.slots') }}</span>
+          <span>{{ t('sections.slots') }}</span>
         </h2>
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <GameMediaCard
+        <GameBannerCard
           v-for="slot in slotsGames"
           :key="slot.id"
           :title="slot.title"
-          :korean-title="slot.koreanTitle"
+          :sub-title="slot.koreanTitle"
           :provider="slot.provider"
           :image-src="slot.imageSrc"
           :video-src="slot.videoSrc"
-          :is-live="slot.isLive"
+
           @click="selectSlot(slot)"
         />
       </div>
     </div>
+    
+    <!-- SlotsGamesModal -->
+    <SlotsGamesModal
+      v-model:open="showModal"
+      :provider="selectedSlot?.provider || ''"
+      :code="selectedSlot?.code || ''"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import GameMediaCard from './GameMediaCard.vue'
+import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import GameBannerCard from './GameBannerCard.vue'
+import SlotsGamesModal from '../views/site/SlotsGamesModal.vue'
+
+const { t } = useI18n()
+
+interface Game {
+  code: string;
+  provider: string;
+  sort: number;
+  type: string;
+}
 
 interface SlotGame {
   id: number
   title: string
   koreanTitle: string
   provider: string
+  type: string
+  code: string
   imageSrc: string
   videoSrc: string
-  isLive: boolean
 }
+
+// Define props
+interface Props {
+  games?: Game[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  games: () => []
+})
 
 // Define emits
 const emit = defineEmits<{
   'slot-selected': [slot: SlotGame]
 }>()
 
-// Reactive data
-const slotsGames = ref<SlotGame[]>([
-  { 
-    id: 1, 
-    title: 'PRAGMATICPLAY', 
-    koreanTitle: '프라그마틱 플레이', 
-    provider: 'Pragmatic Play',
-    imageSrc: '/images/slot/pragmatic.webp',
-    videoSrc: '/images/slot/pragmatic.webm',
-    isLive: false
-  },
-  { 
-    id: 2, 
-    title: 'BNG', 
-    koreanTitle: '분고', 
-    provider: 'BNG',
-    imageSrc: '/images/slot/bng.webp',
-    videoSrc: '/images/slot/bng.webm',
-    isLive: false
-  },
-  { 
-    id: 3, 
-    title: 'HABANERO', 
-    koreanTitle: '하바네로', 
-    provider: 'Habanero',
-    imageSrc: '/images/slot/habanero.webp',
-    videoSrc: '/images/slot/habanero.webm',
-    isLive: false
-  },
-  { 
-    id: 4, 
-    title: 'BIGTIMEGAMING', 
-    koreanTitle: '빅 타임 게이밍', 
-    provider: 'Big Time Gaming',
-    imageSrc: '/images/slot/bigtimegaming.webp',
-    videoSrc: '/images/slot/bigtimegaming.webm',
-    isLive: false
-  },
-  { 
-    id: 5, 
-    title: 'WAZDAN', 
-    koreanTitle: '와즈단', 
-    provider: 'Wazdan',
-    imageSrc: '/images/slot/wazdan.webp',
-    videoSrc: '/images/slot/wazdan.webm',
-    isLive: false
-  },
-  { 
-    id: 6, 
-    title: 'NOLIMITCITY', 
-    koreanTitle: '노리밋 시티', 
-    provider: 'Nolimit City',
-    imageSrc: '/images/slot/nolimit.webp',
-    videoSrc: '/images/slot/nolimit.webm',
-    isLive: false
-  },
-  { 
-    id: 7, 
-    title: 'REDTIGER', 
-    koreanTitle: '레드타이거', 
-    provider: 'Red Tiger',
-    imageSrc: '/images/slot/redtiger.webp',
-    videoSrc: '/images/slot/redtiger.webm',
-    isLive: false
-  },
-  { 
-    id: 8, 
-    title: 'NETENT', 
-    koreanTitle: '넷엔트', 
-    provider: 'NetEnt',
-    imageSrc: '/images/slot/netent.webp',
-    videoSrc: '/images/slot/netent.webm',
-    isLive: false
-  },
-  { 
-    id: 9, 
-    title: 'PLAYNGO', 
-    koreanTitle: '플레이앤고', 
-    provider: 'Play\'n GO',
-    imageSrc: '/images/slot/playngo.webp',
-    videoSrc: '/images/slot/playngo.webm',
-    isLive: false
-  }
-])
+// Use props data or fallback to default data
+const slotsGames = computed(() => {
+  if (props.games && props.games.length > 0) {
+    // Transform Game data to SlotGame format
+    return props.games.map((game, index) => ({
+      id: index + 1,
+      title: t(`games.${game.code}`) || game.code,
+      koreanTitle: t(`games.${game.code}`) || game.code,
+      provider: game.provider,
+      type: game.type,
+      code: game.code,
+      imageSrc: `/images/slot/${game.code.toLowerCase()}.webp`,
+      videoSrc: `/images/slot/${game.code.toLowerCase()}.webm`,
 
-// Methods
+    }))
+  }
+  
+  return []
+})
+
+// Modal state
+const showModal = ref(false)
+const selectedSlot = ref<SlotGame | null>(null)
+
+// Select slot
 const selectSlot = (slot: SlotGame): void => {
   console.log(`Selected slot: ${slot.title}`)
+  selectedSlot.value = slot
+  showModal.value = true
   emit('slot-selected', slot)
 }
 </script>

@@ -8,6 +8,9 @@ export default defineConfig({
     vue(),
     tailwindcss(),
   ],
+  server: {
+    port: 23519,
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -15,5 +18,15 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    chunkSizeWarningLimit: 3000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vue': ['vue'],
+          'vue-router': ['vue-router'],
+          'vue-i18n': ['vue-i18n'],
+        },
+      },
+    },
   },
 })

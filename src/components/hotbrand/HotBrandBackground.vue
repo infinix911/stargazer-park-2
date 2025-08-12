@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 
 // Watch for prop changes to debug
 watch(() => props.currentSlide, (newSlide) => {
-  console.log('HotBrandBackground: currentSlide changed to:', newSlide)
+  //console.log('HotBrandBackground: currentSlide changed to:', newSlide)
 })
 </script>
 

@@ -4,10 +4,10 @@
       <!-- Form Title -->
       <DialogHeader class="text-center mb-8">
         <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
-          {{ $t('changePassword.title') }}
+          {{ t('changePassword.title') }}
         </DialogTitle>
         <DialogDescription class="text-gray-600 mt-2">
-          {{ $t('changePassword.description') }}
+          {{ t('changePassword.description') }}
         </DialogDescription>
       </DialogHeader>
 
@@ -19,13 +19,13 @@
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('changePassword.currentPassword') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('changePassword.currentPassword') }}</label>
           </div>
           <div class="relative">
             <Input
               v-model="form.currentPassword"
               :type="showCurrentPassword ? 'text' : 'password'"
-              :placeholder="$t('changePassword.currentPasswordPlaceholder')"
+              :placeholder="t('changePassword.currentPasswordPlaceholder')"
               :class="{ 'border-red-500': errors.currentPassword }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -52,13 +52,13 @@
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('changePassword.newPassword') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('changePassword.newPassword') }}</label>
           </div>
           <div class="relative">
             <Input
               v-model="form.newPassword"
               :type="showNewPassword ? 'text' : 'password'"
-              :placeholder="$t('changePassword.newPasswordPlaceholder')"
+              :placeholder="t('changePassword.newPasswordPlaceholder')"
               :class="{ 'border-red-500': errors.newPassword }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -85,13 +85,13 @@
             <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <label class="text-gray-700 font-medium">{{ $t('changePassword.verifyPassword') }}</label>
+            <label class="text-gray-700 font-medium">{{ t('changePassword.verifyPassword') }}</label>
           </div>
           <div class="relative">
             <Input
               v-model="form.verifyPassword"
               :type="showVerifyPassword ? 'text' : 'password'"
-              :placeholder="$t('changePassword.verifyPasswordPlaceholder')"
+              :placeholder="t('changePassword.verifyPasswordPlaceholder')"
               :class="{ 'border-red-500': errors.verifyPassword }"
               class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
             />
@@ -120,14 +120,14 @@
             @click="handleOpenChange(false)"
             class="flex-1 bg-gray-500 hover:bg-gray-600 text-white border-gray-500 hover:border-gray-600"
           >
-            {{ $t('changePassword.cancel') }}
+            {{ t('changePassword.cancel') }}
           </Button>
           <Button
             type="submit"
             :disabled="isSubmitting"
             class="flex-1 bg-[#075d4f] hover:bg-[#064e42] disabled:bg-gray-400 text-white border-[#075d4f] hover:border-[#064e42]"
           >
-            {{ isSubmitting ? $t('changePassword.changingPassword') : $t('changePassword.changePassword') }}
+            {{ isSubmitting ? t('changePassword.changingPassword') : t('changePassword.changePassword') }}
           </Button>
         </div>
       </form>
