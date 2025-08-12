@@ -120,6 +120,12 @@
                     >
                       {{ getStatusTranslation(cell.getValue() as number) }}
                     </div>
+                    <div 
+                      v-else-if="cell.column.id === 'amount'"
+                      class="text-gray-900 font-medium"
+                    >
+                      {{ cell.getValue() ? (locale === 'ko' ? `₩${Number(cell.getValue()).toLocaleString()}` : Number(cell.getValue()).toLocaleString()) : (locale === 'ko' ? '₩0' : '0') }}
+                    </div>
                     <div v-else class="text-gray-900">
                       {{ cell.getValue() }}
                     </div>
@@ -182,7 +188,7 @@ import {
 import ApiService from '@/services/ApiService'
 import Swal from 'sweetalert2'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 interface Transaction {
   type: 'DEPOSIT' | 'WITHDRAWAL'
@@ -237,7 +243,7 @@ const columns = computed<ColumnDef<Transaction>[]>(() => [
     size: 120,
     cell: ({ getValue }) => {
       const amount = getValue() as number
-      return amount?.toLocaleString() || '0'
+      return amount ? `₩${amount.toLocaleString()}` : '₩0'
     }
   },
   {
