@@ -564,8 +564,8 @@ const closeMemberPopup = () => {
 };
 
 // Point Transfer
-const pointTransfer = ref({ receiver: { id: "", username: "" }, type: "" });
-const onPointTransfer = (memberId: string, member: string, type: string) => {
+const pointTransfer = ref({ receiver: { id: "", username: "" }, type: "ADD" as "ADD" | "SUBTRACT" });
+const onPointTransfer = (memberId: string, member: string, type: "ADD" | "SUBTRACT") => {
   pointTransfer.value.receiver = { id: memberId, username: member };
   pointTransfer.value.type = type;
   openModal("PointMoneyTransfer");
