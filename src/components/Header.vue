@@ -15,10 +15,10 @@
             <Sheet v-model:open="isMobileMenuOpen">
               <SheetTrigger as-child>
                 <button
-                  class="lg:hidden p-2 text-white hover:text-red-400 transition-colors"
+                  class="lg:hidden p-1.5 sm:p-2 text-white hover:text-red-400 transition-colors"
                 >
                   <svg
-                    class="w-6 h-6"
+                    class="w-5 h-5 sm:w-6 sm:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -34,18 +34,18 @@
               </SheetTrigger>
               <SheetContent
                 side="left"
-                class="bg-[#000000] border-r border-gray-700 w-80 z-[9999]"
+                class="bg-[#000000] border-r border-gray-700 w-80 sm:w-80 z-[9999] max-h-screen mobile-menu-container"
               >
-                <div class="flex flex-col h-full p-4">
+                <div class="flex flex-col h-full p-3 sm:p-4">
                   <!-- Header -->
-                  <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-white font-orbitron">PRODTEST2</h2>
+                  <div class="flex items-center justify-between mb-4 flex-shrink-0">
+                    <h2 class="text-lg font-bold text-white font-orbitron">PRODTEST2</h2>
                     <button
                       @click="isMobileMenuOpen = false"
                       class="text-white hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-800"
                     >
                       <svg
-                        class="w-6 h-6"
+                        class="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -61,31 +61,31 @@
                   </div>
 
                   <!-- Navigation -->
-                  <nav class="flex flex-col space-y-4 font-orbitron">
+                  <nav class="flex flex-col space-y-3 font-orbitron overflow-y-auto flex-1 mobile-menu-container">
                     <!-- Partner Navigation -->
                     <template v-if="isPartner">
                       <template v-for="menuItem in partnerMenuItems" :key="menuItem.key">
                         <!-- Menu items with submenus -->
                         <div v-if="menuItem.submenu" class="space-y-2">
                           <div
-                            class="flex items-center space-x-4 text-white font-bold py-3 px-3"
+                            class="flex items-center space-x-3 text-white font-bold py-2 px-3"
                           >
-                            <i :class="menuItem.icon + ' w-6 h-6 text-lg'"></i>
-                            <span class="text-xl">{{ t(menuItem.label) }}</span>
+                            <i :class="menuItem.icon + ' w-5 h-5 text-base'"></i>
+                            <span class="text-lg">{{ t(menuItem.label) }}</span>
                           </div>
-                          <div class="ml-6 space-y-2">
+                          <div class="ml-5 space-y-1">
                             <router-link
                               v-for="subItem in menuItem.submenu"
                               :key="subItem.key"
                               :to="subItem.path"
                               @click="isMobileMenuOpen = false"
-                              class="flex items-center space-x-3 hover:text-red-400 transition-colors py-3 px-3 rounded-lg hover:bg-gray-800 text-gray-300"
+                              class="flex items-center space-x-2 hover:text-red-400 transition-colors py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300"
                               :class="
                                 isActive(subItem.path) ? 'bg-gray-800 text-red-400' : ''
                               "
                             >
-                              <i :class="subItem.icon + ' w-5 h-5 text-sm'"></i>
-                              <span class="text-lg">{{ t(subItem.label) }}</span>
+                              <i :class="subItem.icon + ' w-4 h-4 text-sm'"></i>
+                              <span class="text-sm">{{ t(subItem.label) }}</span>
                             </router-link>
                           </div>
                         </div>
@@ -95,13 +95,13 @@
                           v-else
                           :to="menuItem.path"
                           @click="isMobileMenuOpen = false"
-                          class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                          class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                           :class="
                             isActive(menuItem.path) ? 'bg-gray-800 text-red-400' : ''
                           "
                         >
-                          <i :class="menuItem.icon + ' w-6 h-6 text-lg'"></i>
-                          <span class="text-xl">{{ t(menuItem.label) }}</span>
+                          <i :class="menuItem.icon + ' w-5 h-5 text-base'"></i>
+                          <span class="text-lg">{{ t(menuItem.label) }}</span>
                         </router-link>
                       </template>
                     </template>
@@ -110,57 +110,57 @@
                     <template v-else>
                       <router-link
                         to="/casino"
-                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/casino.svg"
                           alt="Casino"
-                          class="w-6 h-6 filter brightness-0 invert"
+                          class="w-5 h-5 filter brightness-0 invert"
                         />
-                        <span class="text-xl">{{ t("header.casino") }}</span>
+                        <span class="text-lg">{{ t("header.casino") }}</span>
                       </router-link>
                       <router-link
                         to="/slot"
-                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/slot.svg"
                           alt="Slots"
-                          class="w-6 h-6 filter brightness-0 invert"
+                          class="w-5 h-5 filter brightness-0 invert"
                         />
-                        <span class="text-xl">{{ t("header.slots") }}</span>
+                        <span class="text-lg">{{ t("header.slots") }}</span>
                       </router-link>
                       <a
                         href="#"
-                        class="flex items-center space-x-4 hover:text-red-400 transition-colors font-bold py-4 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/holdem.svg"
                           alt="Hold'em"
                           class="w-6 h-6 filter brightness-0 invert"
                         />
-                        <span class="text-xl">홀덤</span>
+                        <span class="text-lg">홀덤</span>
                       </a>
                     </template>
                   </nav>
 
                   <!-- Footer Actions -->
-                  <div class="mt-auto pt-6 border-t border-gray-700" v-if="!isPartner">
-                    <div class="flex flex-col space-y-3">
+                  <div class="mt-auto pt-4 border-t border-gray-700 flex-shrink-0" v-if="!isPartner">
+                    <div class="flex flex-col space-y-2">
                       <button
                         @click="handleDepositClick"
-                        class="bg-[#00a8ff] hover:bg-[#0097e6] px-4 py-3 flex items-center justify-center space-x-2 text-white text-base font-medium transition-colors rounded-lg cursor-pointer"
+                        class="bg-[#00a8ff] hover:bg-[#0097e6] px-3 py-2 flex items-center justify-center space-x-2 text-white text-sm font-medium transition-colors rounded-lg cursor-pointer"
                       >
                         <img
                           src="/images/header/deposit.svg"
                           alt="Deposit"
-                          class="w-5 h-5 filter brightness-0 invert"
+                          class="w-4 h-4 filter brightness-0 invert"
                         />
                         <span>{{ t("header.deposit") }}</span>
                       </button>
                       <button
                         @click="handleWithdrawalClick"
-                        class="bg-[#00a8ff] hover:bg-[#0097e6] px-4 py-3 flex items-center justify-center space-x-2 text-white text-base font-medium transition-colors rounded-lg cursor-pointer"
+                        class="bg-[#00a8ff] hover:bg-[#0097e6] px-3 py-2 flex items-center justify-center space-x-2 text-white text-sm font-medium transition-colors rounded-lg cursor-pointer"
                       >
                         <img
                           src="/images/header/withdraw.svg"
@@ -170,12 +170,12 @@
                         <span>{{ t("header.withdraw") }}</span>
                       </button>
                       <button
-                        class="bg-white hover:bg-gray-100 px-4 py-3 flex items-center justify-center space-x-2 text-gray-700 text-base font-medium transition-colors rounded-lg"
+                        class="bg-white hover:bg-gray-100 px-3 py-2 flex items-center justify-center space-x-2 text-gray-700 text-sm font-medium transition-colors rounded-lg"
                       >
                         <img
                           src="/images/header/mylounge.svg"
                           alt="My Lounge"
-                          class="w-5 h-5"
+                          class="w-4 h-4"
                         />
                         <span class="text-[#1494dc]">{{ t("header.myLounge") }}</span>
                       </button>
@@ -498,10 +498,35 @@ const handleWithdrawalClick = (): void => {
 </script>
 
 <style scoped>
-/* Mobile menu styles can be added here if needed */
-/* @media (max-width: 768px) {
-  nav {
-    display: none;
+/* Mobile menu responsive improvements */
+@media (max-width: 640px) {
+  .mobile-menu-container {
+    width: 100vw;
+    max-width: 320px;
   }
-} */
+}
+
+/* Ensure smooth scrolling on mobile */
+.mobile-menu-container {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.mobile-menu-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mobile-menu-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobile-menu-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 2px;
+}
+
+.mobile-menu-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
+}
 </style>
