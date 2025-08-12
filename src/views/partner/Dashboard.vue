@@ -221,7 +221,6 @@
               </div>
               <div>
                 <h3 class="text-sm font-semibold text-white">{{ t('common.' + game.game_type) }}</h3>
-                <p class="text-xs text-gray-400">{{ t('partner.gameType') }}</p>
               </div>
             </div>
             

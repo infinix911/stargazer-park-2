@@ -962,5 +962,11 @@ export default {
     HOTEL: "Hotel",
     SLOT: "Slot",
     SPORT: "Sport",
+    searchfilters: "Search filters",
+    records: "Records",
+    showMore: "Show More",
+    showLess: "Show Less",
+    noDataFound: "No data found",
+    refresh: "Refresh"
   }
 } 
