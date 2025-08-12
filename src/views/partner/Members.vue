@@ -294,9 +294,12 @@
                       </div>
                       <div>
                         <div class="flex items-center gap-2">
-                          <h3 class="text-sm font-semibold text-white">
+                          <button
+                            @click="openMemberPopup(member)"
+                            class="text-sm font-semibold text-blue-400 hover:text-blue-300 cursor-pointer transition-colors text-left hover:underline"
+                          >
                             {{ member.member }}
-                          </h3>
+                          </button>
                           <span
                             class="text-xs px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full"
                             >{{ t(`partner.level${member.level}`) }}</span
@@ -558,13 +561,7 @@
     @refresh="getList"
   />
 
-  <!-- Member Popup -->
-  <MemberPopup
-    v-if="showMemberPopup"
-    :member-id="selectedMemberData?.member_id"
-    :member-data="selectedMemberData"
-    @close="closeMemberPopup"
-  />
+
 
   <!-- Add Sub Member Modal -->
   <AddSubMember
@@ -595,7 +592,6 @@ import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
-import MemberPopup from "@/views/partner/profile/MemberPopup.vue";
 import AddSubMember from "@/views/partner/profile/AddSubMember.vue";
 import Swal from "sweetalert2";
 import PartnerPageHeader from "@/components/partner/PartnerPageHeader.vue";
@@ -638,9 +634,9 @@ const authStore = useAuthStore();
 // Computed
 const selectedModal = computed(() => appStore.activeModal);
 
-// Member popup state
-const showMemberPopup = ref(false);
-const selectedMemberData = ref<any>(null);
+
+
+
 
 // Mobile state
 const expandedMembers = ref<string[]>([]);
@@ -877,14 +873,28 @@ const onShopTransact = (
 };
 
 const openMemberPopup = (memberData: any) => {
-  selectedMemberData.value = memberData;
-  showMemberPopup.value = true;
+  // Open member popup in a new window for both desktop and mobile
+  const popupWindow = window.open(
+    `/partner/member/${memberData.member_id}`,
+    `member_${memberData.member_id}`,
+    'width=1000,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no,centerscreen=yes'
+  );
+  
+  // Focus the new window
+  if (popupWindow) {
+    popupWindow.focus();
+  } else {
+    // If popup is blocked, show a message to the user
+    Swal.fire({
+      icon: 'warning',
+      title: t('common.popupBlocked'),
+      text: t('common.popupBlockedMessage'),
+      confirmButtonText: t('common.ok')
+    });
+  }
 };
 
-const closeMemberPopup = () => {
-  showMemberPopup.value = false;
-  selectedMemberData.value = null;
-};
+
 
 // Mobile helpers
 const toggleMemberExpand = (memberId: string) => {

@@ -574,6 +574,7 @@ export default {
     INVALID_RECEIVER: "INVALID_RECEIVER",
     AMOUNT_GT_WALLET: "Amount cannot be greater than available balance.",
     StoreMoneySuccess: "Store money transaction has been processed.",
+    NO_SETTLEMENT_DATA: "No settlement data.",
   },
   games: {
     SNOW_SNOW2: "api2all",
@@ -967,6 +968,8 @@ export default {
     showMore: "Show More",
     showLess: "Show Less",
     noDataFound: "No data found",
-    refresh: "Refresh"
+    refresh: "Refresh",
+    popupBlocked: "Popup Blocked",
+    popupBlockedMessage: "Your browser has blocked the popup. Please allow popups and try again."
   }
 } 

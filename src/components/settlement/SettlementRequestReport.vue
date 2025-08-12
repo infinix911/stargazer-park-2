@@ -315,7 +315,7 @@ const requestWithdrawal = async () => {
   } catch (error: any) {
     Swal.fire({
       title: t("partnerMenu.settlementRequest"),
-      text: t("Error." + (error.response?.data?.message || "Unknown error")),
+      text: t("Notif." + (error.response?.data?.message || "Unknown error")),
       icon: "error",
       confirmButtonColor: "#ef4444",
     });
