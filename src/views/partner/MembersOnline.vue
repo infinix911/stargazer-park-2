@@ -66,31 +66,10 @@
           </KTDatatable>
         </div>
 
-        <!-- Mobile Cards -->
-        <div class="lg:hidden space-y-4">
-          <!-- Loading State -->
-          <div v-if="loading" class="space-y-4">
-            <div
-              v-for="i in 3"
-              :key="i"
-              class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse"
-            >
-              <div class="flex items-center justify-between mb-3">
-                <div class="w-24 h-4 bg-white/10 rounded"></div>
-                <div class="w-16 h-4 bg-white/10 rounded"></div>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <div class="w-16 h-3 bg-white/10 rounded"></div>
-                  <div class="w-20 h-4 bg-white/10 rounded"></div>
-                </div>
-                <div class="space-y-2">
-                  <div class="w-16 h-3 bg-white/10 rounded"></div>
-                  <div class="w-20 h-4 bg-white/10 rounded"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+                 <!-- Mobile Cards -->
+         <div class="lg:hidden space-y-4">
+           <!-- Loading State -->
+           <MobileLoadingSkeleton v-if="loading" :count="3" />
 
           <!-- Empty State -->
           <div v-else-if="!tableData.length" class="text-center py-12">
@@ -177,6 +156,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
 import PartnerPageHeader from "@/components/partner/PartnerPageHeader.vue";
+import MobileLoadingSkeleton from "@/components/ui/MobileLoadingSkeleton.vue";
 
 // Types
 export interface IData {

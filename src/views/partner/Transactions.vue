@@ -155,62 +155,146 @@
     <!-- Data Table Section -->
     <div class="max-w-[1500px] mx-auto px-2 pb-6">
       <DataTableCard :record-count="tableData.length" :loading="loading">
-        <KTDatatable
-          :tableHeader="tableHeaders"
-          :tableData="tableData"
-          :rowsPerPage="50"
-          :loading="loading"
-        >
-          <!-- Transaction Type -->
-          <template v-slot:cell-transaction_type="{ row: data }">
-            <div class="text-center">
-              <span
-                v-if="data.transaction_type === 'DEPOSIT'"
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
-              >
-                <i class="fas fa-arrow-down mr-1"></i>
-                {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
-              </span>
-              <span
-                v-else
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
-              >
-                <i class="fas fa-arrow-up mr-1"></i>
-                {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
-              </span>
-            </div>
-          </template>
-
-          <!-- Amount -->
-          <template v-slot:cell-depwid="{ row: data }">
-            <div class="text-center">
-              <span
-                v-if="data.transaction_type === 'DEPOSIT'"
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
-              >
-                <i class="fas fa-plus mr-1"></i>
-                {{ n(parseInt(data.amount_deposit)) }}
-                <span v-if="data.amount_coupon > 0" class="ml-1 text-yellow-300">
-                  (+{{ n(parseInt(data.amount_coupon)) }})
+        <!-- Desktop Table -->
+        <div class="hidden lg:block">
+          <KTDatatable
+            :tableHeader="tableHeaders"
+            :tableData="tableData"
+            :rowsPerPage="50"
+            :loading="loading"
+          >
+            <!-- Transaction Type -->
+            <template v-slot:cell-transaction_type="{ row: data }">
+              <div class="text-center">
+                <span
+                  v-if="data.transaction_type === 'DEPOSIT'"
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+                >
+                  {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
                 </span>
-              </span>
-              <span
-                v-else
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
-              >
-                <i class="fas fa-minus mr-1"></i>
-                {{ n(parseInt(data.amount_withdraw)) }}
-              </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+                >
+                  {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
+                </span>
+              </div>
+            </template>
+
+            <!-- Amount -->
+            <template v-slot:cell-depwid="{ row: data }">
+              <div class="text-center">
+                <span
+                  v-if="data.transaction_type === 'DEPOSIT'"
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+                >
+                  {{ n(parseInt(data.amount_deposit)) }}
+                  <span v-if="data.amount_coupon > 0" class="ml-1 text-yellow-300">
+                    (+{{ n(parseInt(data.amount_coupon)) }})
+                  </span>
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+                >
+                  {{ n(parseInt(data.amount_withdraw)) }}
+                </span>
+              </div>
+            </template>
+          </KTDatatable>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="lg:hidden space-y-4">
+          <!-- Loading State -->
+          <MobileLoadingSkeleton v-if="loading" :count="5" />
+
+          <!-- Empty State -->
+          <div v-else-if="!tableData.length" class="text-center py-12">
+            <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-exchange-alt text-white/40 text-2xl"></i>
             </div>
-          </template>
-        </KTDatatable>
+            <p class="text-white/60 text-sm">{{ t("common.noDataFound") }}</p>
+          </div>
+
+          <!-- Transaction Cards -->
+          <div
+            v-else
+            v-for="transaction in tableData"
+            :key="`${transaction.member_id}-${transaction.createdAt}`"
+            class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
+          >
+            <!-- First Row: Member and Transaction Type -->
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-user text-blue-400 text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">{{ transaction.member }}</h3>
+                  <div class="flex items-center gap-2 text-xs text-gray-400">
+                    <span>{{ moment(transaction.createdAt).format("MM/DD/YYYY HH:mm") }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Transaction Type Status - Right Side -->
+              <div class="flex-shrink-0">
+                <span
+                  v-if="transaction.transaction_type === 'DEPOSIT'"
+                  class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+                >
+                  {{ t("transactionHistory.types." + transaction.transaction_type.toLowerCase()) }}
+                </span>
+                <span
+                   v-if="transaction.transaction_type === 'WITHDRAW'"
+                  class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+                >
+                  {{ t("transactionHistory.types.withdrawal") }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Second Row: Amount -->
+            <div class="flex items-center justify-between pt-3 pb-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400">{{ t("partner.tranAmount") }}</span>
+                <span
+                  v-if="transaction.transaction_type === 'DEPOSIT'"
+                  class="inline-flex items-center px-3 py-1 text-sm font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+                >
+                  {{ n(parseInt(transaction.amount_deposit)) }}
+                  <span v-if="transaction.amount_coupon > 0" class="ml-1 text-yellow-300">
+                    (+{{ n(parseInt(transaction.amount_coupon)) }})
+                  </span>
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-sm font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+                >
+                  {{ n(parseInt(transaction.amount_withdraw)) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Third Row: Process Date -->
+            <div class="flex items-center justify-between pt-3 border-t border-white/10">
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400">{{ t("partner.processDate") }}</span>
+                <span class="text-xs text-gray-300">
+                  {{ transaction.updatedAt ? moment(transaction.updatedAt).format("MM/DD/YYYY HH:mm") : "-" }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </DataTableCard>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+<script setup lang="ts">
+import { ref, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
@@ -218,7 +302,9 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import MobileLoadingSkeleton from "@/components/ui/MobileLoadingSkeleton.vue";
 
+// Types
 export interface IData {
   member_id: string;
   member: string;
@@ -235,177 +321,159 @@ export interface DateRange {
   end: string;
 }
 
-export default defineComponent({
-  name: "Transactions",
-  components: {
-    KTDatatable,
-    DateRangePicker,
-    DataTableCard,
-  },
-  props: {
-    member_id: {
-      type: String,
-      required: false,
+// Props
+interface Props {
+  member_id?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  member_id: undefined,
+});
+
+// Composables
+const { t, n } = useI18n();
+
+// Reactive state
+const tableData = ref<IData[]>([]);
+const includeSub = ref(true);
+const tranType = ref("ALL");
+const searchType = ref("ID");
+const searchValue = ref("");
+const loading = ref(false);
+
+// Computed properties
+const tableHeaders = [
+  { key: "member", name: t("partner.member") },
+  { key: "transaction_type", name: t("partner.depWid"), customslot: true },
+  { key: "depwid", name: t("partner.tranAmount"), customslot: true },
+  { key: "createdAt", name: t("partner.reqDate") },
+  { key: "updatedAt", name: t("partner.processDate")},
+];
+
+const tranTypes = [
+  { label: t("partner.all"), value: "ALL" },
+  { label: t("partner.deposit"), value: "DEPOSIT" },
+  { label: t("partner.withdrawal"), value: "WITHDRAW" },
+];
+
+const searchTypes = [
+  { label: t("login.id"), value: "ID" },
+  { label: t("partner.nickname"), value: "NICKNAME" },
+];
+
+const sums = ref({
+  withdrawals: 0,
+  deposits: 0,
+});
+
+// Date range (reactive, two-way bind with DateRangePicker)
+const dateRange = ref({
+  start: moment().startOf("month").format("YYYY-MM-DD"),
+  end: moment().format("YYYY-MM-DD"),
+});
+
+// Date Button Configuration
+const dateButtons = [
+  {
+    key: "today",
+    label: "dateRange.today",
+    range: {
+      start: moment().format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
     },
   },
-  setup(props) {
-    const { t, n } = useI18n();
-
-    const tableData = ref<IData[]>([]);
-    const tableHeaders = [
-      { key: "member", name: t("partner.member"), text: true },
-      { key: "transaction_type", name: t("partner.depWid"), customslot: true },
-      { key: "depwid", name: t("partner.tranAmount"), customslot: true },
-      { key: "createdAt", name: t("partner.reqDate"), text: true },
-      { key: "updatedAt", name: t("partner.processDate"), text: true },
-    ];
-
-    const includeSub = ref(true);
-    const tranType = ref("ALL");
-    const tranTypes = [
-      { label: t("partner.all"), value: "ALL" },
-      { label: t("partner.deposit"), value: "DEPOSIT" },
-      { label: t("partner.withdrawal"), value: "WITHDRAW" },
-    ];
-
-    const searchType = ref("ID");
-    const searchValue = ref("");
-    const searchTypes = [
-      { label: t("login.id"), value: "ID" },
-      { label: t("partner.nickname"), value: "NICKNAME" },
-    ];
-
-    const sums = ref({
-      withdrawals: 0,
-      deposits: 0,
-    });
-
-    // Date range (reactive, two-way bind with DateRangePicker)
-    const dateRange = ref({
-      start: moment().startOf("month").format("YYYY-MM-DD"),
+  {
+    key: "lastWeek",
+    label: "dateRange.lastWeek",
+    range: {
+      start: moment().subtract(7, "days").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
+    },
+  },
+  {
+    key: "fifteenDays",
+    label: "dateRange.fifteenDays",
+    range: {
+      start: moment().subtract(15, "days").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    },
+  },
+];
+
+// Methods
+const setSelectedDate = (date: DateRange) => {
+  if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+    dateRange.value.start = date.start;
+    dateRange.value.end = date.end;
+  }
+};
+
+const getList = async () => {
+  try {
+    loading.value = true;
+    let query = qs.stringify({
+      start: dateRange.value.start,
+      end: dateRange.value.end,
+      trantype: tranType.value,
+      type: searchType.value,
+      typeval: searchValue.value,
+      inclsub: includeSub.value,
     });
 
-    // Date Button Configuration
-    const dateButtons = [
-      {
-        key: "today",
-        label: "dateRange.today",
-        range: {
-          start: moment().format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "lastWeek",
-        label: "dateRange.lastWeek",
-        range: {
-          start: moment().subtract(7, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "fifteenDays",
-        label: "dateRange.fifteenDays",
-        range: {
-          start: moment().subtract(15, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-    ];
+    if (props.member_id) {
+      query = qs.stringify({
+        start: dateRange.value.start,
+        end: dateRange.value.end,
+        trantype: tranType.value,
+        type: searchType.value,
+        typeval: searchValue.value,
+        inclsub: includeSub.value,
+        member_id: props.member_id,
+      });
+    }
 
-    // Loading state
-    const loading = ref(false);
+    const results = await ApiService.get(`/partner/tran-history?${query}`)
+      .then((res) => res.data)
+      .catch(() => []);
 
-    const setSelectedDate = (date: DateRange) => {
-      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
-        dateRange.value.start = date.start;
-        dateRange.value.end = date.end;
-      }
-    };
+    tableData.value.splice(0, tableData.value.length, ...results);
+    getSums(results);
+  } catch (error) {
+    console.error("Failed to fetch transaction history:", error);
+  } finally {
+    loading.value = false;
+  }
+};
 
-    const getList = async () => {
-      try {
-        loading.value = true;
-        let query = qs.stringify({
-          start: dateRange.value.start,
-          end: dateRange.value.end,
-          trantype: tranType.value,
-          type: searchType.value,
-          typeval: searchValue.value,
-          inclsub: includeSub.value,
-        });
+const getSums = (results: Array<IData>) => {
+  // Total Withdrawals
+  sums.value.withdrawals = results.reduce(
+    (total: number, obj) => Number(obj.amount_withdraw) + Number(total),
+    0
+  );
+  sums.value.withdrawals *= -1;
 
-        if (props.member_id) {
-          query = qs.stringify({
-            start: dateRange.value.start,
-            end: dateRange.value.end,
-            trantype: tranType.value,
-            type: searchType.value,
-            typeval: searchValue.value,
-            inclsub: includeSub.value,
-            member_id: props.member_id,
-          });
-        }
+  // Total Deposits
+  sums.value.deposits = results.reduce(
+    (total: number, obj) => Number(obj.amount_deposit) + Number(total),
+    0
+  );
+};
 
-        const results = await ApiService.get(`/partner/tran-history?${query}`)
-          .then((res) => res.data)
-          .catch(() => []);
-
-        tableData.value.splice(0, tableData.value.length, ...results);
-        getSums(results);
-      } catch (error) {
-        console.error("Failed to fetch transaction history:", error);
-      } finally {
-        loading.value = false;
-      }
-    };
-
-    // Auto-refresh list when dateRange changes
-    watch(
-      dateRange,
-      (newVal, oldVal) => {
-        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
-          getList();
-        }
-      },
-      { deep: true }
-    );
-
-    const getSums = (results: Array<IData>) => {
-      // Total Withdrawals
-      sums.value.withdrawals = results.reduce(
-        (total: number, obj) => Number(obj.amount_withdraw) + Number(total),
-        0
-      );
-      sums.value.withdrawals *= -1;
-
-      // Total Deposits
-      sums.value.deposits = results.reduce(
-        (total: number, obj) => Number(obj.amount_deposit) + Number(total),
-        0
-      );
-    };
-
-    return {
-      tableHeaders,
-      tableData,
-      includeSub,
-      tranType,
-      tranTypes,
-      searchType,
-      searchTypes,
-      searchValue,
-      dateRange,
-      dateButtons,
-      setSelectedDate,
-      getList,
-      sums,
-      t,
-      n,
-      loading,
-    };
+// Watchers
+watch(
+  dateRange,
+  (newVal, oldVal) => {
+    if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+      getList();
+    }
   },
+  { deep: true }
+);
+
+// Lifecycle
+onMounted(() => {
+  getList();
 });
 </script>
 

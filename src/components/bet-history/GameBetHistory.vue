@@ -229,25 +229,7 @@
         </div>
 
         <!-- Loading State for Mobile -->
-        <div v-if="loading" class="space-y-3">
-          <div
-            v-for="i in 5"
-            :key="i"
-            class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-16 h-6 bg-white/20 rounded"></div>
-                <div class="w-20 h-4 bg-white/10 rounded"></div>
-              </div>
-              <div class="w-16 h-4 bg-white/10 rounded"></div>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="w-24 h-6 bg-white/20 rounded"></div>
-              <div class="w-20 h-6 bg-white/20 rounded"></div>
-            </div>
-          </div>
-        </div>
+        <MobileLoadingSkeleton v-if="loading" :count="5" />
 
         <!-- Mobile Bet Cards -->
         <div v-else-if="tableData.length > 0" class="space-y-3">
@@ -561,6 +543,7 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import MobileLoadingSkeleton from "@/components/ui/MobileLoadingSkeleton.vue";
 
 // DetailRow Component
 const DetailRow = defineComponent({

@@ -299,7 +299,7 @@ export default {
     types: {
       deposit: '입금',
       withdrawal: '출금',
-      transfer: '이체'
+      transfer: '이체',
     },
     status: {
       completed: '완료',

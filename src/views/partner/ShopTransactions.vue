@@ -79,59 +79,136 @@
         :record-count="tableData.length"
         :loading="loading"
       >
-        <KTDatatable
-          :tableHeader="tableHeaderShop"
-          :tableData="tableData"
-          :rowsPerPage="50"
-          :loading="loading"
-        >
-          <!-- Transaction Type -->
-          <template v-slot:cell-type="{ row: data }">
-            <div class="text-center">
-              <span
-                v-if="data.type === 'ADD'"
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
-              >
-                <i class="fas fa-plus mr-1"></i>
-                {{ t("partner.add") }}
-              </span>
-              <span
-                v-else
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
-              >
-                <i class="fas fa-minus mr-1"></i>
-                {{ t("partner.deduct") }}
-              </span>
-            </div>
-          </template>
+        <!-- Desktop Table -->
+        <div class="hidden lg:block">
+          <KTDatatable
+            :tableHeader="tableHeaderShop"
+            :tableData="tableData"
+            :rowsPerPage="50"
+            :loading="loading"
+          >
+            <!-- Transaction Type -->
+            <template v-slot:cell-type="{ row: data }">
+              <div class="text-center">
+                <span
+                  v-if="data.type === 'ADD'"
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+                >
+                  {{ t("partner.add") }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+                >
+                  {{ t("partner.deduct") }}
+                </span>
+              </div>
+            </template>
 
-          <!-- Amount -->
-          <template v-slot:cell-amount="{ row: data }">
-            <div class="text-center">
-              <span
-                v-if="data.type === 'ADD'"
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
-              >
-                <i class="fas fa-plus mr-1"></i>
-                {{ n(Number(data.amount)) }}
-              </span>
-              <span
-                v-else
-                class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
-              >
-                <i class="fas fa-minus mr-1"></i>
-                {{ n(Number(data.amount)) }}
-              </span>
+            <!-- Amount -->
+            <template v-slot:cell-amount="{ row: data }">
+              <div class="text-center">
+                <span
+                  v-if="data.type === 'ADD'"
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+                >
+                  <i class="fas fa-plus mr-1"></i>
+                  {{ n(Number(data.amount)) }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+                >
+                  <i class="fas fa-minus mr-1"></i>
+                  {{ n(Number(data.amount)) }}
+                </span>
+              </div>
+            </template>
+          </KTDatatable>
+        </div>
+
+                 <!-- Mobile Cards -->
+         <div class="lg:hidden space-y-4">
+           <!-- Loading State -->
+           <MobileLoadingSkeleton v-if="loading" :count="3" />
+
+          <!-- Empty State -->
+          <div v-else-if="!tableData.length" class="text-center py-12">
+            <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-store text-white/40 text-2xl"></i>
             </div>
-          </template>
-        </KTDatatable>
+            <p class="text-white/60 text-sm">{{ t("common.noDataFound") }}</p>
+          </div>
+
+          <!-- Transaction Cards -->
+          <div
+            v-else
+            v-for="transaction in tableData"
+            :key="transaction.id || transaction.member_id + transaction.createdAt"
+            class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
+          >
+            <!-- First Row: Member/Receiver and Transaction Type -->
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-store text-purple-400 text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">
+                    {{ transaction.receiver || transaction.sender || transaction.member }}
+                  </h3>
+                  <div class="flex items-center gap-2 text-xs text-gray-400">
+                    <span>{{ moment(transaction.updatedAt || transaction.createdAt).format("MM/DD/YYYY HH:mm") }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Transaction Type Status - Right Side -->
+              <div class="flex-shrink-0">
+                <span
+                  v-if="transaction.type === 'ADD'"
+                  class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-lg border border-green-400/30"
+                >
+                  {{ t("partner.add") }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
+                >
+                  {{ t("partner.deduct") }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Second Row: Amount -->
+            <div class="flex items-center justify-between pt-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400">{{ t("partner.tranAmount") }}</span>
+                <span
+                  v-if="transaction.type === 'ADD'"
+                  class="inline-flex items-center px-3 py-1 text-sm font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
+                >
+                  <i class="fas fa-plus mr-1"></i>
+                  {{ n(Number(transaction.amount)) }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex items-center px-3 py-1 text-sm font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
+                >
+                  <i class="fas fa-minus mr-1"></i>
+                  {{ n(Number(transaction.amount)) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </DataTableCard>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch } from "vue";
+<script setup lang="ts">
+import { ref, computed, onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
@@ -139,11 +216,19 @@ import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import MobileLoadingSkeleton from "@/components/ui/MobileLoadingSkeleton.vue";
 import { useAuthStore } from "@/stores/auth";
+import PartnerPageHeader from "@/components/partner/PartnerPageHeader.vue";
 
+// Types
 export interface IData {
+  id?: string;
   member_id: string;
   member: string;
+  receiver?: string;
+  sender?: string;
+  type: string;
+  amount: number;
   transaction_type: string;
   amount_deposit: number;
   amount_withdraw: number;
@@ -156,149 +241,141 @@ export interface DateRange {
   end: string;
 }
 
-export default defineComponent({
-  name: "ShopTransactions",
-  components: {
-    KTDatatable,
-    DateRangePicker,
-    DataTableCard,
-  },
-  props: {
-    member_id: {
-      type: String,
-      required: false,
-    },
-  },
-  setup(props) {
-    const { t, n } = useI18n();
-    const authStore = useAuthStore();
-    const user = computed(() => authStore.user);
+// Props
+interface Props {
+  member_id?: string;
+}
 
-    const tableData = ref<IData[]>([]);
-    const tableHeaderShop = ref([
-      { key: "receiver", name: t("partner.storeMember"), text: true },
+const props = withDefaults(defineProps<Props>(), {
+  member_id: undefined,
+});
+
+// Composables
+const { t, n } = useI18n();
+const authStore = useAuthStore();
+
+// Reactive state
+const tableData = ref<Array<IData>>([]);
+const loading = ref(false);
+const tranType = ref("ALL");
+const receiver = ref("");
+
+// Computed properties
+const user = computed(() => authStore.user);
+
+const tableHeaderShop = computed(() => {
+  if (user.value.shoplevel === 2) {
+    return [
+      { key: "sender", name: t("partner.sender"), text: true },
       { key: "type", name: t("partner.tranType"), customslot: true },
       { key: "amount", name: t("partner.tranAmount"), customslot: true },
       { key: "updatedAt", name: t("partner.date"), text: true },
-    ]);
-
-    const tranType = ref("ALL");
-    const tranTypes = [
-      { label: t("partner.all"), value: "ALL" },
-      { label: t("partner.add"), value: "ADD" },
-      { label: t("partner.deduct"), value: "DEDUCT" },
     ];
+  }
+  return [
+    { key: "receiver", name: t("partner.storeMember"), text: true },
+    { key: "type", name: t("partner.tranType"), customslot: true },
+    { key: "amount", name: t("partner.tranAmount"), customslot: true },
+    { key: "updatedAt", name: t("partner.date"), text: true },
+  ];
+});
 
-    const receiver = ref("");
+const tranTypes = computed(() => [
+  { label: t("partner.all"), value: "ALL" },
+  { label: t("partner.add"), value: "ADD" },
+  { label: t("partner.deduct"), value: "DEDUCT" },
+]);
 
-    // Date range (reactive, two-way bind with DateRangePicker)
-    const dateRange = ref({
-      start: moment().startOf("month").format("YYYY-MM-DD"),
+// Date range (reactive, two-way bind with DateRangePicker)
+const dateRange = ref({
+  start: moment().startOf("month").format("YYYY-MM-DD"),
+  end: moment().format("YYYY-MM-DD"),
+});
+
+// Date Button Configuration
+const dateButtons = computed(() => [
+  {
+    key: "today",
+    label: "dateRange.today",
+    range: {
+      start: moment().format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    });
-
-    // Date Button Configuration
-    const dateButtons = [
-      {
-        key: "today",
-        label: "dateRange.today",
-        range: {
-          start: moment().format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "lastWeek",
-        label: "dateRange.lastWeek",
-        range: {
-          start: moment().subtract(7, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-      {
-        key: "fifteenDays",
-        label: "dateRange.fifteenDays",
-        range: {
-          start: moment().subtract(15, "days").format("YYYY-MM-DD"),
-          end: moment().format("YYYY-MM-DD"),
-        },
-      },
-    ];
-
-    // Loading state
-    const loading = ref(false);
-
-    const setSelectedDate = (date: DateRange) => {
-      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
-        dateRange.value.start = date.start;
-        dateRange.value.end = date.end;
-      }
-    };
-
-    const getList = async () => {
-      try {
-        loading.value = true;
-        let apipath = "";
-        let query = qs.stringify({
-          receiver: receiver.value,
-          type: tranType.value,
-          start: dateRange.value.start,
-          end: dateRange.value.end,
-        });
-
-        if (user.value.shoplevel < 2) {
-          apipath = `/partner/shop/transactions/sender?${query}`;
-        } else if (user.value.shoplevel === 2) {
-          apipath = `/partner/shop/transactions/receiver`;
-        }
-
-        const results = await ApiService.get(apipath)
-          .then((res) => res.data)
-          .catch(() => []);
-
-        tableData.value.splice(0, tableData.value.length, ...results);
-      } catch (error) {
-        console.error("Failed to fetch shop transactions:", error);
-      } finally {
-        loading.value = false;
-      }
-    };
-
-    // Auto-refresh list when dateRange changes
-    watch(
-      dateRange,
-      (newVal, oldVal) => {
-        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
-          getList();
-        }
-      },
-      { deep: true }
-    );
-
-    onMounted(() => {
-      if (user.value.shoplevel === 2 && tableHeaderShop.value.length > 0) {
-        tableHeaderShop.value[0]!.key = "sender";
-        tableHeaderShop.value[0]!.name = t("partner.sender");
-        getList();
-      }
-    });
-
-    return {
-      t,
-      n,
-      tableHeaderShop,
-      tableData,
-      tranType,
-      tranTypes,
-      receiver,
-      dateRange,
-      dateButtons,
-      setSelectedDate,
-      getList,
-      authStore,
-      loading,
-    };
+    },
   },
+  {
+    key: "lastWeek",
+    label: "dateRange.lastWeek",
+    range: {
+      start: moment().subtract(7, "days").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    },
+  },
+  {
+    key: "fifteenDays",
+    label: "dateRange.fifteenDays",
+    range: {
+      start: moment().subtract(15, "days").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    },
+  },
+]);
+
+// Methods
+const setSelectedDate = (date: DateRange) => {
+  if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+    dateRange.value.start = date.start;
+    dateRange.value.end = date.end;
+  }
+};
+
+const fetchShopTransactions = async (): Promise<IData[]> => {
+  try {
+    let apipath = "";
+    let query = qs.stringify({
+      receiver: receiver.value,
+      type: tranType.value,
+      start: dateRange.value.start,
+      end: dateRange.value.end,
+    });
+
+    if (user.value.shoplevel < 2) {
+      apipath = `/partner/shop/transactions/sender?${query}`;
+    } else if (user.value.shoplevel === 2) {
+      apipath = `/partner/shop/transactions/receiver`;
+    }
+
+    const response = await ApiService.get(apipath);
+    return response.data || [];
+  } catch (error) {
+    console.error("Failed to fetch shop transactions:", error);
+    return [];
+  }
+};
+
+const getList = async (): Promise<void> => {
+  try {
+    loading.value = true;
+    const results = await fetchShopTransactions();
+    tableData.value = results;
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Watchers
+watch(
+  dateRange,
+  (newVal, oldVal) => {
+    if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+      getList();
+    }
+  },
+  { deep: true }
+);
+
+// Lifecycle
+onMounted(() => {
+  getList();
 });
 </script>
 
