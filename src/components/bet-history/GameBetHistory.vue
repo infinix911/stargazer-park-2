@@ -2,17 +2,14 @@
   <div>
     <!-- Controls Section -->
     <div class="w-full px-4 py-6">
-      <div class="flex items-end justify-end">
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
+      <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end justify-end">
+        <!-- Search Fields Row -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial">
           <!-- Search Type -->
-          <div v-if="memberId === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Type
-            </label>
+          <div v-if="memberId === undefined" class="w-full sm:w-32 lg:w-32">
             <select 
               v-model="searchType" 
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px;"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option v-for="option in searchTypes" :key="option.value" :value="option.value" class="bg-gray-800 text-white">
                 {{ option.label }}
@@ -21,49 +18,43 @@
           </div>
 
           <!-- Search Value -->
-          <div v-if="memberId === undefined" class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Search Value
-            </label>
+          <div v-if="memberId === undefined" class="w-full sm:w-48 lg:w-48">
             <input 
               v-model="searchValue" 
               type="text"
-              class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px;"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
 
           <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
-            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-              Date Range
-            </label>
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full date-picker-modern"
-              @changedate="setSelectedDate"
+              class="w-full !h-[40px] date-picker-modern"
+              v-model="daterange"
               initial="week"
-              style="height: 40px;"
             />
           </div>
+        </div>
 
-          <!-- Quick Date Buttons -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-            <button
-              v-for="dateButton in dateButtons"
-              :key="dateButton.key"
-              @click="setSelectedDate(dateButton.range)"
-              class="w-16 h-10 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
-            >
-              {{ t(dateButton.label) }}
-            </button>
-            <button
-              @click="getHistory"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
-            >
-              <i class="fas fa-search mr-1"></i>
-              Search
-            </button>
-          </div>
+        <!-- Quick Date Buttons -->
+        <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
+          <button
+            v-for="dateButton in dateButtons"
+            :key="dateButton.key"
+            @click="setSelectedDate(dateButton.range)"
+            class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          >
+            {{ t(dateButton.label) }}
+          </button>
+          <button
+            @click="getHistory"
+            :disabled="loading"
+            class="h-[40px] flex-1 sm:w-20 sm:flex-initial rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+            <i v-else class="fas fa-search mr-1"></i>
+            {{ loading ? t('common.loading') : t('search') }}
+          </button>
         </div>
       </div>
     </div>
@@ -122,12 +113,14 @@
         :record-count="tableData.length"
         icon="fas fa-dice"
         icon-color="#ef4444"
+        :loading="loading"
       >
           <KTDatatable 
             :tableHeader="tableHeaders" 
             :tableData="tableData" 
             :rowsPerPage="50"
             :total="rowsCount"
+            :loading="loading"
             @items-per-page-change="setPageLimit"
             @current-change="setPage"
           >
@@ -201,7 +194,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 import qs from "qs";
@@ -316,6 +309,15 @@ export default defineComponent({
       return gameNames[props.game as keyof typeof gameNames] || props.game;
     });
 
+    // Date range (reactive, two-way bind with DateRangePicker)
+    const daterange = ref({
+      start: moment().startOf("month").format("YYYY-MM-DD"),
+      end: moment().format("YYYY-MM-DD"),
+    });
+
+    // Loading state
+    const loading = ref(false);
+
     // Pagination
     const rowsCount = ref(0);
     let pageLimit = 50;
@@ -332,22 +334,20 @@ export default defineComponent({
     };
 
     // Date range
-    let daterange = {
-      start: moment().startOf("month").format("YYYY-MM-DD"),
-      end: moment().format("YYYY-MM-DD"),
-    };
-
     const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getHistory();
+      if (daterange.value.start !== date.start || daterange.value.end !== date.end) {
+        daterange.value.start = date.start;
+        daterange.value.end = date.end;
+      }
     };
 
     const getHistory = async () => {
       try {
+        loading.value = true;
         let query = qs.stringify({
           game: props.game,
-          start: daterange.start,
-          end: daterange.end,
+          start: daterange.value.start,
+          end: daterange.value.end,
           type: searchType.value,
           typeval: searchValue.value,
           limit: pageLimit,
@@ -357,8 +357,8 @@ export default defineComponent({
         if (props.memberId) {
           query = qs.stringify({
             game: props.game,
-            start: daterange.start,
-            end: daterange.end,
+            start: daterange.value.start,
+            end: daterange.value.end,
             type: searchType.value,
             typeval: searchValue.value,
             member_id: props.memberId,
@@ -376,8 +376,21 @@ export default defineComponent({
         tableData.value.splice(0, tableData.value.length, ...results.data);
       } catch (error) {
         console.error('Failed to fetch bet history:', error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    // Auto-refresh list when daterange changes
+    watch(
+      daterange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getHistory();
+        }
+      },
+      { deep: true }
+    );
 
     return {
       t,
@@ -390,11 +403,13 @@ export default defineComponent({
       historySums,
       dateButtons,
       gameDisplayName,
+      daterange,
       setPageLimit,
       setPage,
       rowsCount,
       setSelectedDate,
       getHistory,
+      loading,
     };
   },
 });

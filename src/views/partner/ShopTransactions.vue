@@ -10,19 +10,14 @@
   <div class="max-w-[1500px] mx-auto">
     <!-- Controls Section -->
     <div class="w-full mx-auto px-4 py-6" v-if="authStore.user.shoplevel < 2">
-      <div class="flex items-end justify-end">
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
+      <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end justify-end">
+        <!-- Search Fields Row -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial">
           <!-- Transaction Type -->
-          <div class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              {{ t("partner.tranType") }}
-            </label>
+          <div class="w-full sm:w-32 lg:w-32">
             <select
               v-model="tranType"
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option
                 v-for="option in tranTypes"
@@ -36,46 +31,44 @@
           </div>
 
           <!-- Store Member -->
-          <div class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              {{ t("partner.storeMember") }}
-            </label>
+          <div class="w-full sm:w-48 lg:w-48">
             <input
               v-model="receiver"
               type="text"
-              class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px"
+              placeholder="Store Member"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
 
           <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              Date Range
-            </label>
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full date-picker-modern"
-              @changedate="setSelectedDate"
+              class="w-full !h-[40px] date-picker-modern"
+              v-model="dateRange"
               initial="month"
-              style="height: 40px"
             />
           </div>
+        </div>
 
-          <!-- Search Button -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-            <button
-              @click="getList"
-              class="w-20 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg text-xs"
-              style="height: 40px"
-            >
-              <i class="fas fa-search mr-1"></i>
-              Search
-            </button>
-          </div>
+        <!-- Quick Date Buttons -->
+        <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
+          <button
+            v-for="dateButton in dateButtons"
+            :key="dateButton.key"
+            @click="setSelectedDate(dateButton.range)"
+            class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          >
+            {{ t(dateButton.label) }}
+          </button>
+          <button
+            @click="getList"
+            :disabled="loading"
+            class="h-[40px] flex-1 sm:w-20 sm:flex-initial bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+            <i v-else class="fas fa-search mr-1"></i>
+            {{ loading ? t('common.loading') : t('search') }}
+          </button>
         </div>
       </div>
     </div>
@@ -83,16 +76,14 @@
     <!-- Data Table Section -->
     <div class="max-w-[1500px] mx-auto px-2 pb-6">
       <DataTableCard
-        :title="t('partnerMenu.shopTranHistory')"
-        subtitle="Shop transaction records and history"
         :record-count="tableData.length"
-        icon="fas fa-store"
-        icon-color="#8b5cf6"
+        :loading="loading"
       >
         <KTDatatable
           :tableHeader="tableHeaderShop"
           :tableData="tableData"
           :rowsPerPage="50"
+          :loading="loading"
         >
           <!-- Transaction Type -->
           <template v-slot:cell-type="{ row: data }">
@@ -140,7 +131,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
@@ -200,24 +191,59 @@ export default defineComponent({
 
     const receiver = ref("");
 
-    let daterange = {
+    // Date range (reactive, two-way bind with DateRangePicker)
+    const dateRange = ref({
       start: moment().startOf("month").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
+    });
+
+    // Date Button Configuration
+    const dateButtons = [
+      {
+        key: "today",
+        label: "dateRange.today",
+        range: {
+          start: moment().format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+      {
+        key: "lastWeek",
+        label: "dateRange.lastWeek",
+        range: {
+          start: moment().subtract(7, "days").format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+      {
+        key: "fifteenDays",
+        label: "dateRange.fifteenDays",
+        range: {
+          start: moment().subtract(15, "days").format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+    ];
+
+    // Loading state
+    const loading = ref(false);
 
     const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getList();
+      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+        dateRange.value.start = date.start;
+        dateRange.value.end = date.end;
+      }
     };
 
     const getList = async () => {
       try {
+        loading.value = true;
         let apipath = "";
         let query = qs.stringify({
           receiver: receiver.value,
           type: tranType.value,
-          start: daterange.start,
-          end: daterange.end,
+          start: dateRange.value.start,
+          end: dateRange.value.end,
         });
 
         if (user.value.shoplevel < 2) {
@@ -233,8 +259,21 @@ export default defineComponent({
         tableData.value.splice(0, tableData.value.length, ...results);
       } catch (error) {
         console.error("Failed to fetch shop transactions:", error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    // Auto-refresh list when dateRange changes
+    watch(
+      dateRange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getList();
+        }
+      },
+      { deep: true }
+    );
 
     onMounted(() => {
       if (user.value.shoplevel === 2 && tableHeaderShop.value.length > 0) {
@@ -252,9 +291,12 @@ export default defineComponent({
       tranType,
       tranTypes,
       receiver,
+      dateRange,
+      dateButtons,
       setSelectedDate,
       getList,
       authStore,
+      loading,
     };
   },
 });

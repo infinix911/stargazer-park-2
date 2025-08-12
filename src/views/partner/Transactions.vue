@@ -11,19 +11,14 @@
   <div class="max-w-[1500px] mx-auto">
     <!-- Controls Section -->
     <div class="w-full mx-auto px-4 py-6">
-      <div class="flex items-end justify-end">
-        <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end">
+      <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end justify-end">
+        <!-- Search Fields Group -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial">
           <!-- Transaction Type -->
-          <div class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              {{ t("partner.tranType") }}
-            </label>
+          <div class="w-full sm:w-32 lg:w-32">
             <select
               v-model="tranType"
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option
                 v-for="option in tranTypes"
@@ -37,16 +32,10 @@
           </div>
 
           <!-- Search Type -->
-          <div v-if="member_id === undefined" class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              Search Type
-            </label>
+          <div v-if="member_id === undefined" class="w-full sm:w-32 lg:w-32">
             <select
               v-model="searchType"
-              class="w-32 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none"
-              style="height: 40px"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
             >
               <option
                 v-for="option in searchTypes"
@@ -60,30 +49,19 @@
           </div>
 
           <!-- Search Value -->
-          <div v-if="member_id === undefined" class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              Search Value
-            </label>
+          <div v-if="member_id === undefined" class="w-full sm:w-48 lg:w-48">
             <input
               v-model="searchValue"
               type="text"
-              class="w-48 bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400"
-              style="height: 40px"
+              placeholder="Search value"
+              class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>
 
           <!-- Include Sub Members -->
-          <div class="flex-shrink-0">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              Options
-            </label>
+          <div class="w-full sm:w-auto lg:w-auto">
             <div
-              class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3"
-              style="height: 40px"
+              class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3 h-[40px] w-full sm:w-auto"
             >
               <input
                 type="checkbox"
@@ -98,30 +76,34 @@
           </div>
 
           <!-- Date Range Picker -->
-          <div class="flex-1 min-w-0 max-w-[300px]">
-            <label
-              class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide"
-            >
-              Date Range
-            </label>
+          <div class="w-full sm:flex-1 sm:min-w-0 sm:max-w-[300px] lg:w-[300px]">
             <DateRangePicker
-              class="w-full date-picker-modern"
-              @changedate="setSelectedDate"
+              class="w-full !h-[40px] date-picker-modern"
+              v-model="dateRange"
               initial="month"
-              style="height: 40px"
             />
           </div>
+        </div>
 
-          <!-- Search Button -->
-          <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-            <button
-              @click="getList"
-              class="w-20 h-10 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
-            >
-              <i class="fas fa-search mr-1"></i>
-              Search
-            </button>
-          </div>
+        <!-- Quick Date Buttons -->
+        <div class="flex gap-2 items-end justify-center sm:justify-end lg:justify-end">
+          <button
+            v-for="dateButton in dateButtons"
+            :key="dateButton.key"
+            @click="setSelectedDate(dateButton.range)"
+            class="h-[40px] flex-1 sm:w-16 sm:flex-initial rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          >
+            {{ t(dateButton.label) }}
+          </button>
+          <button
+            @click="getList"
+            :disabled="loading"
+            class="h-[40px] flex-1 sm:w-20 sm:flex-initial rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+            <i v-else class="fas fa-search mr-1"></i>
+            {{ loading ? t("common.loading") : t("search") }}
+          </button>
         </div>
       </div>
     </div>
@@ -172,14 +154,13 @@
 
     <!-- Data Table Section -->
     <div class="max-w-[1500px] mx-auto px-2 pb-6">
-      <DataTableCard
-        :title="t('partnerMenu.transaction')"
-        subtitle="Transaction records and history"
-        :record-count="tableData.length"
-        icon="fas fa-exchange-alt"
-        icon-color="#3b82f6"
-      >
-        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50">
+      <DataTableCard :record-count="tableData.length" :loading="loading">
+        <KTDatatable
+          :tableHeader="tableHeaders"
+          :tableData="tableData"
+          :rowsPerPage="50"
+          :loading="loading"
+        >
           <!-- Transaction Type -->
           <template v-slot:cell-transaction_type="{ row: data }">
             <div class="text-center">
@@ -229,7 +210,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import moment from "moment";
 import qs from "qs";
@@ -299,21 +280,56 @@ export default defineComponent({
       deposits: 0,
     });
 
-    let daterange = {
+    // Date range (reactive, two-way bind with DateRangePicker)
+    const dateRange = ref({
       start: moment().startOf("month").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
+    });
+
+    // Date Button Configuration
+    const dateButtons = [
+      {
+        key: "today",
+        label: "dateRange.today",
+        range: {
+          start: moment().format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+      {
+        key: "lastWeek",
+        label: "dateRange.lastWeek",
+        range: {
+          start: moment().subtract(7, "days").format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+      {
+        key: "fifteenDays",
+        label: "dateRange.fifteenDays",
+        range: {
+          start: moment().subtract(15, "days").format("YYYY-MM-DD"),
+          end: moment().format("YYYY-MM-DD"),
+        },
+      },
+    ];
+
+    // Loading state
+    const loading = ref(false);
 
     const setSelectedDate = (date: DateRange) => {
-      daterange = date;
-      getList();
+      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+        dateRange.value.start = date.start;
+        dateRange.value.end = date.end;
+      }
     };
 
     const getList = async () => {
       try {
+        loading.value = true;
         let query = qs.stringify({
-          start: daterange.start,
-          end: daterange.end,
+          start: dateRange.value.start,
+          end: dateRange.value.end,
           trantype: tranType.value,
           type: searchType.value,
           typeval: searchValue.value,
@@ -322,8 +338,8 @@ export default defineComponent({
 
         if (props.member_id) {
           query = qs.stringify({
-            start: daterange.start,
-            end: daterange.end,
+            start: dateRange.value.start,
+            end: dateRange.value.end,
             trantype: tranType.value,
             type: searchType.value,
             typeval: searchValue.value,
@@ -340,8 +356,21 @@ export default defineComponent({
         getSums(results);
       } catch (error) {
         console.error("Failed to fetch transaction history:", error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    // Auto-refresh list when dateRange changes
+    watch(
+      dateRange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getList();
+        }
+      },
+      { deep: true }
+    );
 
     const getSums = (results: Array<IData>) => {
       // Total Withdrawals
@@ -367,11 +396,14 @@ export default defineComponent({
       searchType,
       searchTypes,
       searchValue,
+      dateRange,
+      dateButtons,
       setSelectedDate,
       getList,
       sums,
       t,
       n,
+      loading,
     };
   },
 });

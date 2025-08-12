@@ -11,13 +11,13 @@
     <!-- Game Type Tabs -->
     <div class="w-full mx-auto px-4 py-6">
       <div class="border-b border-white/20">
-        <nav class="flex space-x-8">
+        <nav class="flex space-x-2 lg:space-x-8">
           <button
             v-for="tab in gameTabs"
             :key="tab.key"
             @click="setActiveTab(tab.key)"
             :class="[
-              'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200',
+              'py-4 px-1 border-b-2 font-medium text-base transition-colors duration-200 text-xs lg:text-base',
               activeTab === tab.key 
                 ? 'border-blue-500 text-blue-400' 
                 : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Game Content -->
-    <div class="w-full mx-auto px-4 pb-8">
+    <div class="w-full mx-auto xl:px-4 pb-8">
       <Statistics 
         v-if="activeTab"
         :game="activeTab.toUpperCase()" 
@@ -63,22 +63,22 @@ export default defineComponent({
       },
       {
         key: "casino",
-        label: "partner.casino",
+        label: "common.CASINO",
         icon: "fas fa-coins"
       },
       {
         key: "hotel",
-        label: "partner.hotel", 
+        label: "common.HOTEL", 
         icon: "fas fa-building"
       },
       {
         key: "slot",
-        label: "partner.slot",
+        label: "common.SLOT",
         icon: "fas fa-gamepad"
       },
       {
         key: "sport",
-        label: "partner.sport",
+        label: "common.SPORT",
         icon: "fas fa-futbol"
       }
     ];

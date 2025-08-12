@@ -130,6 +130,11 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/partner/member/:memberId",
+    name: "MemberPopup",
+    component: () => import("../views/partner/profile/MemberPopup.vue"),
+  },
   // Game Launch
   {
     path: "/game/:provider/:code",

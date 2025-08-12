@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="t('PartnerMenu.dashboard')"
+    :title="t('partnerMenu.dashboard')"
     subtitle="Transactions Overview and Game Summary"
     icon="fas fa-users"
     icon-color="green-blue"
@@ -11,33 +11,36 @@
   <div class="max-w-[1500px] mx-auto px-4 py-6">
     <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5">
       <!-- Date Range Picker -->
-      <div class="flex-1 min-w-0 max-w-[300px]">
-        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
-          Date Range
-        </label>
+      <div class="w-full lg:flex-1 lg:min-w-0 lg:max-w-[300px]">
         <DateRangePicker
-          class="w-full h-10 date-picker-modern"
-          @changedate="setSelectedDate"
+          class="w-full !h-[40px] date-picker-modern"
+          v-model="dateRange"
           initial="month"
         />
       </div>
 
       <!-- Quick Action Buttons -->
-      <div class="flex gap-2 lg:min-w-0 lg:flex-shrink-0 items-end justify-end">
-        <button
-          v-for="dateButton in dateButtons"
-          :key="dateButton.key"
-          @click="setSelectedDate(dateButton.range)"
-          class="w-16 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
-        >
-          {{ t(dateButton.label) }}
-        </button>
+      <div class="flex flex-col sm:flex-row gap-2 lg:min-w-0 lg:flex-shrink-0 items-stretch sm:items-end justify-center lg:justify-end">
+        <!-- Date buttons row for mobile, inline for larger screens -->
+        <div class="flex gap-2 flex-1 sm:flex-initial">
+          <button
+            v-for="dateButton in dateButtons"
+            :key="dateButton.key"
+            @click="setSelectedDate(dateButton.range)"
+            class="h-[40px] flex-1 sm:w-16 sm:flex-initial py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 hover:scale-105"
+          >
+            {{ t(dateButton.label) }}
+          </button>
+        </div>
+        <!-- Search button -->
         <button
           @click="getList"
-          class="w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg"
+          :disabled="loading"
+          class="h-[40px] w-full sm:w-20 py-2 rounded-lg text-xs font-semibold text-black bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 transition-all duration-200 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <i class="fas fa-search mr-1"></i>
-          Search
+          <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
+          <i v-else class="fas fa-search mr-1"></i>
+          {{ loading ? t('common.loading') : t('search') }}
         </button>
       </div>
     </div>
@@ -52,8 +55,9 @@
       :record-count="tableData.length"
       icon="fas fa-exchange-alt"
       icon-color="#3b82f6"
+      :loading="loading"
     >
-      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" />
+      <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading" />
     </DataTableCard>
 
     <!-- Game Summary Table -->
@@ -63,12 +67,14 @@
       :record-count="gameTableData.length"
       icon="fas fa-gamepad"
       icon-color="#10b981"
+      :loading="loading"
     >
       <KTDatatable
         :tableHeader="gameTableHeaders"
         :tableData="gameTableData"
         :rowsPerPage="50"
         :isAccordion="true"
+        :loading="loading"
       >
         <!-- Dynamic Sub Tables -->
         <template v-for="(gameType, index) in gameTableData" :key="index" #[`table-sub${index}`]>
@@ -84,7 +90,7 @@
         </template>
         <!-- Main Game Type Cell -->
         <template #cell-game="{ row: data }">
-          <span>{{ t(data.game_type) }}</span>
+          <span>{{ t('common.' + data.game_type) }}</span>
         </template>
       </KTDatatable>
     </DataTableCard>
@@ -92,13 +98,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, ref } from "vue";
+import { defineComponent, onMounted, computed, ref, watch } from "vue";
 import moment from "moment";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/services/ApiService";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import DateRangePicker from "@/components/kt-date/DateRangePicker.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
+import qs from "qs";
 
 export interface IData {
   deposit: number;
@@ -135,12 +142,19 @@ export default defineComponent({
     DateRangePicker,
     DataTableCard,
   },
-  setup() {
+  props: {
+    memberId: {
+      type: String,
+      default: null
+    }
+  },
+  setup(props) {
     const { t } = useI18n();
     
     // Data
     const tableData = ref<Array<IData>>([]);
     const gameTableData = ref<Array<ISummaryTable>>([]);
+    const loading = ref(false);
     
     // Table Headers
     const tableHeaders = [
@@ -160,11 +174,11 @@ export default defineComponent({
       { key: "total_profit", name: t("partner.totalProfit"), currency: true },
     ];
 
-    // Date Range
-    let range = {
+    // Date Range - reactive ref for v-model
+    const dateRange = ref({
       start: moment().startOf("month").format("YYYY-MM-DD"),
       end: moment().format("YYYY-MM-DD"),
-    };
+    });
 
     // Date Button Configuration
     const dateButtons = [
@@ -195,37 +209,75 @@ export default defineComponent({
     ];
 
     // Methods
+    // setSelectedDate is now only used by dateButtons
     const setSelectedDate = (date: DateRange) => {
-      range = date;
-      getList();
+      if (dateRange.value.start !== date.start || dateRange.value.end !== date.end) {
+        dateRange.value.start = date.start;
+        dateRange.value.end = date.end;
+      }
     };
 
     const getList = async () => {
       try {
+        loading.value = true;
+        // Build query parameters using qs
+        const query = qs.stringify(
+          {
+            start: dateRange.value.start,
+            end: dateRange.value.end,
+            member_id: props.memberId || undefined,
+          },
+          { addQueryPrefix: true, skipNulls: true }
+        );
+
         // Fetch transaction data
         const results = await ApiService.get(
-          `/partner/dashboard?start=${range.start}&end=${range.end}`
+          `/partner/dashboard${query}`
         ).then((res) => res.data);
-        tableData.value.splice(0, tableData.value.length, ...results);
+
+        // Clear and update table data without triggering watchers
+        tableData.value.length = 0;
+        tableData.value.push(...results);
 
         // Fetch game summary data
         const gameResults = await ApiService.get(
-          `/partner/dashboard/summary?start=${range.start}&end=${range.end}`
+          `/partner/dashboard/summary${query}`
         ).then((res) => res.data);
-        gameTableData.value.splice(0, gameTableData.value.length, ...gameResults);
+
+        // Clear and update game table data without triggering watchers
+        gameTableData.value.length = 0;
+        gameTableData.value.push(...gameResults);
       } catch (error) {
         console.error("Dashboard API error:", error);
+      } finally {
+        loading.value = false;
       }
     };
 
     const formatDateRange = computed(() => {
-      if (range.start && range.end) {
-        const start = moment(range.start).format("MMM DD");
-        const end = moment(range.end).format("MMM DD");
+      if (dateRange.value.start && dateRange.value.end) {
+        const start = moment(dateRange.value.start).format("MMM DD");
+        const end = moment(dateRange.value.end).format("MMM DD");
         return start === end ? start : `${start} - ${end}`;
       }
       return "Month";
     });
+
+    // Watch for memberId changes only when it's provided as a prop
+    if (props.memberId) {
+      watch(() => props.memberId, (newMemberId, oldMemberId) => {
+        if (newMemberId && newMemberId !== oldMemberId) {
+          getList();
+        }
+      }, { immediate: false });
+    }
+
+    // Add watcher for dateRange to trigger getList
+    watch(dateRange, (newVal, oldVal) => {
+      if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+        getList();
+      }
+    }, { deep: true });
 
     onMounted(() => {
       getList();
@@ -237,10 +289,12 @@ export default defineComponent({
       tableData,
       gameTableHeaders,
       gameTableData,
+      dateRange,
       dateButtons,
       setSelectedDate,
       getList,
       formatDateRange,
+      loading,
     };
   },
 });

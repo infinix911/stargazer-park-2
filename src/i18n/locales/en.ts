@@ -7,7 +7,8 @@ export default {
     holdem: 'Hold\'em',
     deposit: 'Deposit',
     withdraw: 'Withdraw',
-    myLounge: 'My Lounge'
+    myLounge: 'My Lounge',
+    partner: 'Partner'
   },
   topBar: {
     login: 'Login',
@@ -19,6 +20,7 @@ export default {
     loginNow: 'Login Now'
   },
   login: {
+    id: "User ID",
     title: 'PRODTEST2',
     subtitle: 'Login Required',
     description: 'Please log in to access the selected service',
@@ -336,7 +338,7 @@ export default {
     faq: 'FAQ',
     help: 'Help'
   },
-  PartnerMenu: {
+  partnerMenu: {
     home: "Home",
     dashboard: "Dashboard",
     member: "Member",
@@ -359,6 +361,9 @@ export default {
     reports: "Reports",
   },
   partner: {
+    processing: "Processing...",
+    winningAmount: "Winning Amount",
+    amountAfter: "Amount After",
     slotButton: "Slot Recovery",
     slotMoney: "Slot Money",
     type: "Type",
@@ -457,6 +462,11 @@ export default {
     totalDeposit: "Total Deposit",
     totalWithdraw: "Total Withdraw",
     totalDepNWid: "Deposit/Withdrawal Difference",
+    selectDateRange: "Select Date Range",
+    search: "Search",
+    requestSettlement: "Request Settlement",
+    settlementRequest: "Settlement Request",
+    settlementData: "Settlement Data",
     name: "Name",
     telNo: "Phone Number",
     rate: "Rate",
@@ -516,6 +526,15 @@ export default {
     shopMemberBalance: "Shop Member Balance",
     rate_invalid_check_subagent: "Rolling rate cannot be lower than sub agent rolling rate.",
     addPoint: "Transfer",
+    settlementHistory: "Settlement History",
+  },
+  amounts: {
+    "1K": "1K",
+    "10K": "10K",
+    "100K": "100K",
+    "500K": "500K",
+    "1M": "1M",
+    reset: "Reset"
   },
   dateRange: {
     start: "From",
@@ -525,12 +544,36 @@ export default {
     lastWeek: "Last Week",
     fifteenDays: "15 Days",
   },
+  search: 'Search',
+  date: "Date",
+  SearchKeyword: "Enter search keyword...",
+  openAll: "Open All",
+  closeAll: "Close All",
+  status: {
+    normal: "Normal",
+    new: "New",
+    waiting: "Waiting",
+    stopped: "Stopped",
+    complete: "Complete",
+    application: "Application",
+    adminCancel: "Admin Cancel",
+    waitingForApproval: "Waiting for Approval",
+    0: "Waiting",
+    win: "Win",
+    lose: "Lose",
+    tie: "Tie Refund",
+    2: "Refund",
+    3: "Error",
+  },
   notif: {
     Alarm: "Alarm",
     INVALID_ACCOUNT: "Invalid password.",
     INVALID_SECURITY_CODE: "Security code will expire if you don't log in within 2 minutes. Please refresh the page.",
     INVALID_SECURITY_CODE_ANSWER: "Invalid security code.",
-    AUTO_LOGGED_OUT: "Your session has expired, and the connection has been terminated."
+    AUTO_LOGGED_OUT: "Your session has expired, and the connection has been terminated.",
+    INVALID_RECEIVER: "INVALID_RECEIVER",
+    AMOUNT_GT_WALLET: "Amount cannot be greater than available balance.",
+    StoreMoneySuccess: "Store money transaction has been processed.",
   },
   games: {
     SNOW_SNOW2: "api2all",
@@ -914,6 +957,10 @@ export default {
     ok: 'OK',
     loading: 'Loading...',
     retry: 'Retry',
-    close: 'Close'
+    close: 'Close',
+    CASINO: "Casino",
+    HOTEL: "Hotel",
+    SLOT: "Slot",
+    SPORT: "Sport",
   }
 } 
