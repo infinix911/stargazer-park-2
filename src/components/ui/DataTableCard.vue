@@ -1,16 +1,16 @@
 <template>
   <div class="bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
     <!-- Header -->
-    <div class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="p-2 rounded-lg" :class="iconBgClass" :style="iconBgStyle">
-          <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
-        </div>
-        <div>
-          <h2 class="text-lg font-semibold text-white">{{ title }}</h2>
-          <p class="text-xs text-gray-400">{{ subtitle }}</p>
-        </div>
-      </div>
+    <div v-if="hasHeaderContent" class="px-2 xl:px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 flex items-center justify-between">
+             <div class="flex items-center gap-3">
+         <div v-if="title" class="p-2 rounded-lg" :class="iconBgClass" :style="iconBgStyle">
+           <i :class="[iconClass, iconColorClass, 'text-sm']" :style="iconColorStyle"></i>
+         </div>
+         <div>
+           <h2 v-if="title" class="font-semibold text-white text-sm lg:text-base">{{ title }}</h2>
+           <p v-if="subtitle" class="text-xs text-gray-400">{{ subtitle }}</p>
+         </div>
+       </div>
       <div class="text-xs text-gray-400">
         <i class="fas fa-table mr-1"></i>
         {{ recordCount }} records
@@ -18,25 +18,48 @@
     </div>
     
     <!-- Content -->
-    <div class="px-10 pb-5">
-      <slot />
+    <div class="px-2 xl:px-10 pb-5 relative">
+      <!-- Loading Overlay -->
+      <div 
+        v-if="loading" 
+        class="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center animate-in fade-in duration-300"
+      >
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-3"></div>
+          <p class="text-white text-sm font-medium">{{ t('common.loading') }}</p>
+        </div>
+      </div>
+      
+      <!-- Content with loading animation -->
+      <div :class="{ 'opacity-50': loading, 'transition-all duration-300 ease-in-out': true }">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 export interface Props {
-  title: string
-  subtitle: string
-  recordCount: number
-  icon: string
+  title?: string
+  subtitle?: string
+  recordCount?: number
+  icon?: string
   iconColor?: string
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  iconColor: '#3b82f6' // blue-500 as default
+  title: '',
+  subtitle: '',
+  recordCount: 0,
+  icon: 'fas fa-table',
+  iconColor: '#3b82f6', // blue-500 as default
+  loading: false
 })
 
 const iconClass = computed(() => props.icon)
@@ -88,4 +111,42 @@ const iconBgClass = computed(() => {
   }
   return bgColors[props.iconColor] || 'bg-blue-500/20'
 })
+
+// Check if header has any content to show
+const hasHeaderContent = computed(() => {
+  return props.title || props.subtitle || props.icon || props.recordCount !== undefined
+})
+
+
 </script>
+
+<style scoped>
+/* Smooth loading transitions */
+.animate-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth opacity transitions */
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+.transition-opacity {
+  transition: opacity 0.3s ease-in-out;
+}
+</style>

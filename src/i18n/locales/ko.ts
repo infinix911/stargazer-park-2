@@ -353,6 +353,7 @@ export default {
     title: '거래 내역',
     transactions: '거래',
     search: '검색',
+    SearchKeyword: "검색어를 입력하세요...",
     noResults: '검색 결과가 없습니다',
     columns: {
       type: '유형',
@@ -366,7 +367,7 @@ export default {
     types: {
       deposit: '입금',
       withdrawal: '출금',
-      transfer: '이체'
+      transfer: '이체',
     },
     status: {
       completed: '완료',
@@ -434,7 +435,7 @@ export default {
   status: {
     normal: "정상",
     new: "신규",
-    waiting: "대기",
+    waiting: "대기중",
     stopped: "중지",
     complete: "완료",
     application: "신청",
@@ -470,6 +471,9 @@ export default {
     reports: "리포트",
   },
   partner: {
+    subGames: "Sub Games",
+    rollType: "롤링 타입",
+    processing: "처리중...",
     winningAmount: "당첨금액",
     amountAfter: "전환 후",
     slotButton: "슬롯 회수",
@@ -561,6 +565,11 @@ export default {
     totalDeposit: "총 입금액",
     totalWithdraw: "총 출금액",
     totalDepNWid: "입출금 차액",
+    // selectDateRange: "날짜 범위 선택",
+    // search: "검색",
+    // requestSettlement: "정산 요청",
+    // settlementRequest: "정산 요청",
+    settlementData: "정산 데이터",
     name: "이름",
     telNo: "전화번호",
     rate: "등급",
@@ -622,6 +631,15 @@ export default {
     shopMemberBalance: "매장 회원 보유금",
     rate_invalid_check_subagent: "롤링 속도는 하위 에이전트 롤링 속도보다 낮아서는 안 됩니다.",
     addPoint: "이동",
+    settlementHistory: "정산 내역",
+  },
+  amounts: {
+    "1K": "1천",
+    "10K": "1만",
+    "100K": "10만",
+    "500K": "50만",
+    "1M": "100만",
+    reset: "초기화"
   },
   dateRange: {
     start: "부터",
@@ -632,13 +650,29 @@ export default {
     fifteenDays: "15일",
   },
   search: '검색',
+  date: "날짜",
+  openAll: "모두 열기",
+  closeAll: "모두 닫기",
   notif: {
     Alarm: "알림",
     INVALID_ACCOUNT: "비밀번호가 틀렸습니다.",
     INVALID_SECURITY_CODE: "2분 이내에 로그인하지 않을시 보안코드가 만료됩니다. 페이지를 새로 고침 하십시오",
     INVALID_SECURITY_CODE_ANSWER: "보안 코드 잘못되었습니다.",
     AUTO_LOGGED_OUT: "세션이 만료되었습니다. 연결이 종료되었습니다.",
-    Close: "닫기"
+    Close: "닫기",
+    INVALID_RECEIVER: "INVALID_RECEIVER",
+    AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
+    StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
+    NO_SETTLEMENT_DATA: "정산 데이터가 없습니다.",
+  },
+  commission: {
+    settings: "요율 설정",
+    typeRolling: "롤링 타입",
+    typeLosing: "루징 타입",
+    casinoRollingPercent: "카지노 롤링 %",
+    slotRollingPercent: "슬롯 롤링 %",
+    casinoLosingPercent: "카지노 루징 %",
+    slotLosingPercent: "슬롯 루징 %",
   },
   games: {
     SNOW_SNOW2: "api2all",
@@ -1417,6 +1451,18 @@ export default {
     ok: '확인',
     loading: '로딩 중...',
     retry: '다시 시도',
-    close: '닫기'
+    close: '닫기',
+    CASINO: "카지노",
+    HOTEL: "호텔",
+    SLOT: "슬롯",
+    SPORT: "스포츠",
+    searchfilters: "검색 필터",
+    records: "기록",
+    showMore: "더 보기",
+    showLess: "접기",
+    noDataFound: "데이터가 없습니다",
+    refresh: "새로고침",
+    popupBlocked: "팝업이 차단되었습니다",
+    popupBlockedMessage: "브라우저에서 팝업을 차단했습니다. 팝업 차단을 해제하고 다시 시도해주세요."
   }
 } 
