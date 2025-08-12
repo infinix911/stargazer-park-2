@@ -367,7 +367,7 @@
                               onShopTransact(
                                 member.member_id,
                                 member.member,
-                                member.wallet,
+                                member.wallet.toString(),
                                 'ADD'
                               )
                             "
@@ -382,7 +382,7 @@
                               onShopTransact(
                                 member.member_id,
                                 member.member,
-                                member.wallet,
+                                member.wallet.toString(),
                                 'DEDUCT'
                               )
                             "
@@ -403,7 +403,7 @@
                         <span class="text-xs text-gray-400">{{
                           t("partner.slotMoney")
                         }}</span>
-                        <div v-if="member.wallet_game > 0" class="mt-1 flex gap-2">
+                        <div v-if="member.wallet_game && member.wallet_game > 0" class="mt-1 flex gap-2">
                           <button
                             type="button"
                             class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
@@ -413,7 +413,7 @@
                             {{ t("partner.slotButton") }}
                           </button>
                           <div class="text-sm font-bold text-white mt-1">
-                            {{ member.wallet_game?.toLocaleString() || "0" }}
+                            {{ member.wallet_game?.toString() || "0" }}
                           </div>
                         </div>
                         <div v-else class="text-xs text-gray-500 mt-1">-</div>
@@ -469,7 +469,7 @@
                   >
                     <!-- Fourth Row: deposits, bonus, withdrawals, sonic, winamt, profit -->
                     <div class="grid grid-cols-2 gap-4">
-                      <!-- Financial Details -->
+                      <!-- Money Details -->
                       <div class="space-y-3">
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.depAmount") }}</span>
@@ -620,6 +620,7 @@ export interface IData {
   game_bal?: number;
   wallet_game?: number;
   shoplevel?: number;
+  bonus?: number;
 }
 
 export interface DateRange {

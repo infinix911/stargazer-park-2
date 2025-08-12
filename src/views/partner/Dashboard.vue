@@ -336,6 +336,8 @@ export interface IData {
   wallet: number;
   wallet_point: number;
   wallet_rolling: number;
+  deposits: number;
+  withdrawals: number;
 }
 
 export interface ISummaryTable {
