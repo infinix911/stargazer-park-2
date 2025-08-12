@@ -246,6 +246,14 @@ export default {
       bankCheck: '은행 점검',
       unprocessedRefund: '※미처리, 환급 안내 ※',
       casinoSanctions: '카지노 양방 및 악성배팅 제재안내'
+    },
+    image: 'Image',
+    content: 'Content',
+    noContent: 'No content available',
+    dateFormat: {
+      today: 'Today',
+      yesterday: 'Yesterday',
+      daysAgo: 'days ago'
     }
   },
   inquiries: {

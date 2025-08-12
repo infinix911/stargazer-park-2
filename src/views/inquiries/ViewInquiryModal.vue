@@ -4,7 +4,6 @@
       <!-- Modal Header -->
       <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
         <DialogTitle class="text-2xl font-bold flex items-center space-x-3">
-          <MessageSquare class="w-7 h-7 text-white" />
           <span>{{ t('viewInquiry.title') }}</span>
         </DialogTitle>
         <DialogDescription class="text-purple-100 mt-2">
