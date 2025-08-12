@@ -1357,5 +1357,7 @@ export default {
     HOTEL: "호텔",
     SLOT: "슬롯",
     SPORT: "스포츠",
+    searchfilters: "검색 필터",
+    records: "기록"
   }
 } 
