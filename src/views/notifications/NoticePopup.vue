@@ -34,10 +34,21 @@
 
       <!-- Popup Body -->
       <div class="notice-popup-body">
-        <!-- Text Content -->
-        <div v-if="notice.type === 'TEXT'" class="text-content">
-          <div v-html="getTextContent(notice.body)"></div>
-        </div>
+                           <!-- Text Content -->
+          <div v-if="notice.type === 'TEXT'" class="text-content">
+            <QuillEditor
+              v-if="getTextContent(notice.body)"
+              :content="getTextContent(notice.body)"
+              :options="editorOptions"
+              contentType="html"
+              theme="snow"
+              readOnly
+              class="quill-editor"
+            />
+            <div v-else class="text-gray-500 italic text-center py-8">
+              {{ t('notifications.noContent') }}
+            </div>
+          </div>
         
         <!-- Image Content -->
         <div v-else-if="notice.type === 'IMAGE'" class="image-container">
@@ -70,6 +81,9 @@ import { useI18n } from 'vue-i18n'
 import moment from 'moment'
 import ApiService from '@/services/ApiService'
 import { useAuthStore } from '@/stores/auth'
+// @ts-ignore
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 // Types
 interface Notice {
@@ -107,8 +121,9 @@ const STORAGE_KEYS = {
 // Quill Editor options
 const editorOptions = {
   readOnly: true,
+  theme: 'snow',
   modules: {
-    toolbar: false
+    toolbar: null
   }
 }
 
@@ -188,21 +203,38 @@ const handleImageError = (event: Event) => {
 }
 
 const getTextContent = (body: any) => {
-  if (!body || !body.ops) return ''
+  if (!body) return ''
   
-  // Convert Quill Delta to HTML
-  return body.ops.map((op: any) => {
-    if (typeof op.insert === 'string') {
-      let text = op.insert
-      if (op.attributes) {
-        if (op.attributes.bold) text = `<strong>${text}</strong>`
-        if (op.attributes.italic) text = `<em>${text}</em>`
-        if (op.attributes.underline) text = `<u>${text}</u>`
+  // If body is a string, return it directly
+  if (typeof body === 'string') {
+    return body
+  }
+  
+  // If body is an object with ops (Quill Delta format)
+  if (body.ops && Array.isArray(body.ops)) {
+    const delta = body.ops
+    let htmlContent = ''
+    delta.forEach((op: any) => {
+      if (op.insert) {
+        if (typeof op.insert === 'string') {
+          htmlContent += op.insert.replace(/\n/g, '<br>')
+        }
       }
-      return text
-    }
-    return ''
-  }).join('')
+    })
+    return htmlContent
+  }
+  
+  // If body has other properties, try to extract content
+  if (body.content) {
+    return body.content
+  }
+  
+  if (body.html) {
+    return body.html
+  }
+  
+  // Fallback to JSON string
+  return JSON.stringify(body, null, 2)
 }
 
 // Lifecycle
@@ -312,6 +344,24 @@ onUnmounted(() => {
 .quill-editor {
   border: none;
   background: transparent;
+}
+
+/* Custom styles for QuillEditor in dark theme */
+:deep(.ql-editor) {
+  background: transparent !important;
+  color: white !important;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 0 !important;
+}
+
+:deep(.ql-container) {
+  border: none !important;
+  background: transparent !important;
+}
+
+:deep(.ql-toolbar) {
+  display: none !important;
 }
 
 .text-content {
