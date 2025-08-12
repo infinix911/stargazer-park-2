@@ -378,6 +378,7 @@ export default {
     reports: "리포트",
   },
   partner: {
+    subGames: "Sub Games",
     rollType: "롤링 타입",
     processing: "처리중...",
     winningAmount: "당첨금액",
@@ -1358,6 +1359,9 @@ export default {
     SLOT: "슬롯",
     SPORT: "스포츠",
     searchfilters: "검색 필터",
-    records: "기록"
+    records: "기록",
+    showMore: "Show More",
+    showLess: "Show Less",
+    noDataFound: "No Data Found"
   }
 } 

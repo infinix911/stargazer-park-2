@@ -429,7 +429,7 @@
         <!-- Empty State for Mobile -->
         <div v-else class="text-center py-12">
           <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
-          <p class="text-gray-400">{{ t("common.noData") }}</p>
+          <p class="text-gray-400">{{ t("common.noDataFound") }}</p>
         </div>
 
         <!-- Mobile Pagination -->
