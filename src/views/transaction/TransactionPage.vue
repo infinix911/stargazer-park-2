@@ -31,11 +31,7 @@
           </TabsContent>
           
           <TabsContent value="point-history" class="mt-6">
-            <div class="bg-white rounded-lg p-6 border border-gray-300 shadow-lg">
-              <div class="text-center text-gray-600">
-                <p>Point history content will be displayed here</p>
-              </div>
-            </div>
+            <PointHistory />
           </TabsContent>
         </Tabs>
       </div>
@@ -47,6 +43,7 @@
 import { useI18n } from 'vue-i18n'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TransactionHistory from '../histories/TransactionHistory.vue'
+import PointHistory from '../histories/PointHistory.vue'
 
 const { t } = useI18n()
 </script>

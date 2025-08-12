@@ -369,6 +369,29 @@ export default {
       cancelled: '취소'
     }
   },
+  pointHistory: {
+    title: '포인트 내역',
+    search: '검색',
+    noResults: '검색 결과가 없습니다',
+    columns: {
+      amount: '금액',
+      type: '유형',
+      status: '상태',
+      description: '설명',
+      createdAt: '생성일',
+      updatedAt: '수정일'
+    },
+    types: {
+      add: '추가',
+      subtract: '차감'
+    },
+    status: {
+      new: '신규',
+      wait: '대기',
+      complete: '완료',
+      adminCancel: '관리자 취소'
+    }
+  },
   transaction: {
     title: '거래',
     tabs: {

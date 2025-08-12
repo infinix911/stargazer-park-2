@@ -367,6 +367,29 @@ export default {
       cancelled: 'CANCELLED'
     }
   },
+  pointHistory: {
+    title: 'Point History',
+    search: 'Search',
+    noResults: 'No Results Found',
+    columns: {
+      amount: 'Amount',
+      type: 'Type',
+      status: 'Status',
+      description: 'Description',
+      createdAt: 'Created At',
+      updatedAt: 'Updated At'
+    },
+    types: {
+      add: 'ADD',
+      subtract: 'SUBTRACT'
+    },
+    status: {
+      new: 'NEW',
+      wait: 'WAIT',
+      complete: 'COMPLETE',
+      adminCancel: 'ADMIN CANCEL'
+    }
+  },
   transaction: {
     title: 'Transactions',
     tabs: {

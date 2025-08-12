@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-white">
-    <!-- Transaction History Section -->
+    <!-- Point History Section -->
     <div class="py-12">
       <div class="max-w-[1660px] mx-auto px-4">
         <!-- Section Header -->
@@ -8,36 +8,11 @@
           <h2 class="text-3xl font-black flex items-center space-x-4">
             <div class="bg-gray-800 rounded-lg p-1">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
               </svg>
             </div>
-            <span class="text-gray-900">{{ t('transactionHistory.title') }}</span>
+            <span class="text-gray-900">{{ t('pointHistory.title') }}</span>
           </h2>
-        </div>
-
-        <!-- Search/Filter Bar -->
-        <div class="bg-gray-100 rounded-lg p-6 mb-6">
-          <div class="flex flex-col lg:flex-row gap-4 items-center">
-            <!-- Type Filter -->
-            <div class="flex items-center space-x-2">
-              <select
-                v-model="filters.type"
-                class="px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="ALL">ALL</option>
-                <option value="DEPOSIT">DEPOSIT</option>
-                <option value="WITHDRAWAL">WITHDRAWAL</option>
-              </select>
-            </div>
-
-            <!-- Search Button -->
-            <button
-              @click="handleSearch"
-              class="bg-[#22c55e] hover:bg-[#16a34a] px-6 py-2 rounded-md text-white font-medium transition-colors"
-            >
-              {{ t('transactionHistory.search') }}
-            </button>
-          </div>
         </div>
 
         <!-- Loading State -->
@@ -53,7 +28,7 @@
           <div class="text-center text-red-600">
             <p>{{ error }}</p>
             <button 
-              @click="fetchTransactions" 
+              @click="fetchPointHistory" 
               class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               {{ t('common.retry') }}
@@ -61,7 +36,7 @@
           </div>
         </div>
 
-        <!-- Transaction Table -->
+        <!-- Point History Table -->
         <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
           <div class="overflow-x-auto">
             <table class="w-full">
@@ -98,36 +73,22 @@
                     class="px-6 py-4 text-sm border-b border-gray-200 text-center text-gray-900"
                   >
                     <div 
-                      v-if="cell.column.id === 'type'"
+                      v-if="cell.column.id === 'status'"
                       class="inline-block px-3 py-1 rounded-full text-xs font-medium"
                       :class="{
-                        'bg-blue-600 text-white': cell.getValue() === 'DEPOSIT',
-                        'bg-red-600 text-white': cell.getValue() === 'WITHDRAWAL'
-                      }"
-                    >
-                      {{ getTypeTranslation(cell.getValue() as string) }}
-                    </div>
-                    <div 
-                      v-else-if="cell.column.id === 'status'"
-                      class="inline-block px-3 py-1 rounded-full text-xs font-medium"
-                      :class="{
-                        'bg-green-600 text-white': cell.getValue() === 2 || cell.getValue() === 3,
-                        'bg-yellow-600 text-white': cell.getValue() === 0 || cell.getValue() === 1,
-                        'bg-red-600 text-white': cell.getValue() === 4,
-                        'bg-gray-600 text-white': cell.getValue() === 5
+                        'bg-blue-600 text-white': cell.getValue() === 0,
+                        'bg-yellow-600 text-white': cell.getValue() === 1,
+                        'bg-green-600 text-white': cell.getValue() === 2,
+                        'bg-red-600 text-white': cell.getValue() !== 0 && cell.getValue() !== 1 && cell.getValue() !== 2
                       }"
                     >
                       {{ getStatusTranslation(cell.getValue() as number) }}
                     </div>
                     <div 
                       v-else-if="cell.column.id === 'amount'"
-                      class="font-medium"
-                      :class="{
-                        'text-blue-600': row.original.type === 'DEPOSIT',
-                        'text-red-600': row.original.type === 'WITHDRAWAL'
-                      }"
+                      class="font-medium text-gray-900"
                     >
-                      {{ cell.getValue() ? (locale === 'ko' ? `₩${Number(cell.getValue()).toLocaleString()}` : Number(cell.getValue()).toLocaleString()) : (locale === 'ko' ? '₩0' : '0') }}
+                      {{ cell.getValue() ? (locale === 'ko' ? `${Number(cell.getValue()).toLocaleString()}P` : `${Number(cell.getValue()).toLocaleString()}P`) : (locale === 'ko' ? '0P' : '0P') }}
                     </div>
                     <div v-else class="text-gray-900">
                       {{ cell.getValue() }}
@@ -139,8 +100,8 @@
           </div>
 
           <!-- No Results Message -->
-          <div v-if="transactions.length === 0" class="flex items-center justify-center py-12">
-            <p class="text-gray-600 text-lg">{{ t('transactionHistory.noResults') }}</p>
+          <div v-if="pointHistory.length === 0" class="flex items-center justify-center py-12">
+            <p class="text-gray-600 text-lg">{{ t('pointHistory.noResults') }}</p>
           </div>
 
           <!-- Pagination -->
@@ -193,70 +154,40 @@ import Swal from 'sweetalert2'
 
 const { t, locale } = useI18n()
 
-interface Transaction {
-  type: 'DEPOSIT' | 'WITHDRAWAL'
-  status: number
-  bank_name: string
-  bank_account_name: string
-  bank_account: string
-  amount: number
-  coupon_id: number | null
-  coupon: string | null
-  coupon_amount: number | null
+interface PointTransaction {
+  amount: string
   createdAt: string
+  status: number
+  updatedAt: string
 }
 
 // Loading and error states
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-// Transactions data from API
-const transactions = ref<Transaction[]>([])
-
-// Filters
-const filters = ref({
-  type: 'ALL'
-})
+// Point history data from API
+const pointHistory = ref<PointTransaction[]>([])
 
 // Column definitions
-const columns = computed<ColumnDef<Transaction>[]>(() => [
-  {
-    accessorKey: 'type',
-    header: t('transactionHistory.columns.type'),
-    size: 100
-  },
-  {
-    accessorKey: 'bank_name',
-    header: t('transactionHistory.columns.bankName'),
-    size: 150
-  },
-  {
-    accessorKey: 'bank_account_name',
-    header: t('transactionHistory.columns.bankAccountName'),
-    size: 150
-  },
-  {
-    accessorKey: 'bank_account',
-    header: t('transactionHistory.columns.bankAccount'),
-    size: 150
-  },
+const columns = computed<ColumnDef<PointTransaction>[]>(() => [
   {
     accessorKey: 'amount',
-    header: t('transactionHistory.columns.amount'),
-    size: 120,
-    cell: ({ getValue }) => {
-      const amount = getValue() as number
-      return amount ? `₩${amount.toLocaleString()}` : '₩0'
-    }
+    header: t('pointHistory.columns.amount'),
+    size: 120
   },
   {
     accessorKey: 'status',
-    header: t('transactionHistory.columns.status'),
+    header: t('pointHistory.columns.status'),
     size: 120
   },
   {
     accessorKey: 'createdAt',
-    header: t('transactionHistory.columns.date'),
+    header: t('pointHistory.columns.createdAt'),
+    size: 150
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: t('pointHistory.columns.updatedAt'),
     size: 150
   }
 ])
@@ -264,7 +195,7 @@ const columns = computed<ColumnDef<Transaction>[]>(() => [
 // Table instance
 const table = useVueTable({
   get data() {
-    return transactions.value
+    return pointHistory.value
   },
   get columns() {
     return columns.value
@@ -278,28 +209,23 @@ const table = useVueTable({
   }
 })
 
-// Store original transactions data
-const originalTransactions = ref<Transaction[]>([])
-
-// Fetch transactions from API
-const fetchTransactions = async () => {
+// Fetch point history from API
+const fetchPointHistory = async () => {
   try {
     loading.value = true
     error.value = null
     
-    const response = await ApiService.get("/tran/depwid/history")
-    console.log('API Response:', response)
+    const response = await ApiService.get(`/tran/point/history`)
+    console.log('Point History API Response:', response)
     
     if (response.data) {
-      originalTransactions.value = response.data
-      applyFilters()
+      pointHistory.value = response.data
     } else {
-      originalTransactions.value = []
-      transactions.value = []
+      pointHistory.value = []
     }
   } catch (err: any) {
-    console.error('Error fetching transactions:', err)
-    error.value = 'Failed to load transaction history'
+    console.error('Error fetching point history:', err)
+    error.value = 'Failed to load point history'
     
     // Show error message to user
     Swal.fire({
@@ -310,67 +236,28 @@ const fetchTransactions = async () => {
       confirmButtonText: t('common.ok')
     })
     
-    originalTransactions.value = []
-    transactions.value = []
+    pointHistory.value = []
   } finally {
     loading.value = false
   }
 }
 
-// Apply filters to transactions
-const applyFilters = () => {
-  let filteredData = [...originalTransactions.value]
-  
-  // Filter by type
-  if (filters.value.type !== 'ALL') {
-    filteredData = filteredData.filter(transaction => 
-      transaction.type === filters.value.type
-    )
-  }
-  
-  transactions.value = filteredData
-}
-
-// Handle search
-const handleSearch = () => {
-  console.log('Searching with filters:', filters.value)
-  applyFilters()
-}
-
-// Watch for filter changes and apply filters automatically
-watch(() => filters.value.type, () => {
-  if (originalTransactions.value.length > 0) {
-    applyFilters()
-  }
-})
-
-// Load transactions on component mount
+// Load point history on component mount
 onMounted(() => {
-  fetchTransactions()
+  fetchPointHistory()
 })
 
 // Helper functions for translations
-const getTypeTranslation = (type: string) => {
-  const typeMap: Record<string, string> = {
-    'DEPOSIT': t('transactionHistory.types.deposit'),
-    'WITHDRAWAL': t('transactionHistory.types.withdrawal')
-  }
-  return typeMap[type] || type
-}
-
 const getStatusTranslation = (status: number) => {
   const statusMap: Record<number, string> = {
-    0: t('transactionHistory.status.pending'),
-    1: t('transactionHistory.status.processing'),
-    2: t('transactionHistory.status.completed'),
-    3: t('transactionHistory.status.completed'),
-    4: t('transactionHistory.status.failed'),
-    5: t('transactionHistory.status.cancelled')
+    0: t('pointHistory.status.new'),
+    1: t('pointHistory.status.wait'),
+    2: t('pointHistory.status.complete')
   }
-  return statusMap[status] || `Status ${status}`
+  return statusMap[status] || t('pointHistory.status.adminCancel')
 }
 </script>
 
 <style scoped>
-/* Transaction history specific styles */
+/* Point history specific styles */
 </style>
