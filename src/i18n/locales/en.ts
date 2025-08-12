@@ -342,6 +342,7 @@ export default {
   },
   transactionHistory: {
     title: 'Transaction History',
+    transactions: 'Transactions',
     search: 'Search',
     noResults: 'No Results Found',
     columns: {
@@ -361,12 +362,13 @@ export default {
     status: {
       completed: 'COMPLETED',
       pending: 'PENDING',
+      processing: 'PROCESSING',
       failed: 'FAILED',
       cancelled: 'CANCELLED'
     }
   },
   transaction: {
-    title: 'Transaction History',
+    title: 'Transactions',
     tabs: {
       transHistory: 'Trans History',
       pointHistory: 'Point History'
@@ -381,6 +383,7 @@ export default {
       slots: 'Slots',
       holdem: 'Hold\'em',
       wallet: 'My Wallet',
+      transactions: 'Transactions',
       notice: 'Notice',
       event: 'Event',
       deposit: 'Deposit',

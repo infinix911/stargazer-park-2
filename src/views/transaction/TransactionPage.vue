@@ -12,14 +12,14 @@
           <TabsList class="grid w-full grid-cols-2 bg-gray-100 p-1">
             <TabsTrigger 
               value="trans-history" 
-              class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
+              class="cursor-pointer text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
               {{ t('transaction.tabs.transHistory') }}
             </TabsTrigger>
             <TabsTrigger 
               value="point-history" 
-              class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
+              class="cursor-pointer text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
               {{ t('transaction.tabs.pointHistory') }}

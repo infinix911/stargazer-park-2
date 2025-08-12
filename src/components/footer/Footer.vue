@@ -32,6 +32,11 @@
             @click="handleNavClick('wallet')"
           />
           <NavItem 
+            icon="📊" 
+            :label="t('footer.nav.transactions')" 
+            @click="handleNavClick('transactions')"
+          />
+          <NavItem 
             icon="📢" 
             :label="t('footer.nav.notice')" 
             @click="handleNavClick('notice')"
@@ -118,6 +123,12 @@ const handleNavClick = (section: string): void => {
   if (section === 'slots') {
     // Navigate to slot page
     window.location.href = '/slot'
+    return
+  }
+  
+  if (section === 'transactions') {
+    // Navigate to transactions page
+    window.location.href = '/transaction'
     return
   }
   

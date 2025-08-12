@@ -344,6 +344,7 @@ export default {
   },
   transactionHistory: {
     title: '거래 내역',
+    transactions: '거래',
     search: '검색',
     noResults: '검색 결과가 없습니다',
     columns: {
@@ -363,12 +364,13 @@ export default {
     status: {
       completed: '완료',
       pending: '대기중',
+      processing: '처리중',
       failed: '실패',
       cancelled: '취소'
     }
   },
   transaction: {
-    title: '거래 내역',
+    title: '거래',
     tabs: {
       transHistory: '거래 내역',
       pointHistory: '포인트 내역'
@@ -383,6 +385,7 @@ export default {
       slots: '슬롯',
       holdem: '홀덤',
       wallet: '마이 월렛',
+      transactions: '거래내역',
       notice: '공지',
       event: '이벤트',
       deposit: '입금신청',

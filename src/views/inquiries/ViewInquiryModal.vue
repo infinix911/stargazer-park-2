@@ -328,9 +328,9 @@ const formatDate = (dateString: string): string => {
 // Watch for inquiry changes
 watch(() => props.inquiry, (newInquiry) => {
   if (newInquiry) {
-    console.log('Inquiry loaded:', newInquiry)
-    console.log('Body type:', typeof newInquiry.body, 'Body content:', newInquiry.body)
-    console.log('Reply type:', typeof newInquiry.reply, 'Reply content:', newInquiry.reply)
+    //console.log('Inquiry loaded:', newInquiry)
+    //console.log('Body type:', typeof newInquiry.body, 'Body content:', newInquiry.body)
+    //console.log('Reply type:', typeof newInquiry.reply, 'Reply content:', newInquiry.reply)
   }
 }, { immediate: true })
 
