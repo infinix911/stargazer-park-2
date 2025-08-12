@@ -41,60 +41,49 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Statistics from "@/components/partner/game-statistics/Statistics.vue";
 
-export default defineComponent({
-  name: "GameStatistics",
-  components: {
-    Statistics,
-  },
-  setup() {
-    const { t } = useI18n();
-    const activeTab = ref("all");
-    
-    const gameTabs = [
-      {
-        key: "all",
-        label: "partner.all",
-        icon: "fas fa-chart-line"
-      },
-      {
-        key: "casino",
-        label: "common.CASINO",
-        icon: "fas fa-coins"
-      },
-      {
-        key: "hotel",
-        label: "common.HOTEL", 
-        icon: "fas fa-building"
-      },
-      {
-        key: "slot",
-        label: "common.SLOT",
-        icon: "fas fa-gamepad"
-      },
-      {
-        key: "sport",
-        label: "common.SPORT",
-        icon: "fas fa-futbol"
-      }
-    ];
+// Composables
+const { t } = useI18n();
 
-    const setActiveTab = (tab: string) => {
-      activeTab.value = tab;
-    };
+// Reactive data
+const activeTab = ref("all");
 
-    return {
-      activeTab,
-      gameTabs,
-      setActiveTab,
-      t,
-    };
+const gameTabs = [
+  {
+    key: "all",
+    label: "partner.all",
+    icon: "fas fa-chart-line"
   },
-});
+  {
+    key: "casino",
+    label: "common.CASINO",
+    icon: "fas fa-coins"
+  },
+  {
+    key: "hotel",
+    label: "common.HOTEL", 
+    icon: "fas fa-building"
+  },
+  {
+    key: "slot",
+    label: "common.SLOT",
+    icon: "fas fa-gamepad"
+  },
+  {
+    key: "sport",
+    label: "common.SPORT",
+    icon: "fas fa-futbol"
+  }
+];
+
+// Methods
+const setActiveTab = (tab: string) => {
+  activeTab.value = tab;
+};
 </script>
 
 <style scoped>

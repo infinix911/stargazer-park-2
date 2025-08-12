@@ -262,16 +262,16 @@
                   v-if="transaction.transaction_type === 'DEPOSIT'"
                   class="inline-flex items-center px-3 py-1 text-sm font-medium bg-green-500/20 text-green-300 rounded-lg border border-green-500/30"
                 >
-                  {{ n(parseInt(transaction.amount_deposit)) }}
+                  {{ n(Number(transaction.amount_deposit)) }}
                   <span v-if="transaction.amount_coupon > 0" class="ml-1 text-yellow-300">
-                    (+{{ n(parseInt(transaction.amount_coupon)) }})
+                    (+{{ n(Number(transaction.amount_coupon)) }})
                   </span>
                 </span>
                 <span
                   v-else
                   class="inline-flex items-center px-3 py-1 text-sm font-medium bg-red-500/20 text-red-300 rounded-lg border border-red-500/30"
                 >
-                  {{ n(parseInt(transaction.amount_withdraw)) }}
+                  {{ n(Number(transaction.amount_withdraw)) }}
                 </span>
               </div>
             </div>
