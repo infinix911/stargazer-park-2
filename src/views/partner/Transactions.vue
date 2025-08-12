@@ -173,10 +173,10 @@
                   {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
                 </span>
                 <span
-                  v-else
+                   v-if="data.transaction_type === 'WITHDRAW'"
                   class="inline-flex items-center px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full shadow-lg border border-red-400/30"
                 >
-                  {{ t("transactionHistory.types." + data.transaction_type.toLowerCase()) }}
+                  {{ t("transactionHistory.types.withdrawal") }}
                 </span>
               </div>
             </template>
