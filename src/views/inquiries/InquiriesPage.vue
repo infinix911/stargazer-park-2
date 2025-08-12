@@ -236,7 +236,7 @@ interface Inquiry {
   id: number;
   title: string;
   body: string;
-  reply: {};
+  reply: string;
   state: number;
   createdAt: string;
   updatedAt: string;
