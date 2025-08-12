@@ -42,7 +42,7 @@
       
       <DialogFooter>
         <DialogClose as-child>
-          <Button variant="outline">Close</Button>
+          <!-- <Button variant="outline">Close</Button> -->
         </DialogClose>
       </DialogFooter>
     </DialogContent>
