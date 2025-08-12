@@ -133,7 +133,6 @@ defineProps<Props>()
 // Emits
 const emit = defineEmits<{
   'close': []
-  'submit': [data: { title: string; body: string }]
 }>()
 
 // Form data
@@ -217,9 +216,6 @@ const handleSubmit = async () => {
     
     // Close modal
     emit('close')
-    
-    // Emit success event for parent component
-    emit('submit', data)
     
   } catch (error: any) {
     console.error('Error submitting form:', error)
