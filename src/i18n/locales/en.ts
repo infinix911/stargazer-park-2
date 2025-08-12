@@ -179,12 +179,18 @@ export default {
     changePassword: 'Change password',
     changingPassword: 'Changing password...',
     errors: {
-      currentPasswordRequired: 'Current password is required',
-      newPasswordRequired: 'New password is required',
-      newPasswordMinLength: 'Password must be at least 8 characters',
-      newPasswordFormat: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+      currentPasswordMinLength: 'Current password must be at least 5 characters',
+      newPasswordMinLength: 'New password must be at least 5 characters',
       verifyPasswordRequired: 'Please verify your password',
       passwordsDontMatch: 'Passwords don\'t match'
+    },
+    success: {
+      title: 'Success',
+      message: 'Password changed successfully'
+    },
+    error: {
+      title: 'Error',
+      message: 'Failed to change password'
     }
   },
   pointWithdrawal: {

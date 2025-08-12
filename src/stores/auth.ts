@@ -225,11 +225,11 @@ export const useAuthStore = defineStore("auth", {
         // Force Logout
         SocketService.socket.on("reloaduser", () => {
           JwtService.destroyToken();
-          window.location.reload();
+          window.location.href = '/login';
         });
       } catch (e) {
         JwtService.destroyToken();
-        window.location.reload();
+        window.location.href = '/login';
       }
     },
     /**
@@ -267,7 +267,7 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       await ApiService.get("/auth/logout");
       JwtService.destroyToken();
-      window.location.reload();
+      window.location.href = '/login';
     },
     /**
      * Combine Slot Money

@@ -181,12 +181,18 @@ export default {
     changePassword: '비밀번호 변경',
     changingPassword: '비밀번호 변경 중...',
     errors: {
-      currentPasswordRequired: '현재 비밀번호를 입력해주세요',
-      newPasswordRequired: '새 비밀번호를 입력해주세요',
-      newPasswordMinLength: '비밀번호는 최소 8자 이상이어야 합니다',
-      newPasswordFormat: '비밀번호는 대문자, 소문자, 숫자를 각각 하나 이상 포함해야 합니다',
+      currentPasswordMinLength: '현재 비밀번호는 최소 5자 이상이어야 합니다',
+      newPasswordMinLength: '새 비밀번호는 최소 5자 이상이어야 합니다',
       verifyPasswordRequired: '비밀번호를 확인해주세요',
       passwordsDontMatch: '비밀번호가 일치하지 않습니다'
+    },
+    success: {
+      title: '성공',
+      message: '비밀번호가 성공적으로 변경되었습니다'
+    },
+    error: {
+      title: '오류',
+      message: '비밀번호 변경에 실패했습니다'
     }
   },
   pointWithdrawal: {

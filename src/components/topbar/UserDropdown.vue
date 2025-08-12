@@ -90,7 +90,6 @@ const showPointWithdrawalModal = ref(false)
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
   showPointWithdrawalModal.value = true
-  console.log('Point Withdrawal clicked')
 }
 
 const handleChangePassword = () => {
