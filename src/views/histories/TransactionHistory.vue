@@ -122,7 +122,11 @@
                     </div>
                     <div 
                       v-else-if="cell.column.id === 'amount'"
-                      class="text-gray-900 font-medium"
+                      class="font-medium"
+                      :class="{
+                        'text-blue-600': row.original.type === 'DEPOSIT',
+                        'text-red-600': row.original.type === 'WITHDRAWAL'
+                      }"
                     >
                       {{ cell.getValue() ? (locale === 'ko' ? `₩${Number(cell.getValue()).toLocaleString()}` : Number(cell.getValue()).toLocaleString()) : (locale === 'ko' ? '₩0' : '0') }}
                     </div>
