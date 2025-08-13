@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="t('partnerMenu.dashboard')"
+    :title="t('partnerMenu.home')"
     subtitle="Transactions Overview and Game Summary"
     icon="fas fa-users"
     icon-color="green-blue"
@@ -383,11 +383,11 @@ export default defineComponent({
     
     // Table Headers
     const tableHeaders = [
-      { key: "deposits", name: t("partner.deposit"), currency: true },
-      { key: "withdrawals", name: t("partner.withdrawal"), currency: true },
-      { key: "depwid", name: t("partner.depWid"), currency: true },
-      { key: "wallet", name: t("partner.wallet"), currency: true },
-      { key: "wallet_point", name: t("partner.walletPoint"), currency: true },
+      { key: "deposits", name: t("partner.depAmount"), currency: true },
+      { key: "withdrawals", name: t("partner.widAmount"), currency: true },
+      { key: "depwid", name: t("partner.depWidProfit"), currency: true },
+      { key: "wallet", name: t("partner.currentWallet"), currency: true },
+      { key: "wallet_point", name: t("partner.currentPoint"), currency: true },
     ];
     
     const gameTableHeaders = [
@@ -395,7 +395,7 @@ export default defineComponent({
       { key: "betamt", name: t("partner.totalBetAmount"), currency: true },
       { key: "winamt", name: t("partner.totalWinAmount"), currency: true },
       { key: "rollamtsub", name: t("partner.subRolling"), currency: true },
-      { key: "rollamt", name: t("partner.rollAmount"), currency: true },
+      { key: "rollamt", name: t("partner.myRolling"), currency: true },
       { key: "total_profit", name: t("partner.totalProfit"), currency: true },
     ];
 
