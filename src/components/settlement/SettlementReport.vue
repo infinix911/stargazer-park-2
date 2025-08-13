@@ -311,7 +311,7 @@ const getList = async () => {
     ).then((res) => res.data);
 
     if (results && results.length > 0) {
-      tableData.value.splice(0, tableData.value.length, ...results);
+    tableData.value.splice(0, tableData.value.length, ...results);
     }
   } catch (error) {
     console.error("Error fetching settlement data:", error);
@@ -334,7 +334,7 @@ watch(
 
 // Lifecycle
 onMounted(() => {
-  getList();
+getList();
 });
 </script>
 
