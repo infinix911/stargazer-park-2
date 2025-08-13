@@ -142,10 +142,11 @@
                 <tr 
                   v-for="row in table.getRowModel().rows" 
                   :key="row.id"
-                  class="border-b border-slate-600 hover:bg-slate-700/30 transition-colors"
+                  class="border-b border-slate-600 hover:bg-slate-700/30 transition-colors cursor-pointer"
                   :class="row.index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-700/20'"
+                  @click="openInquiry(row.original)"
                 >
-                  <td class="px-6 py-4 text-sm border-b border-slate-600">
+                  <td class="px-6 py-4 text-sm border-b border-slate-600" @click.stop>
                     <div class="flex items-center justify-center">
                       <label class="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -182,8 +183,7 @@
                   >
                     <div 
                       v-if="cell.column.id === 'title'"
-                      class="cursor-pointer hover:text-blue-400 transition-colors"
-                      @click="openInquiry(cell.row.original)"
+                      class="hover:text-blue-400 transition-colors"
                     >
                       {{ cell.getValue() === 'DEPOSIT_ACCOUNT_REQUEST' ? t('inquiries.DepositAccReq') : cell.getValue() }}
                     </div>
