@@ -141,6 +141,14 @@
                         />
                         <span class="text-lg">홀덤</span>
                       </a>
+                      <a
+                        href="/partner/dashboard"
+                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                      >
+            
+                        <i class="fas fa-users"></i>
+                        <span class="text-lg">{{ t("header.partner") }}</span>
+                      </a>
                     </template>
                   </nav>
 
