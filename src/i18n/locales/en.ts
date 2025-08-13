@@ -297,7 +297,9 @@ export default {
     },
     InquiryRead: "Inquiry marked as read successfully",
     InquiryDeletedSuccess: "Inquiry deleted successfully",
-    InquirySentSuccess: "Bank inquiry sent successfully"
+    InquirySentSuccess: "Bank inquiry sent successfully",
+    StateColumn: "Status",
+    DepositAccReq: "Deposit Account Request"
   },
   viewInquiry: {
     title: 'View Inquiry Details',

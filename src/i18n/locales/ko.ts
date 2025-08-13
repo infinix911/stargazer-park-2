@@ -275,7 +275,7 @@ export default {
     },
     buttons: {
       contactUs: '문의하기',
-      bankInquiry: '은행 문의',
+      bankInquiry: '계좌 고객센터',
       delete: '삭제',
       deleteAll: '전체 삭제',
       read: '읽음',
@@ -295,9 +295,25 @@ export default {
       "8": "운영자 취소",
       "9": "운영자 메세지"
     },
-    InquiryRead: "문의사항이 성공적으로 읽음으로 표시되었습니다",
-    InquiryDeletedSuccess: "문의사항이 성공적으로 삭제되었습니다",
-    InquirySentSuccess: "은행 문의가 성공적으로 전송되었습니다"
+    InquiryRead: "고객센터가 처리되었습니다",
+    InquiryDeletedSuccess: "고객센터가 삭제되었습니다",
+    InquirySentSuccess: "은행 문의가 성공적으로 전송되었습니다",
+    Delete: "삭제",
+    DeleteAll: "전체 삭제",
+    Read: "읽음 처리",
+    ReadAll: "전체 읽음 처리",
+    Submit: "고객센터 보내기",
+    Write: "고객센터 글쓰기",
+    Title: "제목",
+    Body: "내용",
+    List: "고객센터 목록",
+    TitleCheck: "제목 필요합니다.",
+    BodyCheck: "내용 필요합니다.",
+    InquiryTitle: "1:1 고객센터",
+    AccountRequest: "입금 계좌 고객센터를 보냈습니다.",
+    InquirySent: "고객센터를 보냈습니다",
+    StateColumn: "상태",
+    DepositAccReq: "입금계좌 요청"
   },
   viewInquiry: {
     title: '문의사항 상세보기',

@@ -32,7 +32,7 @@
         </div>
 
         <!-- Notifications Table -->
-        <div v-else class="bg-slate-800/90 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700 shadow-xl">
+        <div v-else class="bg-slate-800/90 backdrop-blur-sm rounded-sm overflow-hidden border border-slate-700 shadow-xl">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>

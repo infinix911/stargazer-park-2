@@ -20,7 +20,7 @@
             <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.title') }}</label>
           </div>
           <div class="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3 sm:p-4 shadow-sm">
-            <p class="text-gray-900 font-semibold text-base sm:text-lg">{{ props.inquiry.title }}</p>
+            <p class="text-gray-900 font-semibold text-base sm:text-lg">{{ props.inquiry.title === 'DEPOSIT_ACCOUNT_REQUEST' ? t('inquiries.DepositAccReq') : props.inquiry.title }}</p>
           </div>
         </div>
 
@@ -222,6 +222,10 @@ const processedBody = computed(() => {
   if (!props.inquiry?.body) return ''
     
   if (typeof props.inquiry.body === 'string') {
+    // Apply translation for DEPOSIT_ACCOUNT_REQUEST
+    if (props.inquiry.body === 'DEPOSIT_ACCOUNT_REQUEST') {
+      return t('inquiries.DepositAccReq')
+    }
     return props.inquiry.body
   }
   
