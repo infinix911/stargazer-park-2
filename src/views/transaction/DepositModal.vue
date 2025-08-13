@@ -24,8 +24,9 @@
               v-model="form.name"
               type="text"
               :placeholder="t('deposit.namePlaceholder')"
-              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
               readonly
+              disabled
               tabindex="-1"
             />
           </div>
@@ -42,8 +43,9 @@
               v-model="form.bankAccountName"
               type="text"
               :placeholder="t('deposit.bankAccountNamePlaceholder')"
-              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
               readonly
+              disabled
               tabindex="-1"
             />
           </div>
@@ -60,8 +62,9 @@
               v-model="form.mobileNumber"
               type="tel"
               :placeholder="t('deposit.mobileNumberPlaceholder')"
-              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
               readonly
+              disabled
               tabindex="-1"
             />
           </div>
