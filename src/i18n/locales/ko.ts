@@ -299,7 +299,7 @@ export default {
     types: {
       deposit: '입금',
       withdrawal: '출금',
-      transfer: '이체'
+      transfer: '이체',
     },
     status: {
       completed: '완료',
@@ -378,6 +378,7 @@ export default {
     reports: "리포트",
   },
   partner: {
+    subGames: "Sub Games",
     rollType: "롤링 타입",
     processing: "처리중...",
     winningAmount: "당첨금액",
@@ -568,6 +569,7 @@ export default {
     INVALID_RECEIVER: "INVALID_RECEIVER",
     AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
     StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
+    NO_SETTLEMENT_DATA: "정산 데이터가 없습니다.",
   },
   commission: {
     settings: "요율 설정",
@@ -1357,5 +1359,13 @@ export default {
     HOTEL: "호텔",
     SLOT: "슬롯",
     SPORT: "스포츠",
+    searchfilters: "검색 필터",
+    records: "기록",
+    showMore: "더 보기",
+    showLess: "접기",
+    noDataFound: "데이터가 없습니다",
+    refresh: "새로고침",
+    popupBlocked: "팝업이 차단되었습니다",
+    popupBlockedMessage: "브라우저에서 팝업을 차단했습니다. 팝업 차단을 해제하고 다시 시도해주세요."
   }
 } 

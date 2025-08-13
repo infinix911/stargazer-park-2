@@ -1,6 +1,6 @@
 <template>
   <!-- Page Header -->
-  <PartnerPageHeader 
+  <PartnerPageHeader
     :title="t('partnerMenu.member')"
     subtitle="Member Management and Analytics"
     icon="fas fa-users"
@@ -25,7 +25,9 @@
         </div>
 
         <!-- Search Controls - Right Side -->
-        <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end">
+        <div
+          class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end"
+        >
           <!-- Search Type -->
           <div class="w-full sm:w-32 lg:w-32">
             <select
@@ -78,7 +80,7 @@
             >
               <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
               <i v-else class="fas fa-search mr-1"></i>
-              {{ loading ? t('common.loading') : t('search') }}
+              {{ loading ? t("common.loading") : t("search") }}
             </button>
           </div>
         </div>
@@ -97,17 +99,36 @@
               <div
                 class="px-6 py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10"
               >
-                <div class="flex items-center gap-3">
-                  <div class="p-2 bg-purple-500/20 rounded-lg">
-                    <i class="fas fa-sitemap text-purple-400 text-sm"></i>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="p-2 bg-purple-500/20 rounded-lg">
+                      <i class="fas fa-sitemap text-purple-400 text-sm"></i>
+                    </div>
+                    <div>
+                      <h2 class="text-lg font-semibold text-white">Member Tree</h2>
+                      <p class="text-xs text-gray-400">Organization Structure</p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 class="text-lg font-semibold text-white">Member Tree</h2>
-                    <p class="text-xs text-gray-400">Organization Structure</p>
+
+                  <!-- Mobile Accordion Toggle -->
+                  <div class="lg:hidden">
+                    <button
+                      @click="toggleMemberTreeAccordion"
+                      class="p-2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <i
+                        class="fas fa-chevron-down transition-transform duration-200"
+                        :class="{
+                          'rotate-180': isMemberTreeExpanded,
+                        }"
+                      ></i>
+                    </button>
                   </div>
                 </div>
+
+                <!-- Add Accordion in Mobile -->
               </div>
-              <div class="p-4">
+              <div class="p-4" :class="{ hidden: !isMemberTreeExpanded }">
                 <MemberTree />
               </div>
             </div>
@@ -123,113 +144,408 @@
               icon-color="#3b82f6"
               :loading="loading"
             >
-              <KTDatatable
-                :tableHeader="tableHeaders"
-                :tableData="tableData"
-                :rowsPerPage="50"
-                :loading="loading"
-              >
-                <!-- Level -->
-                <template v-slot:cell-level="{ row: data }">
-                  <span>{{ t(`partner.level${data.level}`) }}</span>
-                </template>
-                <!-- Wallet -->
-                <template v-slot:cell-wallet="{ row: data }">
-                  <div class="space-y-1">
-                    <div class="text-white">{{ n(Number(data.wallet)) }}</div>
+              <!-- Desktop Table -->
+              <div class="hidden lg:block">
+                <KTDatatable
+                  :tableHeader="tableHeaders"
+                  :tableData="tableData"
+                  :rowsPerPage="50"
+                  :loading="loading"
+                >
+                  <!-- Level -->
+                  <template v-slot:cell-level="{ row: data }">
+                    <span>{{ t(`partner.level${data.level}`) }}</span>
+                  </template>
+                  <!-- Wallet -->
+                  <template v-slot:cell-wallet="{ row: data }">
+                    <div class="space-y-1">
+                      <div class="text-white">{{ n(Number(data.wallet)) }}</div>
+                      <button
+                        type="button"
+                        class="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                        @click="refreshWalletBalance(data.member_id)"
+                      >
+                        <i class="fas fa-sync-alt"></i>
+                      </button>
+                    </div>
+                  </template>
+                  <!-- Shop Transaction -->
+                  <template v-slot:cell-settle="{ row: data }">
+                    <div
+                      v-if="data.shoplevel === 2 && data.member_id !== authStore.user.id"
+                      class="flex gap-1"
+                    >
+                      <button
+                        type="button"
+                        class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30 whitespace-nowrap"
+                        @click="
+                          onShopTransact(data.member_id, data.member, data.wallet, 'ADD')
+                        "
+                      >
+                        <i class="fas fa-plus mr-1.5"></i>
+                        {{ t("partner.add") }}
+                      </button>
+                      <button
+                        type="button"
+                        class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-red-400/30 whitespace-nowrap"
+                        @click="
+                          onShopTransact(
+                            data.member_id,
+                            data.member,
+                            data.wallet,
+                            'DEDUCT'
+                          )
+                        "
+                      >
+                        <i class="fas fa-minus mr-1.5"></i>
+                        {{ t("partner.subtract") }}
+                      </button>
+                    </div>
+                    <div v-else></div>
+                  </template>
+                  <!-- Game Money Dep Wid -->
+                  <template v-slot:cell-game_money="{ row: data }">
+                    <div class="space-y-1">
+                      <button
+                        v-if="data.game_bal <= 0"
+                        type="button"
+                        class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
+                        @click="onGameMoneyWithdraw(data.member_id)"
+                      >
+                        {{ t("partner.subtract") }}
+                      </button>
+                      <div v-if="data.game_bal" class="text-white">
+                        {{ n(Number(data.game_bal)) }}
+                      </div>
+                    </div>
+                  </template>
+                  <!-- Slot Money -->
+                  <template v-slot:cell-slot_money="{ row: data }">
+                    <div v-if="data.wallet_game > 0" class="space-y-1">
+                      <button
+                        type="button"
+                        class="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                        @click="slotMoney(data.member_id)"
+                      >
+                        <i class="fas fa-check-circle mr-1"></i>
+                        {{ t("partner.slotButton") }}
+                      </button>
+                      <div class="text-white">{{ n(Number(data.wallet_game)) }}</div>
+                    </div>
+                    <div v-else></div>
+                  </template>
+                  <!-- Point Transfer -->
+                  <template v-slot:cell-point_transfer="{ row: data }">
                     <button
                       type="button"
-                      class="px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
-                      @click="refreshWalletBalance(data.member_id)"
+                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30 whitespace-nowrap"
+                      @click="onPointTransfer(data.member_id, data.member, 'ADD')"
                     >
-                      <i class="fas fa-sync-alt"></i>
+                      <i class="fas fa-exchange-alt mr-1.5"></i>
+                      {{ t("partner.addPoint") }}
                     </button>
-                  </div>
-                </template>
-                <!-- Shop Transaction -->
-                <template v-slot:cell-settle="{ row: data }">
+                  </template>
+                  <template v-slot:cell-bonus="{}">
+                    <span></span>
+                  </template>
+                  <!-- Member -->
+                  <template v-slot:cell-member="{ row: data }">
+                    <button
+                      @click="openMemberPopup(data)"
+                      class="text-left text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
+                    >
+                      {{ data.member }}
+                    </button>
+                  </template>
+                </KTDatatable>
+              </div>
+
+              <!-- Mobile Cards -->
+              <div class="lg:hidden space-y-4">
+                <!-- Loading State -->
+                <MobileLoadingSkeleton v-if="loading" :count="3" />
+
+                <!-- Empty State -->
+                <div v-else-if="tableData.length === 0" class="text-center py-12">
                   <div
-                    v-if="data.shoplevel === 2 && data.member_id !== authStore.user.id"
-                    class="flex gap-1"
+                    class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4"
                   >
-                    <button
-                      type="button"
-                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30 whitespace-nowrap"
-                      @click="
-                        onShopTransact(data.member_id, data.member, data.wallet, 'ADD')
-                      "
-                    >
-                      <i class="fas fa-plus mr-1.5"></i>
-                      {{ t("partner.add") }}
-                    </button>
-                    <button
-                      type="button"
-                      class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-red-400/30 whitespace-nowrap"
-                      @click="
-                        onShopTransact(data.member_id, data.member, data.wallet, 'DEDUCT')
-                      "
-                    >
-                      <i class="fas fa-minus mr-1.5"></i>
-                      {{ t("partner.subtract") }}
-                    </button>
+                    <i class="fas fa-users text-white/40 text-2xl"></i>
                   </div>
-                  <div v-else></div>
-                </template>
-                <!-- Game Money Dep Wid -->
-                <template v-slot:cell-game_money="{ row: data }">
-                  <div class="space-y-1">
-                    <button
-                      v-if="data.game_bal <= 0"
-                      type="button"
-                      class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
-                      @click="onGameMoneyWithdraw(data.member_id)"
-                    >
-                      {{ t("partner.subtract") }}
-                    </button>
-                    <div v-if="data.game_bal" class="text-white">
-                      {{ n(Number(data.game_bal)) }}
+                  <p class="text-white/60 text-sm">{{ t("common.noDataFound") }}</p>
+                </div>
+
+                <!-- Member Cards -->
+                <div
+                  v-else
+                  v-for="member in tableData"
+                  :key="member.member_id"
+                  class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
+                >
+                  <!-- First Row: member_count, level, member, createdAt -->
+                  <div
+                    class="flex items-center justify-between mb-4 pb-3 border-b border-white/10"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500/5 rounded-lg flex items-center justify-center"
+                      >
+                        <i class="fas fa-user text-white text-sm"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <button
+                            @click="openMemberPopup(member)"
+                            class="text-sm font-semibold text-blue-400 hover:text-blue-300 cursor-pointer transition-colors text-left hover:underline"
+                          >
+                            {{ member.member }}
+                          </button>
+                          <span
+                            class="text-xs px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full"
+                            >{{ t(`partner.level${member.level}`) }}</span
+                          >
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                          <span
+                            >{{ t("partner.lowerUserCount") }}:
+                            {{ member.member_count }}</span
+                          >
+                          <span>•</span>
+                          <span>{{ moment(member.createdAt).format("MM/DD/YYYY") }}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </template>
-                <!-- Slot Money -->
-                <template v-slot:cell-slot_money="{ row: data }">
-                  <div v-if="data.wallet_game > 0" class="space-y-1">
-                    <button
-                      type="button"
-                      class="px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
-                      @click="slotMoney(data.member_id)"
-                    >
-                      <i class="fas fa-check-circle mr-1"></i>
-                      {{ t("partner.slotButton") }}
-                    </button>
-                    <div class="text-white">{{ n(Number(data.wallet_game)) }}</div>
+
+                  <!-- Second Row: wallet, wallet_point -->
+                  <div
+                    class="flex items-center justify-between pb-3 border-b border-white/10 w-full"
+                  >
+                    <div class="flex justify-between gap-4 w-full">
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-400">{{
+                          t("partner.wallet")
+                        }}</span>
+                        <div class="inline-flex items-center gap-2">
+                          <span class="text-sm font-bold text-white">{{
+                            member.wallet?.toLocaleString() || "0"
+                          }}</span>
+                          <button
+                            type="button"
+                            class="p-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                            @click="refreshWalletBalance(member.member_id)"
+                          >
+                            <i class="fas fa-sync-alt"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-400">{{
+                          t("partner.walletPoint")
+                        }}</span>
+                        <span class="text-sm font-bold text-yellow-300">{{
+                          member.wallet_point?.toLocaleString() || "0"
+                        }}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div v-else></div>
-                </template>
-                <!-- Point Transfer -->
-                <template v-slot:cell-point_transfer="{ row: data }">
-                  <button
-                    type="button"
-                    class="px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30 whitespace-nowrap"
-                    @click="onPointTransfer(data.member_id, data.member, 'ADD')"
+
+                  <!-- Third Row: slot_money, slot_money -->
+                  <div
+                    class="grid grid-cols-3 gap-2 mb-4 pb-3 border-b border-white/10 pt-3"
                   >
-                    <i class="fas fa-exchange-alt mr-1.5"></i>
-                    {{ t("partner.addPoint") }}
-                  </button>
-                </template>
-                <template v-slot:cell-bonus="{}">
-                  <span></span>
-                </template>
-                <!-- Member -->
-                <template v-slot:cell-member="{ row: data }">
-                  <button
-                    @click="openMemberPopup(data)"
-                    class="text-left text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
+                    <!-- Settle Actions -->
+                    <div class="space-y-3">
+                      <div class="text-right">
+                        <span class="text-xs text-gray-400 text-nowrap">{{
+                          t("partner.settle")
+                        }}</span>
+                        <div
+                          v-if="
+                            member.shoplevel === 2 &&
+                            member.member_id !== authStore.user.id
+                          "
+                          class="flex flex-col gap-1 mt-1 justify-end"
+                        >
+                          <button
+                            type="button"
+                            class="px-2 py-1 text-xs font-medium bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
+                            @click="
+                              onShopTransact(
+                                member.member_id,
+                                member.member,
+                                member.wallet.toString(),
+                                'ADD'
+                              )
+                            "
+                          >
+                            <i class="fas fa-plus mr-1"></i>
+                            {{ t("partner.add") }}
+                          </button>
+                          <button
+                            type="button"
+                            class="px-2 py-1 text-xs font-medium bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-red-400/30"
+                            @click="
+                              onShopTransact(
+                                member.member_id,
+                                member.member,
+                                member.wallet.toString(),
+                                'DEDUCT'
+                              )
+                            "
+                          >
+                            <i class="fas fa-minus mr-1"></i>
+                            {{ t("partner.subtract") }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Slot Money -->
+                    <div class="space-y-2">
+                      <div class="text-center">
+                        <span class="text-xs text-gray-400">{{
+                          t("partner.slotMoney")
+                        }}</span>
+                        <!-- .wallet_game && member.wallet_game > 0 -->
+                        <div v-if="member" class="mt-1">
+                          <button
+                            type="button"
+                            class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
+                            @click="slotMoney(member.member_id)"
+                          >
+                            <i class="fas fa-check-circle mr-1"></i>
+                            {{ t("partner.slotButton") }}
+                          </button>
+                          <div class="text-sm font-bold text-white mt-1">
+                            {{ member.wallet_game?.toString() || "0" }}
+                          </div>
+                        </div>
+                        <div v-else class="text-xs text-gray-500 mt-1">-</div>
+                      </div>
+                    </div>
+
+                    <!-- Point Transfer -->
+                    <div class="space-y-2">
+                      <div class="text-center">
+                        <span class="text-xs text-gray-400">{{
+                          t("partner.pointTransfer")
+                        }}</span>
+                        <div class="mt-1">
+                          <button
+                            type="button"
+                            class="px-3 w-full py-1 text-xs font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30"
+                            @click="
+                              onPointTransfer(member.member_id, member.member, 'ADD')
+                            "
+                          >
+                            <i class="fas fa-exchange-alt mr-1"></i>
+                            {{ t("partner.addPoint") }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Expand Button -->
+                  <div class="flex justify-center">
+                    <button
+                      @click="toggleMemberExpand(member.member_id)"
+                      class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 text-gray-300 hover:text-white"
+                    >
+                      <span class="text-xs">{{
+                        expandedMembers.includes(member.member_id)
+                          ? t("common.showLess")
+                          : t("common.showMore")
+                      }}</span>
+                      <i
+                        class="fas fa-chevron-down transition-transform text-xs"
+                        :class="{
+                          'rotate-180': expandedMembers.includes(member.member_id),
+                        }"
+                      ></i>
+                    </button>
+                  </div>
+
+                  <!-- Expandable Details: Fourth Row Data -->
+                  <div
+                    v-if="expandedMembers.includes(member.member_id)"
+                    class="mt-4 pt-4 border-t border-white/10 animate-in slide-in-from-top duration-200"
                   >
-                    {{ data.member }}
-                  </button>
-                </template>
-              </KTDatatable>
+                    <!-- Fourth Row: deposits, bonus, withdrawals, sonic, winamt, profit -->
+                    <div class="grid grid-cols-2 gap-4">
+                      <!-- Money Details -->
+                      <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{ t("partner.depAmount") }}</span>
+                          <span class="text-white font-medium">{{
+                            member.deposits?.toLocaleString() || "0"
+                          }}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{ t("partner.depBonus") }}</span>
+                          <span class="text-white font-medium">{{
+                            member.bonus?.toLocaleString() || "0"
+                          }}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{ t("partner.widAmount") }}</span>
+                          <span class="text-white font-medium">{{
+                            member.withdrawals?.toLocaleString() || "0"
+                          }}</span>
+                        </div>
+                      </div>
+
+                      <!-- Profit & Win Details -->
+                      <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{
+                            t("partner.depWidProfit")
+                          }}</span>
+                          <span class="text-white font-medium">{{
+                            member.sonic?.toLocaleString() || "0"
+                          }}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{ t("partner.winamount") }}</span>
+                          <span class="text-white font-medium">{{
+                            member.winamt?.toLocaleString() || "0"
+                          }}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                          <span class="text-gray-400">{{ t("partner.betProfit") }}</span>
+                          <span
+                            class="text-sm font-bold"
+                            :class="
+                              member.profit >= 0 ? 'text-green-400' : 'text-red-400'
+                            "
+                          >
+                            {{ member.profit >= 0 ? "+" : ""
+                            }}{{ member.profit?.toLocaleString() || "0" }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Additional Member Info -->
+                    <div class="mt-4 pt-3 border-t border-white/10">
+                      <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="flex items-center justify-between">
+                          <span class="text-gray-400">{{ t("partner.lastLogin") }}</span>
+                          <span class="text-gray-300">{{
+                            member.last_login
+                              ? moment(member.last_login).format("MM/DD/YYYY HH:mm")
+                              : "-"
+                          }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-gray-400">{{ t("partner.nickname") }}</span>
+                          <span class="text-gray-300">{{ member.nickname || "-" }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </DataTableCard>
           </div>
         </div>
@@ -245,13 +561,7 @@
     @refresh="getList"
   />
 
-  <!-- Member Popup -->
-  <MemberPopup
-    v-if="showMemberPopup"
-    :member-id="selectedMemberData?.member_id"
-    :member-data="selectedMemberData"
-    @close="closeMemberPopup"
-  />
+
 
   <!-- Add Sub Member Modal -->
   <AddSubMember
@@ -260,8 +570,12 @@
     @refresh="getList"
   />
 
-  <PointMoneyTransfer v-if="selectedModal === 'PointMoneyTransfer'" :receiver="pointTransfer.receiver"
-  :type="pointTransfer.type" @refresh="getList" />
+  <PointMoneyTransfer
+    v-if="selectedModal === 'PointMoneyTransfer'"
+    :receiver="pointTransfer.receiver"
+    :type="pointTransfer.type"
+    @refresh="getList"
+  />
 </template>
 
 <script setup lang="ts">
@@ -278,10 +592,10 @@ import { useAppStore } from "@/stores/app";
 import { useAuthStore } from "@/stores/auth";
 import MemberTree from "@/components/partner/member/MemberTree.vue";
 import DataTableCard from "@/components/ui/DataTableCard.vue";
-import MemberPopup from "@/views/partner/profile/MemberPopup.vue";
 import AddSubMember from "@/views/partner/profile/AddSubMember.vue";
 import Swal from "sweetalert2";
 import PartnerPageHeader from "@/components/partner/PartnerPageHeader.vue";
+import MobileLoadingSkeleton from "@/components/ui/MobileLoadingSkeleton.vue";
 
 export interface IData {
   createdAt: string;
@@ -304,6 +618,7 @@ export interface IData {
   game_bal?: number;
   wallet_game?: number;
   shoplevel?: number;
+  bonus?: number;
 }
 
 export interface DateRange {
@@ -319,9 +634,13 @@ const authStore = useAuthStore();
 // Computed
 const selectedModal = computed(() => appStore.activeModal);
 
-// Member popup state
-const showMemberPopup = ref(false);
-const selectedMemberData = ref<any>(null);
+
+
+
+
+// Mobile state
+const expandedMembers = ref<string[]>([]);
+const isMemberTreeExpanded = ref(true); // Start expanded on mobile
 
 // Loading state
 const loading = ref(false);
@@ -554,18 +873,49 @@ const onShopTransact = (
 };
 
 const openMemberPopup = (memberData: any) => {
-  selectedMemberData.value = memberData;
-  showMemberPopup.value = true;
+  // Open member popup in a new window for both desktop and mobile
+  const popupWindow = window.open(
+    `/partner/member/${memberData.member_id}`,
+    `member_${memberData.member_id}`,
+    'width=1000,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no,centerscreen=yes'
+  );
+  
+  // Focus the new window
+  if (popupWindow) {
+    popupWindow.focus();
+  } else {
+    // If popup is blocked, show a message to the user
+    Swal.fire({
+      icon: 'warning',
+      title: t('common.popupBlocked'),
+      text: t('common.popupBlockedMessage'),
+      confirmButtonText: t('common.ok')
+    });
+  }
 };
 
-const closeMemberPopup = () => {
-  showMemberPopup.value = false;
-  selectedMemberData.value = null;
+
+
+// Mobile helpers
+const toggleMemberExpand = (memberId: string) => {
+  const index = expandedMembers.value.indexOf(memberId);
+  if (index > -1) {
+    expandedMembers.value.splice(index, 1);
+  } else {
+    expandedMembers.value.push(memberId);
+  }
+};
+
+const toggleMemberTreeAccordion = () => {
+  isMemberTreeExpanded.value = !isMemberTreeExpanded.value;
 };
 
 // Point Transfer
-const pointTransfer = ref({ receiver: { id: "", username: "" }, type: "" });
-const onPointTransfer = (memberId: string, member: string, type: string) => {
+const pointTransfer = ref({
+  receiver: { id: "", username: "" },
+  type: "ADD" as "ADD" | "SUBTRACT",
+});
+const onPointTransfer = (memberId: string, member: string, type: "ADD" | "SUBTRACT") => {
   pointTransfer.value.receiver = { id: memberId, username: member };
   pointTransfer.value.type = type;
   openModal("PointMoneyTransfer");
@@ -579,4 +929,13 @@ const onGameMoneyWithdraw = async (memberId: string) => {
 
 // Initialize
 getList();
+
+// Expose functions and state for template
+const exposed = {
+  expandedMembers,
+  toggleMemberExpand,
+  toggleMemberTreeAccordion,
+  isMemberTreeExpanded,
+  moment,
+};
 </script>

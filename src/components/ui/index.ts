@@ -1,0 +1,1 @@
+export { default as MobileLoadingSkeleton } from './MobileLoadingSkeleton.vue'; 

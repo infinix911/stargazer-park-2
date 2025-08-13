@@ -5,22 +5,22 @@
         class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       />
              <BaseDialogContent
-         class="p-0 bg-transparent fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] duration-200 w-[95vw] max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
+         class="p-0 bg-transparent fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] duration-200 w-[95vw] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
        >
         <!-- Modal Wrapper -->
         <div
-          class="w-full bg-[#07102e]/5 backdrop-blur-md border border-white/50 p-4 sm:p-6 md:p-8 rounded-lg overflow-hidden"
+          class="w-full bg-[#07102e]/5 backdrop-blur-md border border-white/50 p-3 sm:p-4 md:p-6 lg:p-8 rounded-lg overflow-hidden"
         >
           <!-- Modal Header with gradient -->
           <div
-            class="px-4 sm:px-6 py-3 sm:py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-4 sm:-mx-6 md:-mx-8 -mt-4 sm:-mt-6 md:-mt-8 mb-4 sm:mb-6 relative"
+            class="px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-3 sm:-mx-4 md:-mx-6 -mt-3 sm:-mt-4 md:-mt-6 mb-3 sm:mb-4 md:mb-6 relative"
           >
-            <div class="flex items-center gap-3">
-              <div class="px-3 py-2 bg-blue-500/20 rounded-lg">
-                <i class="fas fa-wallet text-blue-400 text-sm"></i>
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div class="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-500/20 rounded-lg">
+                <i class="fas fa-wallet text-blue-400 text-xs sm:text-sm"></i>
               </div>
               <div>
-                <h2 class="text-lg font-semibold text-white">
+                <h2 class="text-base sm:text-lg font-semibold text-white">
                   {{ t(`partner.storeMoney${type}`) }}
                 </h2>
                 <p class="text-xs text-gray-400">
@@ -34,79 +34,79 @@
             <button
               type="button"
               @click="handleClose"
-              class="custom-close-button absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-200 group"
+              class="custom-close-button absolute top-2 right-2 sm:top-4 sm:right-4 p-1.5 sm:p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-200 group"
             >
-              <X class="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <X class="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
 
                   <!-- Transaction Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-3 sm:space-y-4">
+        <form @submit.prevent="handleSubmit" class="space-y-2 sm:space-y-3 md:space-y-4">
             <!-- Member Field -->
-            <div class="space-y-2">
+            <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <User class="w-5 h-5 text-blue-400" />
-                <label class="text-white font-medium">{{
+                <User class="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                <label class="text-white font-medium text-sm sm:text-base">{{
                   t("partnerMenu.member")
                 }}</label>
               </div>
               <Input
                 v-model="user.username"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Store Member Field -->
-            <div class="space-y-2">
+            <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <Users class="w-5 h-5 text-purple-400" />
-                <label class="text-white font-medium">{{
+                <Users class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                <label class="text-white font-medium text-sm sm:text-base">{{
                   t("partner.storeMember")
                 }}</label>
               </div>
               <Input
                 v-model="receiver.username"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Balance Field -->
-            <div class="space-y-2">
+            <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <Wallet class="w-5 h-5 text-green-400" />
-                <label class="text-white font-medium">{{
+                <Wallet class="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
+                <label class="text-white font-medium text-sm sm:text-base">{{
                   t("partner.shopMemberBalance")
                 }}</label>
               </div>
               <Input
                 v-model="balanceDisplay"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Transaction Type Field -->
-            <div class="space-y-2">
+            <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <ArrowUpDown class="w-5 h-5 text-yellow-400" />
-                <label class="text-white font-medium">{{
+                <ArrowUpDown class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+                <label class="text-white font-medium text-sm sm:text-base">{{
                   t("partner.transaction")
                 }}</label>
               </div>
               <Input
                 v-model="transactionTypeDisplay"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Transaction Amount Field -->
-            <div class="space-y-2">
+            <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <DollarSign class="w-5 h-5 text-orange-400" />
-                <label class="text-white font-medium">{{
+                <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
+                <label class="text-white font-medium text-sm sm:text-base">{{
                   t("partner.tranAmount")
                 }}</label>
               </div>
@@ -115,14 +115,14 @@
                 type="number"
                 :placeholder="t('partner.shopTransferNotifAnyAmount')"
                 :class="{ 'border-red-500': errors.amount }"
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+                class="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base h-9 sm:h-10"
               />
-              <p v-if="errors.amount" class="text-red-400 text-sm">{{ errors.amount }}</p>
+              <p v-if="errors.amount" class="text-xs sm:text-sm text-red-400">{{ errors.amount }}</p>
             </div>
 
             <!-- Quick Amount Buttons -->
             <div class="space-y-2">
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                 <Button
                   v-for="amount in quickAmounts"
                   :key="amount.value"
@@ -131,8 +131,8 @@
                   variant="outline"
                   :class="
                     amount.value === 0
-                      ? 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 hover:scale-105'
-                      : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white border-gray-600 hover:border-gray-500 py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 shadow-lg'
+                      ? 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 h-8 sm:h-9'
+                      : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white border-gray-600 hover:border-gray-500 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 shadow-lg h-8 sm:h-9'
                   "
                 >
                   {{ t(amount.label) }}
@@ -143,7 +143,7 @@
             <!-- Submit Button -->
             <Button
               type="submit"
-              class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white font-medium py-3 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
+              class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white font-medium py-2.5 sm:py-3 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg h-10 sm:h-11 text-sm sm:text-base"
               :disabled="isSubmitting"
             >
               <span v-if="isSubmitting">{{ t("partner.processing") }}</span>

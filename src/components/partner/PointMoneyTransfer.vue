@@ -47,7 +47,7 @@
               <label class="text-white font-medium">{{ t("partner.point") }}</label>
             </div>
             <Input
-              :value="pointBalanceDisplay"
+              v-model="pointBalanceDisplay"
               readonly
               class="bg-white/10 border-white/20 text-white placeholder-gray-400"
             />
@@ -88,7 +88,7 @@
             <Input
               v-model="form.amount"
               type="number"
-              :placeholder="t('deposit.AmountCheck')"
+              :placeholder="t('partner.amountCheck')"
               :class="{ 'border-red-500': errors.amount }"
               class="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
             />
