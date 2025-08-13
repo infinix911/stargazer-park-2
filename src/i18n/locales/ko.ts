@@ -472,7 +472,7 @@ export default {
   },
   partner: {
     amountBefore: "이전 금액",
-    amountAfter: "현재 금액",
+    betAmountAfter: "현재 금액",
     subGames: "Sub Games",
     rollType: "롤링 타입",
     processing: "처리중...",
