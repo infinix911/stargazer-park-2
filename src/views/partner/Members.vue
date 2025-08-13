@@ -311,7 +311,7 @@
                             {{ member.member_count }}</span
                           >
                           <span>•</span>
-                          <span>{{ moment(member.createdAt).format("MM/DD/YYYY") }}</span>
+                          <span>{{ moment(member.last_login).format("MM/DD/YYYY HH:mm") }}</span>
                         </div>
                       </div>
                     </div>
@@ -328,7 +328,7 @@
                         }}</span>
                         <div class="inline-flex items-center gap-2">
                           <span class="text-sm font-bold text-white">{{
-                            member.wallet?.toLocaleString() || "0"
+                            n(Number(member.wallet))
                           }}</span>
                           <button
                             type="button"
@@ -344,7 +344,7 @@
                           t("partner.walletPoint")
                         }}</span>
                         <span class="text-sm font-bold text-yellow-300">{{
-                          member.wallet_point?.toLocaleString() || "0"
+                          n(Number(member.wallet_point))
                         }}</span>
                       </div>
                     </div>
@@ -406,8 +406,7 @@
                         <span class="text-xs text-gray-400">{{
                           t("partner.slotMoney")
                         }}</span>
-                        <!-- .wallet_game && member.wallet_game > 0 -->
-                        <div v-if="member" class="mt-1">
+                        <div v-if="member.wallet_game && member.wallet_game > 0" class="mt-1">
                           <button
                             type="button"
                             class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
@@ -417,7 +416,7 @@
                             {{ t("partner.slotButton") }}
                           </button>
                           <div class="text-sm font-bold text-white mt-1">
-                            {{ member.wallet_game?.toString() || "0" }}
+                            {{ n(Number(member.wallet_game)) }}
                           </div>
                         </div>
                         <div v-else class="text-xs text-gray-500 mt-1">-</div>
@@ -447,7 +446,7 @@
                   </div>
 
                   <!-- Expand Button -->
-                  <div class="flex justify-center">
+                  <div class="flex justify-center items-center">
                     <button
                       @click="toggleMemberExpand(member.member_id)"
                       class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 text-gray-300 hover:text-white"
@@ -478,19 +477,19 @@
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.depAmount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.deposits?.toLocaleString() || "0"
+                            n(Number(member.deposits))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.depBonus") }}</span>
                           <span class="text-white font-medium">{{
-                            member.bonus?.toLocaleString() || "0"
+                            n(Number(member.bonus))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.widAmount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.withdrawals?.toLocaleString() || "0"
+                            n(Number(member.withdrawals))
                           }}</span>
                         </div>
                       </div>
@@ -502,13 +501,13 @@
                             t("partner.depWidProfit")
                           }}</span>
                           <span class="text-white font-medium">{{
-                            member.sonic?.toLocaleString() || "0"
+                            n(Number(member.sonic))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.winamount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.winamt?.toLocaleString() || "0"
+                            n(Number(member.winamt))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
@@ -519,8 +518,8 @@
                               member.profit >= 0 ? 'text-green-400' : 'text-red-400'
                             "
                           >
-                            {{ member.profit >= 0 ? "+" : ""
-                            }}{{ member.profit?.toLocaleString() || "0" }}
+                            {{ Number(member.profit) >= 0 ? "+" : ""
+                            }}{{ n(Number(member.profit)) }}
                           </span>
                         </div>
                       </div>
@@ -532,8 +531,8 @@
                         <div class="flex items-center justify-between">
                           <span class="text-gray-400">{{ t("partner.lastLogin") }}</span>
                           <span class="text-gray-300">{{
-                            member.last_login
-                              ? moment(member.last_login).format("MM/DD/YYYY HH:mm")
+                            member.createdAt
+                              ? moment(member.createdAt).format("MM/DD/YYYY HH:mm")
                               : "-"
                           }}</span>
                         </div>
