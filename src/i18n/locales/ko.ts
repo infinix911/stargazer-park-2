@@ -1479,6 +1479,8 @@ export default {
     loading: '로딩 중...',
     retry: '다시 시도',
     close: '닫기',
+    page: '페이지',
+    of: '/',
     CASINO: "카지노",
     HOTEL: "호텔",
     SLOT: "슬롯",

@@ -1063,6 +1063,8 @@ export default {
     loading: 'Loading...',
     retry: 'Retry',
     close: 'Close',
+    page: 'Page',
+    of: 'of',
     CASINO: "Casino",
     HOTEL: "Hotel",
     SLOT: "Slot",
