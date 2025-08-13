@@ -132,7 +132,7 @@
               />
             </div>
             <!-- Language Switcher -->
-            <div class="flex items-center space-x-1 md:space-x-2">
+            <!-- <div class="flex items-center space-x-1 md:space-x-2">
               <button
                 @click="setLanguage('ko')"
                 :class="[
@@ -155,7 +155,7 @@
               >
                 English
               </button>
-            </div>
+            </div> -->
 
             <!-- User Dropdown -->
             <UserDropdown />
