@@ -8,7 +8,6 @@
         <!--Member Details-->
         <div class="hidden md:block" v-if="authStore.isAuthenticated">
           <div
-            @click="setRouter('/mypage'), openModal('change')"
             class="cursor-pointer flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <div
