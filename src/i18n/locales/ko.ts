@@ -614,6 +614,7 @@ export default {
     vip: "등급 4",
     rollFee: "롤링피",
     losingAmount: "루징 보유금액",
+    settleLosingAmount: "미당첨금액",
     requestWithdrawal: "출금 요청",
     addSubSuccess: "하부 회원을 생성되었습니다.",
     member_already_exist: "아아디, 전화번호, 계좌번호 다시 확인해주세요",
