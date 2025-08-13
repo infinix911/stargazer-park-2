@@ -21,7 +21,7 @@
           v-if="imageSrc"
           :src="imageSrc"
           :alt="title"
-          class="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:blur-sm"
+          class="absolute bottom-0 left-0 w-full h-full  transition-all duration-500 group-hover:scale-110 group-hover:blur-sm"
         />
 
         <!-- Overlay with Game Info -->
