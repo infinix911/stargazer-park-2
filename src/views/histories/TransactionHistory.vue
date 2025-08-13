@@ -1,28 +1,23 @@
 <template>
-  <div class="w-full bg-white">
+  <div class="w-full">
     <!-- Transaction History Section -->
-    <div class="py-12">
+    <div class="py-2">
       <div class="max-w-[1660px] mx-auto px-4">
         <!-- Section Header -->
         <div class="flex items-center justify-between mb-8">
           <h2 class="text-3xl font-black flex items-center space-x-4">
-            <div class="bg-gray-800 rounded-lg p-1">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-              </svg>
-            </div>
-            <span class="text-gray-900">{{ t('transactionHistory.title') }}</span>
+            <span class="text-white">{{ t('transactionHistory.title') }}</span>
           </h2>
         </div>
 
         <!-- Search/Filter Bar -->
-        <div class="bg-gray-100 rounded-lg p-6 mb-6">
+        <div class="bg-slate-800/90 backdrop-blur-sm rounded-sm border border-slate-700 p-6 mb-6">
           <div class="flex flex-col lg:flex-row gap-4 items-center">
             <!-- Type Filter -->
             <div class="flex items-center space-x-2">
               <select
                 v-model="filters.type"
-                class="px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                class="px-3 py-2 bg-slate-700 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="ALL">ALL</option>
                 <option value="DEPOSIT">DEPOSIT</option>
@@ -33,7 +28,7 @@
             <!-- Search Button -->
             <button
               @click="handleSearch"
-              class="bg-[#22c55e] hover:bg-[#16a34a] px-6 py-2 rounded-md text-white font-medium transition-colors"
+              class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md text-white font-medium transition-colors shadow-lg"
             >
               {{ t('transactionHistory.search') }}
             </button>
@@ -41,20 +36,20 @@
         </div>
 
         <!-- Loading State -->
-        <div v-if="loading" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+        <div v-if="loading" class="bg-slate-800/90 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-8">
           <div class="flex items-center justify-center">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span class="ml-3 text-gray-600">{{ t('common.loading') }}</span>
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+            <span class="ml-3 text-slate-300">{{ t('common.loading') }}</span>
           </div>
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
-          <div class="text-center text-red-600">
+        <div v-else-if="error" class="bg-slate-800/90 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-8">
+          <div class="text-center text-red-400">
             <p>{{ error }}</p>
             <button 
               @click="fetchTransactions" 
-              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
             >
               {{ t('common.retry') }}
             </button>
@@ -62,15 +57,15 @@
         </div>
 
         <!-- Transaction Table -->
-        <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
+        <div v-else class="bg-slate-800/90 backdrop-blur-sm rounded-sm overflow-hidden border border-slate-700 shadow-xl">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
+                <tr class="bg-[#141722]">
                   <th 
                     v-for="header in table.getFlatHeaders()" 
                     :key="header.id"
-                    class="px-6 py-4 text-center text-sm font-medium text-gray-900 border-b border-gray-300"
+                    class="px-6 py-6 text-center text-sm font-medium text-slate-200 border-b border-slate-600"
                   >
                     <div 
                       v-if="header.isPlaceholder" 
@@ -89,13 +84,13 @@
                 <tr 
                   v-for="row in table.getRowModel().rows" 
                   :key="row.id"
-                  class="border-b border-gray-200 hover:bg-gray-50 transition-colors"
-                  :class="row.index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+                  class="border-b border-slate-600 hover:bg-slate-700/30 transition-colors"
+                  :class="row.index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-700/20'"
                 >
                   <td 
                     v-for="cell in row.getVisibleCells()" 
                     :key="cell.id"
-                    class="px-6 py-4 text-sm border-b border-gray-200 text-center text-gray-900"
+                    class="px-6 py-4 text-sm border-b border-slate-600 text-center text-slate-200"
                   >
                     <div 
                       v-if="cell.column.id === 'type'"
@@ -129,7 +124,7 @@
                     >
                       {{ cell.getValue() ? (locale === 'ko' ? `₩${Number(cell.getValue()).toLocaleString()}` : Number(cell.getValue()).toLocaleString()) : (locale === 'ko' ? '₩0' : '0') }}
                     </div>
-                    <div v-else class="text-gray-900">
+                    <div v-else class="text-slate-200">
                       {{ cell.getValue() }}
                     </div>
                   </td>
@@ -140,15 +135,15 @@
 
           <!-- No Results Message -->
           <div v-if="transactions.length === 0" class="flex items-center justify-center py-12">
-            <p class="text-gray-600 text-lg">{{ t('transactionHistory.noResults') }}</p>
+            <p class="text-slate-300 text-lg">{{ t('transactionHistory.noResults') }}</p>
           </div>
 
           <!-- Pagination -->
-          <div class="flex items-center justify-end gap-2 px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <div class="flex items-center justify-end gap-2 px-6 py-4 bg-slate-700/30 border-t border-slate-600">
             <button
               @click="table.previousPage()"
               :disabled="!table.getCanPreviousPage()"
-              class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               «
             </button>
@@ -157,10 +152,10 @@
               :key="page"
               @click="table.setPageIndex(page - 1)"
               :class="[
-                'px-3 py-2 text-sm font-medium rounded-md',
+                'px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                 table.getState().pagination.pageIndex === page - 1
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-100'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'text-slate-300 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white'
               ]"
             >
               {{ page }}
@@ -168,7 +163,7 @@
             <button
               @click="table.nextPage()"
               :disabled="!table.getCanNextPage()"
-              class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               »
             </button>

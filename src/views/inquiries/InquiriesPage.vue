@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-gradient-to-br from-[#181b28] to-[#11131c]">
     <!-- Contact Us Modal -->
     <ContactUsModal
       :open="showContactUsModal"
@@ -19,74 +19,69 @@
         <!-- Section Header -->
         <div class="flex items-center justify-between mb-8">
           <h2 class="text-3xl font-black flex items-center space-x-4">
-            <div class="bg-white rounded-lg p-1">
-              <svg class="w-8 h-8 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <span class="text-gray-900">{{ t('inquiries.title') }}</span>
+            <span class="text-white">{{ t('inquiries.title') }}</span>
           </h2>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-wrap gap-3 mb-6">
-          <button 
-            @click="handleContactUs"
-            class="bg-[#22c55e] hover:bg-[#16a34a] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
-          >
-            {{ t('inquiries.buttons.contactUs') }}
-          </button>
-          <button 
-            @click="handleBankInquiry"
-            class="bg-[#8b5cf6] hover:bg-[#7c3aed] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
-          >
-            {{ t('inquiries.buttons.bankInquiry') }}
-          </button>
+        <!-- Management Action Buttons -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 mb-6 px-2 sm:px-0">
           <button 
             @click="handleDeleteInquiry(false)"
-            class="bg-[#ef4444] hover:bg-[#dc2626] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#ef4444] hover:bg-[#dc2626] px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ t('inquiries.buttons.delete') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.Delete') }}</span>
           </button>
           <button 
             @click="handleDeleteInquiry(true)"
-            class="bg-[#f97316] hover:bg-[#ea580c] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#ef4444] hover:bg-[#ef4444]/80 px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
           >
-            {{ t('inquiries.buttons.deleteAll') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.DeleteAll') }}</span>
           </button>
           <button 
             @click="handleReadInquiry(false)"
-            class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#dd7c2b] hover:bg-[#ca8a04] px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ t('inquiries.buttons.read') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.Read') }}</span>
           </button>
           <button 
             @click="handleReadInquiry(true)"
-            class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#dd7c2b] hover:bg-[#dd7c2b]/80 px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
           >
-            {{ t('inquiries.buttons.readAll') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.ReadAll') }}</span>
           </button>
         </div>
 
         <!-- Loading State -->
-        <div v-if="loading" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+        <div v-if="loading" class="bg-slate-800/90 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-8">
           <div class="flex items-center justify-center">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span class="ml-3 text-gray-600">{{ t('common.loading') }}</span>
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+            <span class="ml-3 text-slate-300">{{ t('common.loading') }}</span>
           </div>
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
-          <div class="text-center text-red-600">
+        <div v-else-if="error" class="bg-slate-800/90 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-8">
+          <div class="text-center text-red-400">
             <p>{{ error }}</p>
             <button 
               @click="getInquiry" 
-              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
             >
               {{ t('common.retry') }}
             </button>
@@ -94,23 +89,41 @@
         </div>
 
         <!-- Inquiries Table -->
-        <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
+        <div v-else class="bg-slate-800/90 backdrop-blur-sm rounded-sm overflow-hidden border border-slate-700 shadow-xl">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
-                  <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 border-b border-gray-300 w-12">
-                    <input 
-                      type="checkbox" 
-                      v-model="selectAll" 
-                      @change="toggleSelectAll"
-                      class="rounded border-gray-400 text-blue-600 focus:ring-blue-500 focus:ring-2"
-                    />
+                <tr class="bg-[#141722]">
+                  <th class="px-6 py-6 text-left text-sm font-medium text-slate-200 border-b border-slate-600 w-12">
+                    <div class="flex items-center justify-center">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          v-model="selectAll" 
+                          @change="toggleSelectAll"
+                          class="sr-only"
+                        />
+                        <div 
+                          class="w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
+                          :class="selectAll ? 'bg-blue-600 border-blue-600' : 'bg-slate-700 border-slate-500'"
+                        >
+                          <svg 
+                            v-if="selectAll"
+                            class="w-3 h-3 text-white" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                        </div>
+                      </label>
+                    </div>
                   </th>
                   <th 
                     v-for="header in table.getFlatHeaders()" 
                     :key="header.id"
-                    class="px-6 py-4 text-center text-sm font-medium text-gray-900 border-b border-gray-300"
+                    class="px-6 py-6 text-center text-sm font-medium text-slate-200 border-b border-slate-600"
                   >
                     <div 
                       v-if="header.isPlaceholder" 
@@ -129,32 +142,50 @@
                 <tr 
                   v-for="row in table.getRowModel().rows" 
                   :key="row.id"
-                  class="border-b border-gray-200 hover:bg-gray-50 transition-colors"
-                  :class="row.index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+                  class="border-b border-slate-600 hover:bg-slate-700/30 transition-colors cursor-pointer"
+                  :class="row.index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-700/20'"
+                  @click="openInquiry(row.original)"
                 >
-                  <td class="px-6 py-4 text-sm border-b border-gray-200">
-                    <input 
-                      type="checkbox" 
-                      :value="row.original.id"
-                      v-model="selectedInquiries"
-                      class="rounded border-gray-400 text-blue-600 focus:ring-blue-500 focus:ring-2"
-                    />
+                  <td class="px-6 py-4 text-sm border-b border-slate-600" @click.stop>
+                    <div class="flex items-center justify-center">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          :value="row.original.id"
+                          v-model="selectedInquiries"
+                          class="sr-only"
+                        />
+                        <div 
+                          class="w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
+                          :class="selectedInquiries.includes(row.original.id) ? 'bg-blue-600 border-blue-600' : 'bg-slate-700 border-slate-500'"
+                        >
+                          <svg 
+                            v-if="selectedInquiries.includes(row.original.id)"
+                            class="w-3 h-3 text-white" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                        </div>
+                      </label>
+                    </div>
                   </td>
                   <td 
                     v-for="cell in row.getVisibleCells()" 
                     :key="cell.id"
-                    class="px-6 py-4 text-sm border-b border-gray-200 text-center"
+                    class="px-6 py-4 text-sm border-b border-slate-600 text-center"
                     :class="{
-                      'text-gray-900': cell.column.id !== 'state',
+                      'text-slate-200': cell.column.id !== 'state',
                       'text-blue-400': cell.column.id === 'state'
                     }"
                   >
                     <div 
                       v-if="cell.column.id === 'title'"
-                      class="cursor-pointer hover:text-blue-300 transition-colors"
-                      @click="openInquiry(cell.row.original)"
+                      class="hover:text-blue-400 transition-colors"
                     >
-                      {{ cell.getValue() }}
+                      {{ cell.getValue() === 'DEPOSIT_ACCOUNT_REQUEST' ? t('inquiries.DepositAccReq') : cell.getValue() }}
                     </div>
                     <div 
                       v-else-if="cell.column.id === 'state'"
@@ -170,7 +201,7 @@
                     >
                       {{ getStateText(cell.row.original.state) }}
                     </div>
-                    <div v-else class="text-gray-900">
+                    <div v-else class="text-slate-200">
                       {{ cell.getValue() }}
                     </div>
                   </td>
@@ -180,11 +211,11 @@
           </div>
 
           <!-- Pagination -->
-          <div class="flex items-center justify-end gap-2 px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <div class="flex items-center justify-end gap-2 px-6 py-4 bg-slate-700/30 border-t border-slate-600">
             <button
               @click="table.previousPage()"
               :disabled="!table.getCanPreviousPage()"
-              class="px-3 py-2 text-sm font-medium text-gray-700 bg-transparent border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               «
             </button>
@@ -193,10 +224,10 @@
               :key="page"
               @click="table.setPageIndex(page - 1)"
               :class="[
-                'px-3 py-2 text-sm font-medium rounded-md',
+                'px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                 table.getState().pagination.pageIndex === page - 1
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 bg-transparent border border-gray-300 hover:bg-gray-100'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'text-slate-300 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white'
               ]"
             >
               {{ page }}
@@ -204,11 +235,33 @@
             <button
               @click="table.nextPage()"
               :disabled="!table.getCanNextPage()"
-              class="px-3 py-2 text-sm font-medium text-gray-700 bg-transparent border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               »
             </button>
           </div>
+        </div>
+
+        <!-- New Inquiry Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 justify-center px-2 sm:px-0">
+          <button 
+            @click="handleContactUs"
+            class="w-full sm:w-auto sm:max-w-[300px] cursor-pointer sm:flex-1 bg-[#95b1f8] hover:bg-[#95b1f8]/80 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl text-black text-base sm:text-lg font-semibold transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:scale-[1.02] sm:hover:scale-105 flex items-center justify-center space-x-2 sm:space-x-3 active:scale-95"
+          >
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.Write') }}</span>
+          </button>
+          <button 
+            @click="handleBankInquiry"
+            class="w-full sm:w-auto sm:max-w-[300px] cursor-pointer sm:flex-1 bg-[#3d455f] hover:bg-[#3d455f]/80 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl text-white text-base sm:text-lg font-semibold transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:scale-[1.02] sm:hover:scale-105 flex items-center justify-center space-x-2 sm:space-x-3 active:scale-95"
+          >
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.buttons.bankInquiry') }}</span>
+          </button>
         </div>
       </div>
     </div>
@@ -282,12 +335,12 @@ const getStateText = (state: number): string => {
 const columns = computed<ColumnDef<Inquiry>[]>(() => [
   {
     accessorKey: 'title',
-    header: t('inquiries.columns.title'),
+    header: t('table.Subject'),
     size: 400
   },
   {
     accessorKey: 'createdAt',
-    header: t('inquiries.columns.date'),
+    header: t('table.Date'),
     size: 180,
     cell: ({ getValue }) => {
       const date = getValue() as string
@@ -296,7 +349,7 @@ const columns = computed<ColumnDef<Inquiry>[]>(() => [
   },
   {
     accessorKey: 'state',
-    header: t('inquiries.columns.status'),
+    header: t('inquiries.StateColumn'),
     size: 120,
     cell: ({ row }) => {
       return getStateText(row.original.state)

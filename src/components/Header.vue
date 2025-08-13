@@ -1,11 +1,11 @@
 <template>
-  <header class="bg-[#000000]">
+  <header class="bg-[#000000] h-[88px] flex items-center">
     <!-- Deposit Modal -->
     <DepositModal :open="showDepositModal" @close="showDepositModal = false" />
 
     <!-- Withdrawal Modal -->
     <WithdrawalModal :open="showWithdrawalModal" @close="showWithdrawalModal = false" />
-    <div class="max-w-[1660px] mx-auto px-4 py-2 lg:py-3">
+    <div class="max-w-[1660px] mx-auto px-4 w-full">
       <div class="flex items-center justify-between">
         <!-- Logo and Navigation -->
         <div class="flex items-center space-x-4 lg:space-x-8">
@@ -294,20 +294,20 @@
         </div>
 
         <!-- User Actions -->
-        <div class="flex items-center space-x-2 lg:space-x-0" v-if="!isPartner">
+        <div class="flex items-center space-x-1 sm:space-x-2 lg:space-x-0" v-if="!isPartner">
           <!-- Deposit/Withdrawal Section -->
           <div
-            class="flex rounded-lg lg:rounded-xl overflow-hidden border border-gray-600"
+            class="flex rounded-lg lg:rounded-xl overflow-hidden"
           >
-            <!-- Deposit Button -->
-            <button
-              @click="handleDepositClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors cursor-pointer"
-            >
+                          <!-- Deposit Button -->
+              <button
+                @click="handleDepositClick"
+                class="max-h-[68px] bg-[#00a8ff] hover:bg-[#0097e6] px-2 sm:px-3 lg:px-4 py-3 lg:py-5 flex items-center space-x-1 sm:space-x-2 text-white text-xs sm:text-sm lg:text-base font-medium transition-colors cursor-pointer"
+              >
               <img
                 src="/images/header/deposit.svg"
                 alt="Deposit"
-                class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert"
+                class="w-4 h-4 sm:w-5 sm:h-5 lg:w-8 lg:h-8 filter brightness-0 invert"
               />
               <span class="hidden sm:inline">{{ t("header.deposit") }}</span>
             </button>
@@ -315,24 +315,24 @@
             <!-- Withdrawal Button -->
             <button
               @click="handleWithdrawalClick"
-              class="bg-[#00a8ff] hover:bg-[#0097e6] px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 text-white text-xs lg:text-base font-medium transition-colors border-l border-[#0080cc] cursor-pointer"
+              class="max-h-[68px] bg-[#00a8ff] hover:bg-[#0097e6] px-2 sm:px-3 lg:px-4 py-3 lg:py-5 flex items-center space-x-1 sm:space-x-2 text-white text-xs sm:text-sm lg:text-base font-medium transition-colors cursor-pointer border-r border-[#000000]"
             >
               <img
                 src="/images/header/withdraw.svg"
                 alt="Withdraw"
-                class="w-4 h-4 lg:w-8 lg:h-8 filter brightness-0 invert"
+                class="w-4 h-4 sm:w-5 sm:h-5 lg:w-8 lg:h-8 filter brightness-0 invert"
               />
               <span class="hidden sm:inline">{{ t("header.withdraw") }}</span>
             </button>
 
             <!-- My Lounge Button -->
             <button
-              class="bg-white hover:bg-gray-100 px-2 lg:px-6 py-3 lg:py-5 flex items-center space-x-1 lg:space-x-2 text-gray-700 text-xs lg:text-base font-medium transition-colors"
+              class="max-h-[68px] bg-white hover:bg-gray-100 px-2 sm:px-3 lg:px-4 py-3 lg:py-5 flex items-center space-x-1 sm:space-x-2 text-gray-700 text-xs sm:text-sm lg:text-base font-medium transition-colors border border-[#000000] rounded-r-xl"
             >
               <img
                 src="/images/header/mylounge.svg"
                 alt="My Lounge"
-                class="w-4 h-4 lg:w-8 lg:h-8"
+                class="w-4 h-4 sm:w-5 sm:h-5 lg:w-8 lg:h-8"
               />
               <span class="text-[#1494dc] hidden sm:inline">{{
                 t("header.myLounge")
