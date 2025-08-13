@@ -32,7 +32,7 @@
           <svg class="w-5 h-5 text-blue-300 group-hover:text-blue-900 mr-3 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
-          <span class="text-blue-300 group-hover:text-blue-900 transition-colors">Point Withdrawal</span>
+          <span class="text-blue-300 group-hover:text-blue-900 transition-colors">{{ t('userDropdown.pointWithdrawal') }}</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator class="bg-[#0c2b5f]" />
@@ -42,7 +42,7 @@
           <svg class="w-5 h-5 text-blue-300 group-hover:text-blue-900 mr-3 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
           </svg>
-          <span class="text-blue-300 group-hover:text-blue-900 transition-colors">Change Password</span>
+          <span class="text-blue-300 group-hover:text-blue-900 transition-colors">{{ t('password.ChangePassword') }}</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator class="bg-[#0c2b5f]" />
@@ -52,7 +52,7 @@
           <svg class="w-5 h-5 text-red-400 group-hover:text-red-900 mr-3 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          <span class="text-red-400 group-hover:text-red-900 font-medium transition-colors">Logout</span>
+          <span class="text-red-400 group-hover:text-red-900 font-medium transition-colors">{{ t('userDropdown.logout') }}</span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
     </DropdownMenuContent>
@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -80,6 +81,7 @@ import ChangePasswordModal from './ChangePasswordModal.vue'
 import PointWithdrawalModal from './PointWithdrawalModal.vue'
 import { useAuthStore } from '../../stores/auth'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 const user = computed(() => authStore.user);
 

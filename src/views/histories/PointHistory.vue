@@ -167,22 +167,22 @@ const pointHistory = ref<PointTransaction[]>([])
 const columns = computed<ColumnDef<PointTransaction>[]>(() => [
   {
     accessorKey: 'amount',
-    header: t('pointHistory.columns.amount'),
+    header: t('point.Amount'),
     size: 120
   },
   {
     accessorKey: 'status',
-    header: t('pointHistory.columns.status'),
+    header: t('partner.status'),
     size: 120
   },
   {
     accessorKey: 'createdAt',
-    header: t('pointHistory.columns.createdAt'),
+    header: t('partner.reqDate'),
     size: 150
   },
   {
     accessorKey: 'updatedAt',
-    header: t('pointHistory.columns.updatedAt'),
+    header: t('partner.processDate'),
     size: 150
   }
 ])
