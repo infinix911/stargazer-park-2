@@ -114,56 +114,50 @@
         <!-- Quick Amount Buttons -->
         <div class="space-y-1.5 sm:space-y-2">
           <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
-            <Button
+            <button
               type="button"
               @click="setAmount(10000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               10,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(50000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               50,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(100000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               100,000
-            </Button>
+            </button>
           </div>
           <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
-            <Button
+            <button
               type="button"
               @click="setAmount(500000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               500,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(1000000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               1M
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="resetAmount"
-              variant="outline"
-              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
+              class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               {{ t('deposit.reset') }}
-            </Button>
+            </button>
           </div>
         </div>
 
