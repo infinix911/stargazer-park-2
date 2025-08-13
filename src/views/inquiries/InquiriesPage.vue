@@ -93,7 +93,7 @@
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="bg-slate-700/50">
+                <tr class="bg-[#141722]">
                   <th class="px-6 py-4 text-left text-sm font-medium text-slate-200 border-b border-slate-600 w-12">
                     <div class="flex items-center justify-center">
                       <label class="relative inline-flex items-center cursor-pointer">

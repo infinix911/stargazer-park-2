@@ -313,7 +313,8 @@ export default {
     AccountRequest: "입금 계좌 고객센터를 보냈습니다.",
     InquirySent: "고객센터를 보냈습니다",
     StateColumn: "상태",
-    DepositAccReq: "입금계좌 요청"
+    DepositAccReq: "입금계좌 요청",
+    Resp: "응답"
   },
   viewInquiry: {
     title: '문의사항 상세보기',

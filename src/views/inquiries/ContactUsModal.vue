@@ -17,7 +17,7 @@
         <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
             <FileText class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
-            <label class="text-white font-semibold text-lg">{{ t('contactUs.fields.title') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('inquiries.Title') }}</label>
           </div>
           <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <Input
@@ -41,7 +41,7 @@
         <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
             <MessageSquare class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
-            <label class="text-white font-semibold text-lg">{{ t('contactUs.fields.message') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('inquiries.Body') }}</label>
           </div>
           <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <textarea
@@ -79,7 +79,7 @@
               <div class="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-black mr-2"></div>
               {{ t('contactUs.submitting') }}
             </span>
-            <span v-else>{{ t('contactUs.submit') }}</span>
+            <span v-else>{{ t('inquiries.Submit') }}</span>
           </Button>
         </div>
       </form>
