@@ -27,7 +27,7 @@
 
             <!-- Search Button -->
             <button
-              @click="handleSearch"
+              @click="fetchTransactions"
               class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md text-white font-medium transition-colors shadow-lg"
             >
               {{ t('transactionHistory.search') }}
@@ -324,12 +324,6 @@ const applyFilters = () => {
   }
   
   transactions.value = filteredData
-}
-
-// Handle search
-const handleSearch = () => {
-  console.log('Searching with filters:', filters.value)
-  applyFilters()
 }
 
 // Watch for filter changes and apply filters automatically
