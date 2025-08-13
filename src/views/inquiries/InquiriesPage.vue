@@ -91,10 +91,10 @@
         <!-- Inquiries Table -->
         <div v-else class="bg-slate-800/90 backdrop-blur-sm rounded-sm overflow-hidden border border-slate-700 shadow-xl">
           <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full min-w-[600px]">
               <thead>
                 <tr class="bg-[#141722]">
-                  <th class="px-6 py-6 text-left text-sm font-medium text-slate-200 border-b border-slate-600 w-12">
+                  <th class="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 text-left text-xs sm:text-sm font-medium text-slate-200 border-b border-slate-600 w-8 sm:w-12">
                     <div class="flex items-center justify-center">
                       <label class="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -104,12 +104,12 @@
                           class="sr-only"
                         />
                         <div 
-                          class="w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
+                          class="w-4 h-4 sm:w-5 sm:h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
                           :class="selectAll ? 'bg-blue-600 border-blue-600' : 'bg-slate-700 border-slate-500'"
                         >
                           <svg 
                             v-if="selectAll"
-                            class="w-3 h-3 text-white" 
+                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" 
                             fill="none" 
                             stroke="currentColor" 
                             viewBox="0 0 24 24"
@@ -123,7 +123,7 @@
                   <th 
                     v-for="header in table.getFlatHeaders()" 
                     :key="header.id"
-                    class="px-6 py-6 text-center text-sm font-medium text-slate-200 border-b border-slate-600"
+                    class="px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 text-center text-xs sm:text-sm font-medium text-slate-200 border-b border-slate-600"
                   >
                     <div 
                       v-if="header.isPlaceholder" 
@@ -146,7 +146,7 @@
                   :class="row.index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-700/20'"
                   @click="openInquiry(row.original)"
                 >
-                  <td class="px-6 py-4 text-sm border-b border-slate-600" @click.stop>
+                  <td class="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm border-b border-slate-600" @click.stop>
                     <div class="flex items-center justify-center">
                       <label class="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -156,12 +156,12 @@
                           class="sr-only"
                         />
                         <div 
-                          class="w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
+                          class="w-4 h-4 sm:w-5 sm:h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
                           :class="selectedInquiries.includes(row.original.id) ? 'bg-blue-600 border-blue-600' : 'bg-slate-700 border-slate-500'"
                         >
                           <svg 
                             v-if="selectedInquiries.includes(row.original.id)"
-                            class="w-3 h-3 text-white" 
+                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" 
                             fill="none" 
                             stroke="currentColor" 
                             viewBox="0 0 24 24"
@@ -175,7 +175,7 @@
                   <td 
                     v-for="cell in row.getVisibleCells()" 
                     :key="cell.id"
-                    class="px-6 py-4 text-sm border-b border-slate-600 text-center"
+                    class="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm border-b border-slate-600 text-center"
                     :class="{
                       'text-slate-200': cell.column.id !== 'state',
                       'text-blue-400': cell.column.id === 'state'
@@ -183,13 +183,20 @@
                   >
                     <div 
                       v-if="cell.column.id === 'title'"
-                      class="hover:text-blue-400 transition-colors"
+                      class="hover:text-blue-400 transition-colors truncate max-w-[120px] sm:max-w-[200px] md:max-w-[300px]"
+                      :title="(cell.getValue() === 'DEPOSIT_ACCOUNT_REQUEST' ? t('inquiries.DepositAccReq') : cell.getValue()) as string"
                     >
                       {{ cell.getValue() === 'DEPOSIT_ACCOUNT_REQUEST' ? t('inquiries.DepositAccReq') : cell.getValue() }}
                     </div>
                     <div 
+                      v-else-if="cell.column.id === 'createdAt'"
+                      class="text-slate-200 truncate"
+                    >
+                      {{ new Date(cell.getValue() as string).toLocaleDateString() }}
+                    </div>
+                    <div 
                       v-else-if="cell.column.id === 'state'"
-                      class="inline-block px-3 py-1 rounded-full text-xs font-medium"
+                      class="inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap"
                       :class="{
                         'bg-blue-600 text-white': cell.row.original.state === 3,
                         'bg-gray-600 text-white': cell.row.original.state === 0,
@@ -201,7 +208,7 @@
                     >
                       {{ getStateText(cell.row.original.state) }}
                     </div>
-                    <div v-else class="text-slate-200">
+                    <div v-else class="text-slate-200 truncate">
                       {{ cell.getValue() }}
                     </div>
                   </td>
@@ -211,34 +218,60 @@
           </div>
 
           <!-- Pagination -->
-          <div class="flex items-center justify-end gap-2 px-6 py-4 bg-slate-700/30 border-t border-slate-600">
-            <button
-              @click="table.previousPage()"
-              :disabled="!table.getCanPreviousPage()"
-              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              «
-            </button>
-            <button
-              v-for="page in table.getPageCount()"
-              :key="page"
-              @click="table.setPageIndex(page - 1)"
-              :class="[
-                'px-3 py-2 text-sm font-medium rounded-lg transition-colors',
-                table.getState().pagination.pageIndex === page - 1
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'text-slate-300 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white'
-              ]"
-            >
-              {{ page }}
-            </button>
-            <button
-              @click="table.nextPage()"
-              :disabled="!table.getCanNextPage()"
-              class="px-3 py-2 text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              »
-            </button>
+          <div class="flex items-center justify-between sm:justify-end gap-2 px-3 sm:px-6 py-3 sm:py-4 bg-slate-700/30 border-t border-slate-600">
+            <!-- Mobile: Show current page info -->
+            <div class="sm:hidden text-xs text-slate-300">
+              {{ t('common.page') }} {{ table.getState().pagination.pageIndex + 1 }} {{ t('common.of') }} {{ table.getPageCount() }}
+            </div>
+            
+            <!-- Desktop: Full pagination -->
+            <div class="hidden sm:flex items-center gap-2">
+              <button
+                @click="table.previousPage()"
+                :disabled="!table.getCanPreviousPage()"
+                class="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                «
+              </button>
+              <button
+                v-for="page in table.getPageCount()"
+                :key="page"
+                @click="table.setPageIndex(page - 1)"
+                :class="[
+                  'px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors',
+                  table.getState().pagination.pageIndex === page - 1
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-slate-300 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white'
+                ]"
+              >
+                {{ page }}
+              </button>
+              <button
+                @click="table.nextPage()"
+                :disabled="!table.getCanNextPage()"
+                class="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                »
+              </button>
+            </div>
+            
+            <!-- Mobile: Navigation buttons -->
+            <div class="flex sm:hidden items-center gap-1">
+              <button
+                @click="table.previousPage()"
+                :disabled="!table.getCanPreviousPage()"
+                class="px-2 py-1.5 text-xs font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                «
+              </button>
+              <button
+                @click="table.nextPage()"
+                :disabled="!table.getCanNextPage()"
+                class="px-2 py-1.5 text-xs font-medium text-slate-300 bg-transparent border border-slate-600 rounded-lg hover:bg-slate-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                »
+              </button>
+            </div>
           </div>
         </div>
 
