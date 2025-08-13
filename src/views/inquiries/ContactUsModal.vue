@@ -17,14 +17,14 @@
         <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
             <FileText class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
-            <label class="text-white font-semibold text-base sm:text-lg">{{ t('contactUs.fields.title') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('contactUs.fields.title') }}</label>
           </div>
           <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <Input
               v-model="form.title"
               type="text"
               :placeholder="t('contactUs.fields.titlePlaceholder')"
-              class="bg-transparent border-none text-white placeholder-slate-400 focus:outline-none focus:ring-0 text-base sm:text-lg"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:outline-none focus:ring-0 text-lg"
               required
               @input="errors.title = ''"
             />
@@ -41,14 +41,14 @@
         <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
             <MessageSquare class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
-            <label class="text-white font-semibold text-base sm:text-lg">{{ t('contactUs.fields.message') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('contactUs.fields.message') }}</label>
           </div>
           <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <textarea
               v-model="form.body"
               :placeholder="t('contactUs.fields.messagePlaceholder')"
               :rows="4"
-              class="w-full bg-transparent border-none text-white placeholder-slate-400 focus:outline-none focus:ring-0 resize-none text-sm sm:text-base lg:text-lg leading-relaxed"
+              class="w-full bg-transparent border-none text-white placeholder-slate-400 focus:outline-none focus:ring-0 resize-none text-lg leading-relaxed"
               required
               @input="errors.body = ''"
             ></textarea>
