@@ -16,6 +16,11 @@ export default {
     login: '로그인',
     signup: '회원가입'
   },
+  userDropdown: {
+    pointWithdrawal: '포인트 출금',
+    changePassword: '비밀번호 변경',
+    logout: '로그아웃'
+  },
   auth: {
     loginRequired: '로그인 필요',
     loginRequiredMessage: '이 기능을 사용하려면 로그인이 필요합니다.',
@@ -1502,5 +1507,14 @@ export default {
     DEPOSIT: "입금",
     WITHDRAWAL: "출금",
     WITHDRAW: "출금",
+  },
+  password: {
+    ChangePassword: "비밀번호 변경",
+    ResetPassword: "비밀번호를 변경되었습니다.",
+    CurrentPassword: "현재 비밀번호",
+    NewPassword: "새 비밀번호",
+    VerifyPassword: "비밀번호 확인",
+    NEW_PASS_MISMATCH: "새 비밀번호를 다시 확인해주세요.",
+    INCORRECT_PASS: "비밀번호가 잘못되었습니다.",
   },
 } 

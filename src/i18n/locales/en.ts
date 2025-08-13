@@ -16,6 +16,11 @@ export default {
     login: 'Login',
     signup: 'Sign Up'
   },
+  userDropdown: {
+    pointWithdrawal: 'Point Withdrawal',
+    changePassword: 'Change Password',
+    logout: 'Logout'
+  },
   auth: {
     loginRequired: 'Login Required',
     loginRequiredMessage: 'Please log in to access this feature.',
