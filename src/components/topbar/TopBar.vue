@@ -98,6 +98,14 @@
                 {{ n(Number(user?.wallet || 0) + Number(user?.wallet_slot || 0)) }}
                 원
               </span>
+              <span
+              class="cursor-pointer ml-1"
+              @click="handleWalletRefresh">
+              <i 
+                class="fa-solid fa-refresh transition-all duration-100"
+                :class="{ 'animate-spin': isRefreshing }"
+              ></i>
+          </span>
             </div>
 
             <!-- P Counter -->
@@ -180,9 +188,25 @@ const authStore = useAuthStore();
 // Get user data from auth store
 const user = computed(() => authStore.user);
 
+// Refresh wallet state
+const isRefreshing = ref(false);
+
 // Language switching function
 const setLanguage = (lang: "ko" | "en") => {
   locale.value = lang;
+};
+
+// Handle wallet refresh with animation
+const handleWalletRefresh = async () => {
+  isRefreshing.value = true;
+  
+  try {
+    await authStore.updateWalletWithSlot();
+  } finally {
+    setTimeout(() => {
+      isRefreshing.value = false;
+    }, 500);
+  }
 };
 
 // Navigation functions
