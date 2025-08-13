@@ -28,7 +28,7 @@
                 <label class="text-gray-700 font-medium">{{ t('pointWithdrawal.point') }}</label>
               </div>
               <Input
-                :value="formatNumber(currentPoint)"
+                v-model="walletPoint.current"
                 readonly
                 class="bg-gray-100 border-gray-300 text-gray-900"
               />
@@ -43,7 +43,7 @@
                 <label class="text-gray-700 font-medium">{{ t('pointWithdrawal.balance') }}</label>
               </div>
               <Input
-                :value="formatNumber(currentBalance)"
+                v-model="wallet.current"
                 readonly
                 class="bg-gray-100 border-gray-300 text-gray-900"
               />
@@ -63,7 +63,7 @@
                 <label class="text-gray-700 font-medium">{{ t('pointWithdrawal.point') }}</label>
               </div>
               <Input
-                :value="formatNumber(afterPoint)"
+                v-model="walletPoint.new"
                 readonly
                 class="bg-gray-100 border-gray-300 text-gray-900"
               />
@@ -78,7 +78,7 @@
                 <label class="text-gray-700 font-medium">{{ t('pointWithdrawal.balance') }}</label>
               </div>
               <Input
-                :value="formatNumber(afterBalance)"
+                v-model="wallet.new"
                 readonly
                 class="bg-gray-100 border-gray-300 text-gray-900"
               />
@@ -191,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import {
@@ -203,8 +203,13 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/stores/auth'
+import ApiService from '@/services/ApiService'
+import Swal from 'sweetalert2'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 
 // Props
 interface Props {
@@ -220,7 +225,7 @@ const emit = defineEmits<{
 
 // Form state
 const form = reactive({
-  pointAmount: ''
+  pointAmount: 0
 })
 
 // Form state
@@ -229,45 +234,55 @@ const errors = reactive({
   pointAmount: ''
 })
 
-// Sample data (replace with actual data from API)
-const currentPoint = ref(3749246)
-const currentBalance = ref(78400)
+const wallet = computed(() => ({ 
+  current: user.value.wallet || 0, 
+  new: 0 
+}));
+const walletPoint = computed(() => ({ 
+  current: user.value.wallet_point || 0, 
+  new: 0 
+}));
 
 // Computed values
 const pointAmount = computed(() => {
-  const amount = parseInt(form.pointAmount) || 0
-  return amount
-})
-
-const afterPoint = computed(() => {
-  return Math.max(0, currentPoint.value - pointAmount.value)
-})
-
-const afterBalance = computed(() => {
-  return Math.max(0, currentBalance.value - pointAmount.value)
+  return form.pointAmount || 0
 })
 
 // Reactive validation schema
 const withdrawalSchema = computed(() => z.object({
-  pointAmount: z.string()
+  pointAmount: z.number()
     .min(1, t('pointWithdrawal.errors.pointAmountRequired'))
     .refine((val) => {
-      const amount = parseInt(val)
-      return !isNaN(amount) && amount > 0
+      return val > 0
     }, t('pointWithdrawal.errors.pointAmountPositive'))
     .refine((val) => {
-      const amount = parseInt(val)
-      return amount <= currentPoint.value
+      return val <= walletPoint.value.current
     }, t('pointWithdrawal.errors.pointAmountExceedsPoints'))
     .refine((val) => {
-      const amount = parseInt(val)
-      return amount <= currentBalance.value
+      return val <= wallet.value.current
     }, t('pointWithdrawal.errors.pointAmountExceedsBalance'))
     .refine((val) => {
-      const amount = parseInt(val)
-      return amount >= 10000
+      return val >= 10000
     }, t('pointWithdrawal.errors.pointAmountMinimum'))
 }))
+
+// Watch for point amount changes
+watch(
+  () => form.pointAmount,
+  (value) => {
+    
+    if (Number(value) > Number(walletPoint.value.current)) {
+      walletPoint.value.new = walletPoint.value.current;
+      wallet.value.new = wallet.value.current;
+    } else {
+      walletPoint.value.new =
+        Number(walletPoint.value.current) - Number(value);
+      wallet.value.new = Number(wallet.value.current) + Number(value);
+    }
+    
+  },
+  { immediate: true }
+);
 
 // Computed
 const isOpen = computed({
@@ -284,25 +299,22 @@ const handleOpenChange = (value: boolean) => {
 }
 
 const resetForm = () => {
-  form.pointAmount = ''
+  form.pointAmount = 0
   errors.pointAmount = ''
 }
 
-const formatNumber = (num: number): string => {
-  return num.toLocaleString()
-}
-
 const setAmount = (amount: number) => {
-  form.pointAmount = amount.toString()
+  amount > 0
+        ? (form.pointAmount = Number(form.pointAmount) + Number(amount))
+        : (form.pointAmount = 0)
 }
 
 const setMaxAmount = () => {
-  const maxAmount = Math.min(currentPoint.value, currentBalance.value)
-  form.pointAmount = maxAmount.toString()
+  form.pointAmount = walletPoint.value.current
 }
 
 const resetAmount = () => {
-  form.pointAmount = ''
+  form.pointAmount = 0
 }
 
 const validateForm = () => {
@@ -332,25 +344,38 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const amount = Number(form.pointAmount)
     
-    console.log('Point withdrawal successful:', {
-      pointAmount: form.pointAmount,
-      currentPoint: currentPoint.value,
-      currentBalance: currentBalance.value
-    })
-    
-    // Close modal and reset form
-    emit('update:open', false)
-    resetForm()
-    
-    // You can add a success notification here
+    if (amount > Number(walletPoint.value.current)) {
+      return Swal.fire(t("point.Title"), t(`point.AMOUNT_GT`), "info")
+    }
+
+    await ApiService.post("/tran/point", { amount })
+      .then(() => {
+        Swal.fire(
+          t("point.Title"),
+          t("point.TransferSuccess", amount),
+          "success"
+        )
+        
+        // Close modal and reset form
+        emit('update:open', false)
+        resetForm()
+      })
+      .catch((e) => {
+        Swal.fire(
+          t("point.Title"),
+          t(`point.${e.response.data.message}`),
+          "error"
+        )
+      })
+      
   } catch (error) {
     console.error('Failed to withdraw points:', error)
-    // You can add an error notification here
   } finally {
     isSubmitting.value = false
   }
+  
+  return
 }
 </script>

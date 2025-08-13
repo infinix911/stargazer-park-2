@@ -144,7 +144,7 @@ const authStore = useAuthStore()
 // Form validation schema
 const loginSchema = z.object({
   username: z.string().min(1, t('login.errors.usernameRequired')).min(3, t('login.errors.usernameMinLength')),
-  password: z.string().min(1, t('login.errors.passwordRequired')).min(6, t('login.errors.passwordMinLength')),
+  password: z.string().min(1, t('login.errors.passwordRequired')).min(5, t('login.errors.passwordMinLength')),
   captcha: z.string().min(1, t('login.errors.captchaRequired'))
 })
 

@@ -37,16 +37,6 @@
 
         <DropdownMenuSeparator class="bg-gray-200" />
 
-        <!-- Point History -->
-        <DropdownMenuItem @click="handlePointHistory" class="bg-white hover:bg-gray-50 cursor-pointer">
-          <svg class="w-5 h-5 text-gray-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span class="text-gray-700">Point History</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator class="bg-gray-200" />
-
         <!-- Change Password -->
         <DropdownMenuItem @click="handleChangePassword" class="bg-white hover:bg-gray-50 cursor-pointer">
           <svg class="w-5 h-5 text-gray-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,12 +90,6 @@ const showPointWithdrawalModal = ref(false)
 // Event handlers for menu items
 const handlePointWithdrawal = () => {
   showPointWithdrawalModal.value = true
-  console.log('Point Withdrawal clicked')
-}
-
-const handlePointHistory = () => {
-  console.log('Point History clicked')
-  // Add navigation logic here
 }
 
 const handleChangePassword = () => {

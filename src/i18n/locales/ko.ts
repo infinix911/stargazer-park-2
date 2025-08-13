@@ -9,6 +9,8 @@ export default {
     withdraw: '출금신청',
     myLounge: '마이 라운지',
     partner: '파트너',
+    Inquiry: '문의사항',
+    AccountInquiry: '계좌 문의'
   },
   topBar: {
     login: '로그인',
@@ -179,12 +181,18 @@ export default {
     changePassword: '비밀번호 변경',
     changingPassword: '비밀번호 변경 중...',
     errors: {
-      currentPasswordRequired: '현재 비밀번호를 입력해주세요',
-      newPasswordRequired: '새 비밀번호를 입력해주세요',
-      newPasswordMinLength: '비밀번호는 최소 8자 이상이어야 합니다',
-      newPasswordFormat: '비밀번호는 대문자, 소문자, 숫자를 각각 하나 이상 포함해야 합니다',
+      currentPasswordMinLength: '현재 비밀번호는 최소 5자 이상이어야 합니다',
+      newPasswordMinLength: '새 비밀번호는 최소 5자 이상이어야 합니다',
       verifyPasswordRequired: '비밀번호를 확인해주세요',
       passwordsDontMatch: '비밀번호가 일치하지 않습니다'
+    },
+    success: {
+      title: '성공',
+      message: '비밀번호가 성공적으로 변경되었습니다'
+    },
+    error: {
+      title: '오류',
+      message: '비밀번호 변경에 실패했습니다'
     }
   },
   pointWithdrawal: {
@@ -207,7 +215,8 @@ export default {
       pointAmountExceedsPoints: '출금 금액이 보유 포인트를 초과할 수 없습니다',
       pointAmountExceedsBalance: '출금 금액이 잔액을 초과할 수 없습니다',
       pointAmountMinimum: '최소 출금 금액은 10,000원입니다'
-    }
+    },
+    AMOUNT_GT: "금액이 실제 적립금보다 크면 안 됩니다.",
   },
   sections: {
     casino: '카지노',
@@ -246,6 +255,14 @@ export default {
       bankCheck: '은행 점검',
       unprocessedRefund: '※미처리, 환급 안내 ※',
       casinoSanctions: '카지노 양방 및 악성배팅 제재안내'
+    },
+    image: '이미지',
+    content: '내용',
+    noContent: '사용 가능한 내용이 없습니다',
+    dateFormat: {
+      today: '오늘',
+      yesterday: '어제',
+      daysAgo: '일 전'
     }
   },
   inquiries: {
@@ -268,6 +285,48 @@ export default {
       memberRead: '회원 읽음',
       unread: '읽지 않음',
       replied: '답변 완료'
+    },
+    states: {
+      "0": "미답변",
+      "1": "답변 대기",
+      "2": "확인",
+      "3": "회원 확인",
+      "4": "운영자 메세지",
+      "8": "운영자 취소",
+      "9": "운영자 메세지"
+    },
+    InquiryRead: "문의사항이 성공적으로 읽음으로 표시되었습니다",
+    InquiryDeletedSuccess: "문의사항이 성공적으로 삭제되었습니다",
+    InquirySentSuccess: "은행 문의가 성공적으로 전송되었습니다"
+  },
+  viewInquiry: {
+    title: '문의사항 상세보기',
+    description: '문의사항의 전체 정보를 확인하세요',
+    fields: {
+      title: '문의 제목',
+      status: '현재 상태',
+      date: '작성일',
+      message: '문의 내용',
+      reply: '관리자 답변',
+      lastUpdated: '최종 수정일'
+    },
+    buttons: {
+      close: '모달 닫기'
+    },
+    states: {
+      "0": "검토 대기",
+      "1": "조사 중", 
+      "2": "처리 중",
+      "3": "완료됨",
+      "4": "관리자 응답",
+      "8": "취소됨",
+      "9": "관리자 공지"
+    },
+    messages: {
+      loading: '문의사항 세부정보를 불러오는 중...',
+      error: '문의사항 세부정보를 불러오는데 실패했습니다',
+      noReply: '아직 답변이 제공되지 않았습니다',
+      noMessage: '메시지 내용을 사용할 수 없습니다'
     }
   },
   contactUs: {
@@ -280,10 +339,19 @@ export default {
       messagePlaceholder: '문의 내용을 자세히 설명해 주세요...'
     },
     submit: '제출',
-    submitting: '제출 중...'
+    submitting: '제출 중...',
+    cancel: '취소',
+    successMessage: '문의사항이 성공적으로 제출되었습니다',
+    validation: {
+      titleRequired: '제목을 입력해주세요',
+      titleMinLength: '제목은 최소 3자 이상이어야 합니다',
+      messageRequired: '메시지를 입력해주세요',
+      messageMinLength: '메시지는 최소 10자 이상이어야 합니다'
+    }
   },
   transactionHistory: {
     title: '거래 내역',
+    transactions: '거래',
     search: '검색',
     SearchKeyword: "검색어를 입력하세요...",
     noResults: '검색 결과가 없습니다',
@@ -304,12 +372,36 @@ export default {
     status: {
       completed: '완료',
       pending: '대기중',
+      processing: '처리중',
       failed: '실패',
       cancelled: '취소'
     }
   },
+  pointHistory: {
+    title: '포인트 내역',
+    search: '검색',
+    noResults: '검색 결과가 없습니다',
+    columns: {
+      amount: '금액',
+      type: '유형',
+      status: '상태',
+      description: '설명',
+      createdAt: '생성일',
+      updatedAt: '수정일'
+    },
+    types: {
+      add: '추가',
+      subtract: '차감'
+    },
+    status: {
+      new: '신규',
+      wait: '대기',
+      complete: '완료',
+      adminCancel: '관리자 취소'
+    }
+  },
   transaction: {
-    title: '거래 내역',
+    title: '거래',
     tabs: {
       transHistory: '거래 내역',
       pointHistory: '포인트 내역'
@@ -324,6 +416,7 @@ export default {
       slots: '슬롯',
       holdem: '홀덤',
       wallet: '마이 월렛',
+      transactions: '거래내역',
       notice: '공지',
       event: '이벤트',
       deposit: '입금신청',
@@ -566,6 +659,7 @@ export default {
     INVALID_SECURITY_CODE: "2분 이내에 로그인하지 않을시 보안코드가 만료됩니다. 페이지를 새로 고침 하십시오",
     INVALID_SECURITY_CODE_ANSWER: "보안 코드 잘못되었습니다.",
     AUTO_LOGGED_OUT: "세션이 만료되었습니다. 연결이 종료되었습니다.",
+    Close: "닫기",
     INVALID_RECEIVER: "INVALID_RECEIVER",
     AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
     StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
@@ -1346,6 +1440,9 @@ export default {
     TOPTREND: "탑 트렌드",
     PGSOFT: "PG소프트",
     GENESIS: "제네시스"
+  },
+  notice: {
+    CloseToday: '오늘 팝업 열지 않기'
   },
   common: {
     search: '게임 검색...',

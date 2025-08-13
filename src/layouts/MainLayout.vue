@@ -20,9 +20,7 @@
     <ProviderSection />
     
     <!-- Footer -->
-    <Footer 
-      @open-customer-service="handleCustomerService"
-      @nav-click="handleNavClick"
+    <Footer
       @show-deposit-modal="showDepositModal = true"
       @show-withdrawal-modal="showWithdrawalModal = true"
     />
@@ -41,6 +39,9 @@
     
     <!-- Scroll to Top Button -->
     <ScrollToTop />
+
+    <!-- Notice Popup -->
+    <NoticePopup />
   </div>
 </template>
 
@@ -52,12 +53,12 @@ import TopBar from '../components/topbar/TopBar.vue'
 import Header from '../components/Header.vue'
 import HeroSection from '../components/HeroSection.vue'
 import HotBrandBackground from '../components/hotbrand/HotBrandBackground.vue'
-//import HotBrands from '../components/HotBrands.vue'
 import ProviderSection from '../components/ProviderSection.vue'
 import Footer from '../components/footer/Footer.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
 import DepositModal from '../views/transaction/DepositModal.vue'
 import WithdrawalModal from '../views/transaction/WithdrawalModal.vue'
+import NoticePopup from '@/views/notifications/NoticePopup.vue'
 
 // Reactive data for current slide
 const currentSlide = ref(0)
@@ -73,16 +74,4 @@ const handleSlideChange = (slideIndex: number): void => {
   currentSlide.value = slideIndex
 }
 
-// Event handlers for layout interactions
-// const handleGameSelected = (game: GameSelectedEvent): void => {
-//   console.log('Hot brand game selected:', game)
-// }
-
-const handleCustomerService = (): void => {
-  console.log('Opening customer service...')
-}
-
-const handleNavClick = (section: string): void => {
-  console.log('Footer navigation clicked:', section)
-}
 </script>

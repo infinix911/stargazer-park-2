@@ -4,10 +4,15 @@
     <ContactUsModal
       :open="showContactUsModal"
       @close="showContactUsModal = false"
-      @submit="handleContactUsSubmit"
     />
     
-
+    <!-- View Inquiry Modal -->
+    <ViewInquiryModal
+      :open="showViewInquiryModal"
+      :inquiry="selectedInquiry"
+      @close="showViewInquiryModal = false"
+    />
+    
     <!-- Inquiries Section -->
     <div class="py-12">
       <div class="max-w-[1660px] mx-auto px-4">
@@ -38,7 +43,7 @@
             {{ t('inquiries.buttons.bankInquiry') }}
           </button>
           <button 
-            @click="handleDelete"
+            @click="handleDeleteInquiry(false)"
             class="bg-[#ef4444] hover:bg-[#dc2626] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
@@ -46,13 +51,13 @@
             {{ t('inquiries.buttons.delete') }}
           </button>
           <button 
-            @click="handleDeleteAll"
+            @click="handleDeleteInquiry(true)"
             class="bg-[#f97316] hover:bg-[#ea580c] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
             {{ t('inquiries.buttons.deleteAll') }}
           </button>
           <button 
-            @click="handleRead"
+            @click="handleReadInquiry(false)"
             class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
@@ -60,15 +65,36 @@
             {{ t('inquiries.buttons.read') }}
           </button>
           <button 
-            @click="handleReadAll"
+            @click="handleReadInquiry(true)"
             class="bg-[#eab308] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
           >
             {{ t('inquiries.buttons.readAll') }}
           </button>
         </div>
 
+        <!-- Loading State -->
+        <div v-if="loading" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span class="ml-3 text-gray-600">{{ t('common.loading') }}</span>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="bg-white rounded-lg border border-gray-300 shadow-lg p-8">
+          <div class="text-center text-red-600">
+            <p>{{ error }}</p>
+            <button 
+              @click="getInquiry" 
+              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {{ t('common.retry') }}
+            </button>
+          </div>
+        </div>
+
         <!-- Inquiries Table -->
-        <div class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
+        <div v-else class="bg-white rounded-lg overflow-hidden border border-gray-300 shadow-lg">
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
@@ -119,8 +145,8 @@
                     :key="cell.id"
                     class="px-6 py-4 text-sm border-b border-gray-200 text-center"
                     :class="{
-                      'text-gray-900': cell.column.id !== 'status',
-                      'text-blue-400': cell.column.id === 'status'
+                      'text-gray-900': cell.column.id !== 'state',
+                      'text-blue-400': cell.column.id === 'state'
                     }"
                   >
                     <div 
@@ -131,15 +157,18 @@
                       {{ cell.getValue() }}
                     </div>
                     <div 
-                      v-else-if="cell.column.id === 'status'"
+                      v-else-if="cell.column.id === 'state'"
                       class="inline-block px-3 py-1 rounded-full text-xs font-medium"
                       :class="{
-                        'bg-blue-600 text-white': cell.getValue() === 'MEMBER READ',
-                        'bg-gray-600 text-white': cell.getValue() === 'UNREAD',
-                        'bg-green-600 text-white': cell.getValue() === 'REPLIED'
+                        'bg-blue-600 text-white': cell.row.original.state === 3,
+                        'bg-gray-600 text-white': cell.row.original.state === 0,
+                        'bg-yellow-600 text-white': cell.row.original.state === 1,
+                        'bg-green-600 text-white': cell.row.original.state === 2,
+                        'bg-purple-600 text-white': cell.row.original.state === 4 || cell.row.original.state === 9,
+                        'bg-red-600 text-white': cell.row.original.state === 8
                       }"
                     >
-                      {{ cell.getValue() }}
+                      {{ getStateText(cell.row.original.state) }}
                     </div>
                     <div v-else class="text-gray-900">
                       {{ cell.getValue() }}
@@ -187,8 +216,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ApiService from '@/services/ApiService'
+import SocketService from '@/services/SocketService'
+import Swal from 'sweetalert2'
 import {
   useVueTable,
   getCoreRowModel,
@@ -196,41 +228,41 @@ import {
   type ColumnDef
 } from '@tanstack/vue-table'
 import ContactUsModal from './ContactUsModal.vue'
+import ViewInquiryModal from './ViewInquiryModal.vue'
 
 const { t } = useI18n()
 
 interface Inquiry {
-  id: number
-  title: string
-  date: string
-  status: 'MEMBER READ' | 'UNREAD' | 'REPLIED'
-  content?: string
+  id: number;
+  title: string;
+  body: string;
+  reply: string;
+  state: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-// Sample inquiries data
-const inquiries = ref<Inquiry[]>([
-  {
-    id: 1,
-    title: '예금주성 이용불가 안내',
-    date: '2025-01-22 17:45:44',
-    status: 'MEMBER READ',
-    content: 'Sample inquiry content about bank account holder name issue.'
-  },
-  {
-    id: 2,
-    title: '입금 확인 요청',
-    date: '2025-01-20 14:30:22',
-    status: 'REPLIED',
-    content: 'Request for deposit confirmation.'
-  },
-  {
-    id: 3,
-    title: '계정 보안 문의',
-    date: '2025-01-18 09:15:30',
-    status: 'UNREAD',
-    content: 'Inquiry about account security measures.'
+// Inquiries data from API
+const inquiries = ref<Inquiry[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+// Fetch inquiries from API
+const getInquiry = async (): Promise<void> => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await ApiService.get('/inquiry')
+    inquiries.value = response.data || []
+  } catch (err) {
+    console.error('Error fetching inquiries:', err)
+    error.value = 'Failed to load inquiries'
+    // Fallback
+    inquiries.value = []
+  } finally {
+    loading.value = false
   }
-])
+}
 
 // Selection state
 const selectedInquiries = ref<number[]>([])
@@ -238,6 +270,13 @@ const selectAll = ref(false)
 
 // Modal state
 const showContactUsModal = ref(false)
+const showViewInquiryModal = ref(false)
+const selectedInquiry = ref<Inquiry | null>(null)
+
+// State mapping function
+const getStateText = (state: number): string => {
+  return t(`inquiries.states.${state}`) || `State ${state}`
+}
 
 // Column definitions
 const columns = computed<ColumnDef<Inquiry>[]>(() => [
@@ -247,14 +286,21 @@ const columns = computed<ColumnDef<Inquiry>[]>(() => [
     size: 400
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'createdAt',
     header: t('inquiries.columns.date'),
-    size: 180
+    size: 180,
+    cell: ({ getValue }) => {
+      const date = getValue() as string
+      return new Date(date).toLocaleDateString()
+    }
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'state',
     header: t('inquiries.columns.status'),
-    size: 120
+    size: 120,
+    cell: ({ row }) => {
+      return getStateText(row.original.state)
+    }
   }
 ])
 
@@ -286,76 +332,157 @@ const toggleSelectAll = () => {
 
 // Action handlers
 const handleContactUs = () => {
-  console.log('Opening contact us modal')
   showContactUsModal.value = true
 }
 
-const handleContactUsSubmit = (data: { title: string; body: string }) => {
-  console.log('Contact us form submitted:', data)
-  // Here you would typically send the data to your backend
-  // For now, we'll add it to the inquiries list
-  const newInquiry: Inquiry = {
-    id: inquiries.value.length + 1,
-    title: data.title,
-    date: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    status: 'UNREAD',
-    content: data.body
-  }
-  inquiries.value.unshift(newInquiry)
-  showContactUsModal.value = false
-}
-
-const handleBankInquiry = () => {
-  console.log('Opening bank inquiry modal/page')
-  // Implement bank inquiry functionality
-}
-
-const handleDelete = () => {
-  console.log('Deleting selected inquiries:', selectedInquiries.value)
-  // Implement delete functionality
-  inquiries.value = inquiries.value.filter(inquiry => !selectedInquiries.value.includes(inquiry.id))
-  selectedInquiries.value = []
-  selectAll.value = false
-}
-
-const handleDeleteAll = () => {
-  console.log('Deleting all inquiries')
-  // Implement delete all functionality
-  if (confirm('Are you sure you want to delete all inquiries?')) {
-    inquiries.value = []
-    selectedInquiries.value = []
-    selectAll.value = false
-  }
-}
-
-const handleRead = () => {
-  console.log('Marking selected inquiries as read:', selectedInquiries.value)
-  // Implement mark as read functionality
-  inquiries.value = inquiries.value.map(inquiry => {
-    if (selectedInquiries.value.includes(inquiry.id)) {
-      return { ...inquiry, status: 'MEMBER READ' as const }
+const handleBankInquiry = async () => {
+  try {
+    const data = {
+      title: "DEPOSIT_ACCOUNT_REQUEST",
+      body: "DEPOSIT_ACCOUNT_REQUEST",
+    };
+    
+    const resp = await ApiService.post("/inquiry", data);
+    
+    if (resp.data.message !== "MESSAGE_SENT") {
+      return Swal.fire({
+        icon: "error",
+        title: t("header.AccountInquiry"),
+        text: t("notif." + resp.data.message),
+        confirmButtonColor: "#FF0000",
+        confirmButtonText: t("notif.Close"),
+      });
     }
-    return inquiry
-  })
-  selectedInquiries.value = []
-  selectAll.value = false
+    
+    Swal.fire({
+      icon: "success",
+      title: t("header.AccountInquiry"),
+      text: t("inquiry.InquirySentSuccess"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    
+    getInquiry();
+    return;
+  } catch (error: any) {
+    
+    return Swal.fire({
+      icon: "error",
+      title: t("header.AccountInquiry"),
+      text: t("notif." + (error.response?.data?.message || "UNKNOWN_ERROR")),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  }
 }
 
-const handleReadAll = () => {
-  console.log('Marking all inquiries as read')
-  // Implement mark all as read functionality
-  inquiries.value = inquiries.value.map(inquiry => ({
-    ...inquiry,
-    status: 'MEMBER READ' as const
-  }))
-  selectedInquiries.value = []
-  selectAll.value = false
-}
+const handleDeleteInquiry = async (isAll: boolean) => {
+  let ids = inquiries.value.filter((i) => i.state === 3).map((obj) => obj.id);
+
+  if (!isAll) ids = selectedInquiries.value;
+  
+  await ApiService.patch(`/inquiry`, {
+    inquiryIds: ids,
+  })
+  .then(() => {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryDeletedSuccess"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  })
+  .catch((e) => {
+    Swal.fire({
+      icon: "error",
+      title: t("header.Inquiry"),
+      text: t("notif." + e.response.data.message),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  });
+
+  getInquiry();
+};
+
+const handleReadInquiry = async (isAll: boolean) => {
+  let ids = inquiries.value.filter((i) => i.state !== 3).map((obj) => Number(obj.id));
+
+  if (!isAll) ids = selectedInquiries.value;
+
+  if (ids.length === 0) {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryRead"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    return;
+  }
+
+  await ApiService.patch(`/inquiry/read`, {
+    inquiryIds: ids,
+  })
+  .then(() => {
+    Swal.fire({
+      icon: "success",
+      title: t("header.Inquiry"),
+      text: t("inquiry.InquiryRead"),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+    selectedInquiries.value = [];
+    SocketService.socket.emit("members_init");
+  })
+  .catch((e) => {
+    Swal.fire({
+      icon: "error",
+      title: t("header.Inquiry"),
+      text: t("notif." + e.response.data.message),
+      confirmButtonColor: "#FF0000",
+      confirmButtonText: t("notif.Close"),
+    });
+  });
+
+  getInquiry();
+};
 
 // Handle inquiry click
-const openInquiry = (inquiry: Inquiry) => {
+const openInquiry = async (inquiry: Inquiry) => {
   console.log('Opening inquiry:', inquiry)
-  // Add your inquiry opening logic here
-  // This could open a modal, navigate to a detail page, etc.
+  selectedInquiry.value = inquiry
+  showViewInquiryModal.value = true
+  
+  // Mark as read if applicable
+  await selectInquiry(inquiry)
 }
+
+// Select inquiry and mark as read if applicable
+const selectInquiry = async (row: any) => {
+  if (row.state === 2 || row.state === 4 || row.state === 8) {
+    try {
+      await ApiService.patch(`/inquiry/read`, {
+        inquiryIds: [parseInt(row.id)],
+      });
+      SocketService.socket.emit("members_init");
+    } catch (error: any) {
+      console.error('Error marking inquiry as read:', error);
+      
+      Swal.fire({
+        icon: "error",
+        title: t("header.Inquiry"),
+        text: t("notif." + (error.response?.data?.message || "UNKNOWN_ERROR")),
+        confirmButtonColor: "#FF0000",
+        confirmButtonText: t("notif.Close"),
+      });
+    }
+  }
+}
+
+// Fetch inquiries on component mount
+onMounted(() => {
+  getInquiry()
+})
 </script>

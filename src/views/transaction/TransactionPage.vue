@@ -12,14 +12,14 @@
           <TabsList class="grid w-full grid-cols-2 bg-gray-100 p-1">
             <TabsTrigger 
               value="trans-history" 
-              class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
+              class="cursor-pointer text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
               {{ t('transaction.tabs.transHistory') }}
             </TabsTrigger>
             <TabsTrigger 
               value="point-history" 
-              class="text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
+              class="cursor-pointer text-gray-700 data-[state=active]:bg-[#1494dc] data-[state=active]:text-white py-4 px-6 text-base font-medium"
               style="height: 56px !important; min-height: 56px !important; display: flex !important; align-items: center !important; justify-content: center !important;"
             >
               {{ t('transaction.tabs.pointHistory') }}
@@ -31,11 +31,7 @@
           </TabsContent>
           
           <TabsContent value="point-history" class="mt-6">
-            <div class="bg-white rounded-lg p-6 border border-gray-300 shadow-lg">
-              <div class="text-center text-gray-600">
-                <p>Point history content will be displayed here</p>
-              </div>
-            </div>
+            <PointHistory />
           </TabsContent>
         </Tabs>
       </div>
@@ -47,6 +43,7 @@
 import { useI18n } from 'vue-i18n'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TransactionHistory from '../histories/TransactionHistory.vue'
+import PointHistory from '../histories/PointHistory.vue'
 
 const { t } = useI18n()
 </script>

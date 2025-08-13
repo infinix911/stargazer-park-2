@@ -16,7 +16,6 @@
 import Button from '../ui/Button.vue'
 
 interface Props {
-  icon: string
   label: string
 }
 

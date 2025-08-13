@@ -8,6 +8,8 @@ export default {
     deposit: 'Deposit',
     withdraw: 'Withdraw',
     myLounge: 'My Lounge',
+    Inquiry: 'Inquiry',
+    AccountInquiry: 'Account Inquiry',
     partner: 'Partner'
   },
   topBar: {
@@ -179,12 +181,18 @@ export default {
     changePassword: 'Change password',
     changingPassword: 'Changing password...',
     errors: {
-      currentPasswordRequired: 'Current password is required',
-      newPasswordRequired: 'New password is required',
-      newPasswordMinLength: 'Password must be at least 8 characters',
-      newPasswordFormat: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+      currentPasswordMinLength: 'Current password must be at least 5 characters',
+      newPasswordMinLength: 'New password must be at least 5 characters',
       verifyPasswordRequired: 'Please verify your password',
       passwordsDontMatch: 'Passwords don\'t match'
+    },
+    success: {
+      title: 'Success',
+      message: 'Password changed successfully'
+    },
+    error: {
+      title: 'Error',
+      message: 'Failed to change password'
     }
   },
   pointWithdrawal: {
@@ -207,7 +215,8 @@ export default {
       pointAmountExceedsPoints: 'Point amount cannot exceed your available points',
       pointAmountExceedsBalance: 'Point amount cannot exceed your balance',
       pointAmountMinimum: 'Minimum withdrawal amount is 10,000'
-    }
+    },
+    AMOUNT_GT: "Amount cannot be greater than actual points",
   },
   sections: {
     casino: 'Casino',
@@ -246,6 +255,14 @@ export default {
       bankCheck: '은행 점검',
       unprocessedRefund: '※미처리, 환급 안내 ※',
       casinoSanctions: '카지노 양방 및 악성배팅 제재안내'
+    },
+    image: 'Image',
+    content: 'Content',
+    noContent: 'No content available',
+    dateFormat: {
+      today: 'Today',
+      yesterday: 'Yesterday',
+      daysAgo: 'days ago'
     }
   },
   inquiries: {
@@ -268,6 +285,48 @@ export default {
       memberRead: 'MEMBER READ',
       unread: 'UNREAD',
       replied: 'REPLIED'
+    },
+    states: {
+      "0": "Unanswered",
+      "1": "Waiting for Reply",
+      "2": "Confirmed",
+      "3": "Member Confirmed",
+      "4": "Operator Message",
+      "8": "Operator Cancelled",
+      "9": "Operator Message"
+    },
+    InquiryRead: "Inquiry marked as read successfully",
+    InquiryDeletedSuccess: "Inquiry deleted successfully",
+    InquirySentSuccess: "Bank inquiry sent successfully"
+  },
+  viewInquiry: {
+    title: 'View Inquiry Details',
+    description: 'Review the complete information about your inquiry',
+    fields: {
+      title: 'Inquiry Title',
+      status: 'Current Status',
+      date: 'Created Date',
+      message: 'Inquiry Message',
+      reply: 'Admin Reply',
+      lastUpdated: 'Last Modified'
+    },
+    buttons: {
+      close: 'Close'
+    },
+    states: {
+      "0": "Pending Review",
+      "1": "Under Investigation", 
+      "2": "In Progress",
+      "3": "Completed",
+      "4": "Admin Response",
+      "8": "Cancelled",
+      "9": "Admin Notice"
+    },
+    messages: {
+      loading: 'Loading inquiry details...',
+      error: 'Failed to load inquiry details',
+      noReply: 'No reply has been provided yet',
+      noMessage: 'No message content available'
     }
   },
   contactUs: {
@@ -280,10 +339,19 @@ export default {
       messagePlaceholder: 'Describe your inquiry in detail...'
     },
     submit: 'Submit',
-    submitting: 'Submitting...'
+    submitting: 'Submitting...',
+    cancel: 'Cancel',
+    successMessage: 'Your inquiry has been submitted successfully',
+    validation: {
+      titleRequired: 'Title is required',
+      titleMinLength: 'Title must be at least 3 characters',
+      messageRequired: 'Message is required',
+      messageMinLength: 'Message must be at least 10 characters'
+    }
   },
   transactionHistory: {
     title: 'Transaction History',
+    transactions: 'Transactions',
     search: 'Search',
     noResults: 'No Results Found',
     columns: {
@@ -303,12 +371,36 @@ export default {
     status: {
       completed: 'COMPLETED',
       pending: 'PENDING',
+      processing: 'PROCESSING',
       failed: 'FAILED',
       cancelled: 'CANCELLED'
     }
   },
+  pointHistory: {
+    title: 'Point History',
+    search: 'Search',
+    noResults: 'No Results Found',
+    columns: {
+      amount: 'Amount',
+      type: 'Type',
+      status: 'Status',
+      description: 'Description',
+      createdAt: 'Created At',
+      updatedAt: 'Updated At'
+    },
+    types: {
+      add: 'ADD',
+      subtract: 'SUBTRACT'
+    },
+    status: {
+      new: 'NEW',
+      wait: 'WAIT',
+      complete: 'COMPLETE',
+      adminCancel: 'ADMIN CANCEL'
+    }
+  },
   transaction: {
-    title: 'Transaction History',
+    title: 'Transactions',
     tabs: {
       transHistory: 'Trans History',
       pointHistory: 'Point History'
@@ -323,6 +415,7 @@ export default {
       slots: 'Slots',
       holdem: 'Hold\'em',
       wallet: 'My Wallet',
+      transactions: 'Transactions',
       notice: 'Notice',
       event: 'Event',
       deposit: 'Deposit',
@@ -571,6 +664,7 @@ export default {
     INVALID_SECURITY_CODE: "Security code will expire if you don't log in within 2 minutes. Please refresh the page.",
     INVALID_SECURITY_CODE_ANSWER: "Invalid security code.",
     AUTO_LOGGED_OUT: "Your session has expired, and the connection has been terminated.",
+    Close: "Close",
     INVALID_RECEIVER: "INVALID_RECEIVER",
     AMOUNT_GT_WALLET: "Amount cannot be greater than available balance.",
     StoreMoneySuccess: "Store money transaction has been processed.",
@@ -950,6 +1044,9 @@ export default {
       "bghflgi59db7d7r2": "Blackjack VIP X",
       "oa7fpshyqfueqxuj": "Blackjack VIP Z"
     }
+  },
+  notice: {
+    CloseToday: 'Close Today'
   },
   common: {
     search: 'Search games...',

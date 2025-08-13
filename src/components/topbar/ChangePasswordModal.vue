@@ -148,6 +148,8 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import ApiService from '@/services/ApiService'
+import Swal from 'sweetalert2'
 
 const { t } = useI18n()
 
@@ -185,10 +187,8 @@ const errors = reactive({
 
 // Reactive validation schema
 const passwordSchema = computed(() => z.object({
-  currentPassword: z.string().min(1, t('changePassword.errors.currentPasswordRequired')),
-  newPassword: z.string()
-    .min(8, t('changePassword.errors.newPasswordMinLength'))
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, t('changePassword.errors.newPasswordFormat')),
+  currentPassword: z.string().min(5, t('changePassword.errors.currentPasswordMinLength')),
+  newPassword: z.string().min(5, t('changePassword.errors.newPasswordMinLength')),
   verifyPassword: z.string().min(1, t('changePassword.errors.verifyPasswordRequired'))
 }).refine((data) => data.newPassword === data.verifyPassword, {
   message: t('changePassword.errors.passwordsDontMatch'),
@@ -261,17 +261,38 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const data = {
+      password: form.currentPassword,
+      new_pass: form.newPassword,
+      confirm_pass: form.verifyPassword
+    }
+
+    await ApiService.post("/auth/change-pass", data)
+    
+    // Show success message
+    Swal.fire({
+      icon: 'success',
+      title: t('changePassword.success.title'),
+      text: t('changePassword.success.message'),
+      confirmButtonColor: '#075d4f',
+      confirmButtonText: t('common.ok')
+    })
     
     // Close modal and reset form
     emit('update:open', false)
     resetForm()
     
-    // You can add a success notification here
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to change password:', error)
-    // You can add an error notification here
+    
+    // Show error message
+    Swal.fire({
+      icon: 'error',
+      title: t('changePassword.error.title'),
+      text: error.response?.data?.message || t('changePassword.error.message'),
+      confirmButtonColor: '#FF0000',
+      confirmButtonText: t('common.ok')
+    })
   } finally {
     isSubmitting.value = false
   }
