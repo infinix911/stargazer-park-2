@@ -314,7 +314,7 @@
                 }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t("partner.MyRolling") }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.myRolling") }}</span>
                 <span class="text-sm font-bold text-yellow-300">{{
                   n(Number(game.rollamt))
                 }}</span>
