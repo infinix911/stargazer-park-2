@@ -1,23 +1,23 @@
 <template>
   <Dialog :open="props.open" @update:open="handleOpenChange">
-    <DialogContent class="w-full max-w-md bg-white p-8">
+    <DialogContent class="w-[95vw] max-w-md sm:max-w-lg bg-white p-4 sm:p-6 md:p-8 max-h-[90vh] overflow-y-auto">
       <!-- Form Title -->
-      <DialogHeader class="text-center mb-8">
-        <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
+      <DialogHeader class="text-center mb-6 sm:mb-8">
+        <DialogTitle class="text-2xl sm:text-3xl font-orbitron font-bold text-gray-900">
           {{ t('deposit.title') }}
         </DialogTitle>
-        <DialogDescription class="text-gray-600 mt-2">
+        <DialogDescription class="text-gray-600 mt-2 text-sm sm:text-base">
           {{ t('deposit.description') }}
         </DialogDescription>
       </DialogHeader>
 
       <!-- Deposit Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="space-y-4 sm:space-y-6">
         <!-- Name Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('deposit.name') }}</label>
+            <User class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('deposit.name') }}</label>
           </div>
           <Input
             v-model="form.name"
@@ -31,8 +31,8 @@
         <!-- Bank Account Name Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('deposit.bankAccountName') }}</label>
+            <CreditCard class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('deposit.bankAccountName') }}</label>
           </div>
           <Input
             v-model="form.bankAccountName"
@@ -46,8 +46,8 @@
         <!-- Mobile Number Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <Phone class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('deposit.mobileNumber') }}</label>
+            <Phone class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('deposit.mobileNumber') }}</label>
           </div>
           <Input
             v-model="form.mobileNumber"
@@ -61,8 +61,8 @@
         <!-- Deposit Amount Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('deposit.depositAmount') }}</label>
+            <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('deposit.depositAmount') }}</label>
           </div>
           <Input
             v-model="displayAmount"
@@ -78,7 +78,7 @@
         <!-- Coupon Field -->
         <div class="space-y-2" v-if="couponList.length > 0">
           <div class="flex items-center space-x-2">
-            <label class="text-gray-700 font-medium">{{ t('deposit.coupon') }}</label>
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('deposit.coupon') }}</label>
           </div>
           <Select v-model="form.couponId">
             <SelectTrigger class="w-full">
@@ -93,13 +93,13 @@
         </div>
 
         <!-- Quick Amount Buttons -->
-        <div class="space-y-3">
-          <div class="grid grid-cols-3 gap-2">
+        <div class="space-y-2 sm:space-y-3">
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
             <Button
               type="button"
               @click="setAmount(10000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               10,000
             </Button>
@@ -107,7 +107,7 @@
               type="button"
               @click="setAmount(50000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               50,000
             </Button>
@@ -115,17 +115,17 @@
               type="button"
               @click="setAmount(100000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               100,000
             </Button>
           </div>
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
             <Button
               type="button"
               @click="setAmount(500000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               500,000
             </Button>
@@ -133,7 +133,7 @@
               type="button"
               @click="setAmount(1000000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               1M
             </Button>
@@ -141,7 +141,7 @@
               type="button"
               @click="resetAmount"
               variant="outline"
-              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               {{ t('deposit.reset') }}
             </Button>
@@ -151,7 +151,7 @@
         <!-- Submit Button -->
         <Button
           type="submit"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 sm:py-3 text-sm sm:text-base"
           :disabled="isSubmitting"
         >
           <span v-if="isSubmitting">{{ t('deposit.submitting') }}</span>

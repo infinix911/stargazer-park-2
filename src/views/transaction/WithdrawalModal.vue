@@ -1,23 +1,23 @@
 <template>
   <Dialog :open="props.open" @update:open="handleOpenChange">
-    <DialogContent class="w-full max-w-md bg-white p-8">
+    <DialogContent class="w-[95vw] max-w-md sm:max-w-lg bg-white p-4 sm:p-6 md:p-8 max-h-[90vh] overflow-y-auto">
       <!-- Form Title -->
-      <DialogHeader class="text-center mb-8">
-        <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
+      <DialogHeader class="text-center mb-6 sm:mb-8">
+        <DialogTitle class="text-2xl sm:text-3xl font-orbitron font-bold text-gray-900">
           {{ t('withdrawal.title') }}
         </DialogTitle>
-        <DialogDescription class="text-gray-600 mt-2">
+        <DialogDescription class="text-gray-600 mt-2 text-sm sm:text-base">
           {{ t('withdrawal.description') }}
         </DialogDescription>
       </DialogHeader>
 
       <!-- Withdrawal Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="space-y-4 sm:space-y-6">
         <!-- Bank Name Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <Building2 class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankName') }}</label>
+            <Building2 class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('withdrawal.bankName') }}</label>
           </div>
           <Input
             v-model="form.bankName"
@@ -31,8 +31,8 @@
         <!-- Bank Account Name Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccountName') }}</label>
+            <User class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('withdrawal.bankAccountName') }}</label>
           </div>
           <Input
             v-model="form.bankAccountName"
@@ -46,8 +46,8 @@
         <!-- Bank Account Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccount') }}</label>
+            <CreditCard class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('withdrawal.bankAccount') }}</label>
           </div>
           <Input
             v-model="form.bankAccount"
@@ -61,8 +61,8 @@
         <!-- Balance Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <Wallet class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.balance') }}</label>
+            <Wallet class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('withdrawal.balance') }}</label>
           </div>
           <Input
             v-model="form.balance"
@@ -76,8 +76,8 @@
         <!-- Withdrawal Amount Field -->
         <div class="space-y-2">
           <div class="flex items-center space-x-2">
-            <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.withdrawalAmount') }}</label>
+            <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+            <label class="text-gray-700 font-medium text-sm sm:text-base">{{ t('withdrawal.withdrawalAmount') }}</label>
           </div>
           <Input
             v-model="displayAmount"
@@ -91,13 +91,13 @@
         </div>
 
         <!-- Quick Amount Buttons -->
-        <div class="space-y-3">
-          <div class="grid grid-cols-3 gap-2">
+        <div class="space-y-2 sm:space-y-3">
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
             <Button
               type="button"
               @click="setAmount(10000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               10,000
             </Button>
@@ -105,7 +105,7 @@
               type="button"
               @click="setAmount(50000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               50,000
             </Button>
@@ -113,17 +113,17 @@
               type="button"
               @click="setAmount(100000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               100,000
             </Button>
           </div>
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
             <Button
               type="button"
               @click="setAmount(500000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               500,000
             </Button>
@@ -131,7 +131,7 @@
               type="button"
               @click="setAmount(1000000)"
               variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               1M
             </Button>
@@ -139,7 +139,7 @@
               type="button"
               @click="resetAmount"
               variant="outline"
-              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-colors'"
             >
               {{ t('withdrawal.reset') }}
             </Button>
@@ -149,7 +149,7 @@
         <!-- Submit Button -->
         <Button
           type="submit"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 sm:py-3 text-sm sm:text-base"
           :disabled="isSubmitting"
         >
           <span v-if="isSubmitting">{{ t('withdrawal.withdrawing') }}</span>

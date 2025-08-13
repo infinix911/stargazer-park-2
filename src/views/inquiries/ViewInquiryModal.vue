@@ -1,34 +1,34 @@
 <template>
   <Dialog :open="open" @update:open="$emit('close')">
-    <DialogContent class="w-full max-w-4xl bg-white p-0 overflow-hidden">
+    <DialogContent class="w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl bg-white p-0 overflow-hidden max-h-[90vh] flex flex-col">
       <!-- Modal Header -->
-      <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
-        <DialogTitle class="text-2xl font-bold flex items-center space-x-3">
+      <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 sm:p-6 flex-shrink-0">
+        <DialogTitle class="text-lg sm:text-xl lg:text-2xl font-bold flex items-center space-x-3">
           <span>{{ t('viewInquiry.title') }}</span>
         </DialogTitle>
-        <DialogDescription class="text-purple-100 mt-2">
-          {{ t('viewInquiry.description') }}
+        <DialogDescription class="text-purple-100 mt-2 text-sm sm:text-base">
+          <!-- {{ t('viewInquiry.description') }} -->
         </DialogDescription>
       </DialogHeader>
 
       <!-- Inquiry Details -->
-      <div v-if="props.inquiry" class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+      <div v-if="props.inquiry" class="p-4 sm:p-6 space-y-4 sm:space-y-6 flex-1 overflow-y-auto">
         <!-- Title Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <FileText class="w-5 h-5 text-purple-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.title') }}</label>
+            <FileText class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.title') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 shadow-sm">
-            <p class="text-gray-900 font-semibold text-lg">{{ props.inquiry.title }}</p>
+          <div class="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3 sm:p-4 shadow-sm">
+            <p class="text-gray-900 font-semibold text-base sm:text-lg">{{ props.inquiry.title }}</p>
           </div>
         </div>
 
         <!-- Status Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <Circle class="w-5 h-5 text-purple-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.status') }}</label>
+            <Circle class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.status') }}</label>
           </div>
           <div class="inline-block px-4 py-2 rounded-full text-sm font-semibold shadow-sm"
                :class="{
@@ -44,23 +44,23 @@
         </div>
 
         <!-- Date Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <Calendar class="w-5 h-5 text-purple-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.date') }}</label>
+            <Calendar class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.date') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm">
-            <p class="text-gray-900 font-medium">{{ formatDate(props.inquiry.createdAt) }}</p>
+          <div class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm">
+            <p class="text-gray-900 font-medium text-sm sm:text-base">{{ formatDate(props.inquiry.createdAt) }}</p>
           </div>
         </div>
 
         <!-- Message Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <MessageSquare class="w-5 h-5 text-purple-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.message') }}</label>
+            <MessageSquare class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.message') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 shadow-sm">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 sm:p-4 shadow-sm">
             <QuillEditor
               v-if="processedBody"
               :content="processedBody"
@@ -72,19 +72,19 @@
               toolbar="false"
               class="bg-transparent text-gray-900"
             />
-            <div v-else class="text-gray-500 italic text-center py-4">
+            <div v-else class="text-gray-500 italic text-center py-3 sm:py-4 text-sm sm:text-base">
               {{ t('viewInquiry.messages.noMessage') }}
             </div>
           </div>
         </div>
 
         <!-- Reply Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <Reply class="w-5 h-5 text-green-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.reply') }}</label>
+            <Reply class="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.reply') }}</label>
           </div>
-          <div v-if="props.inquiry.reply" class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 shadow-sm">
+          <div v-if="props.inquiry.reply" class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3 sm:p-4 shadow-sm">
             <QuillEditor
               :content="processedReply"
               :readOnly="true"
@@ -96,45 +96,45 @@
               class="bg-transparent text-gray-900"
             />
           </div>
-          <div v-else class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm">
-            <div class="text-gray-500 italic text-center py-4">
+          <div v-else class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm">
+            <div class="text-gray-500 italic text-center py-3 sm:py-4 text-sm sm:text-base">
               {{ t('viewInquiry.messages.noReply') }}
             </div>
           </div>
         </div>
 
         <!-- Last Updated Section -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <Clock class="w-5 h-5 text-purple-600" />
-            <label class="text-gray-700 font-semibold text-lg">{{ t('viewInquiry.fields.lastUpdated') }}</label>
+            <Clock class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('viewInquiry.fields.lastUpdated') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm">
-            <p class="text-gray-900 font-medium">{{ formatDate(props.inquiry.updatedAt) }}</p>
+          <div class="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm">
+            <p class="text-gray-900 font-medium text-sm sm:text-base">{{ formatDate(props.inquiry.updatedAt) }}</p>
           </div>
         </div>
       </div>
 
       <!-- Loading State -->
-      <div v-else-if="loading" class="flex items-center justify-center py-16">
+      <div v-else-if="loading" class="flex items-center justify-center py-12 sm:py-16 flex-1">
         <div class="text-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <span class="ml-3 text-gray-600 text-lg mt-4 block">{{ t('viewInquiry.messages.loading') }}</span>
+          <div class="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <span class="ml-3 text-gray-600 text-base sm:text-lg mt-4 block">{{ t('viewInquiry.messages.loading') }}</span>
         </div>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="text-center py-16">
+      <div v-else-if="error" class="text-center py-12 sm:py-16 flex-1">
         <div class="text-red-600">
-          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-12 h-12 sm:w-16 sm:h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <p class="text-lg font-medium mb-4">{{ t('viewInquiry.messages.error') }}</p>
+          <p class="text-base sm:text-lg font-medium mb-4">{{ t('viewInquiry.messages.error') }}</p>
           <button 
             @click="$emit('close')" 
-            class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            class="px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
           >
             {{ t('viewInquiry.buttons.close') }}
           </button>
@@ -142,11 +142,11 @@
       </div>
 
             <!-- Action Buttons -->
-      <DialogFooter class="bg-gray-50 border-t border-gray-200 p-6">
+      <DialogFooter class="bg-gray-50 border-t border-gray-200 p-4 sm:p-6 flex-shrink-0">
         <Button
           variant="outline"
           @click="$emit('close')"
-          class="cursor-pointer px-8 py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
+          class="cursor-pointer px-6 sm:px-8 py-2.5 sm:py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
         >
           {{ t('viewInquiry.buttons.close') }}
         </Button>
@@ -351,10 +351,16 @@ watch(() => props.open, (isOpen) => {
 :deep(.ql-editor) {
   background: transparent !important;
   color: #374151 !important; /* text-gray-700 */
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.8;
   padding: 0 !important;
   min-height: auto !important;
+}
+
+@media (min-width: 640px) {
+  :deep(.ql-editor) {
+    font-size: 16px;
+  }
 }
 
 :deep(.ql-container) {

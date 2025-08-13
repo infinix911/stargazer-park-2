@@ -1,44 +1,44 @@
 <template>
   <Dialog :open="open" @update:open="$emit('update:open', $event)">
-    <DialogContent class="w-full max-w-4xl bg-white p-0 overflow-hidden">
+    <DialogContent class="w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl bg-white p-0 overflow-hidden max-h-[90vh] flex flex-col">
       <!-- Header -->
-      <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
-        <DialogTitle class="text-2xl font-bold flex items-center justify-start space-x-3">
+      <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 sm:p-6 flex-shrink-0">
+        <DialogTitle class="text-lg sm:text-xl lg:text-2xl font-bold flex items-center justify-start space-x-3">
           <span>{{ notice?.title }}</span>
         </DialogTitle>
-        <DialogDescription class="text-purple-100 mt-2 text-left">
+        <DialogDescription class="text-purple-100 mt-2 text-left text-sm sm:text-base">
           {{ formatDate(notice?.createdAt) }}
         </DialogDescription>
       </DialogHeader>
 
       <!-- Content -->
-      <div class="p-6 space-y-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+      <div class="p-4 sm:p-6 space-y-4 sm:space-y-6 flex-1 overflow-y-auto custom-scrollbar">
         <!-- Notice Image -->
-        <div v-if="notice?.imgsrc" class="space-y-3">
+        <div v-if="notice?.imgsrc" class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
-            <label class="text-gray-700 font-semibold text-lg">{{ t('notifications.image') }}</label>
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('notifications.image') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 shadow-sm">
+          <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3 sm:p-4 shadow-sm">
             <img 
               :src="notice.imgsrc" 
               :alt="notice.title"
-              class="w-full max-h-64 object-contain rounded-lg"
+              class="w-full max-h-48 sm:max-h-64 object-contain rounded-lg"
             />
           </div>
         </div>
 
         <!-- Notice Content -->
-        <div class="space-y-3">
+        <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
-            <label class="text-gray-700 font-semibold text-lg">{{ t('notifications.content') }}</label>
+            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('notifications.content') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 shadow-sm">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 sm:p-4 shadow-sm">
             <QuillEditor
               v-if="noticeContent"
               v-model:content="noticeContent"
@@ -49,7 +49,7 @@
               readOnly
               class="bg-transparent text-gray-900"
             />
-            <div v-else class="text-gray-500 italic text-center py-8">
+            <div v-else class="text-gray-500 italic text-center py-6 sm:py-8 text-sm sm:text-base">
               {{ t('notifications.noContent') }}
             </div>
           </div>
@@ -57,11 +57,11 @@
       </div>
 
       <!-- Footer -->
-      <DialogFooter class="p-6 bg-gray-50 border-t border-gray-200">
+      <DialogFooter class="p-4 sm:p-6 bg-gray-50 border-t border-gray-200 flex-shrink-0">
         <DialogClose as-child>
           <Button 
             variant="outline" 
-            class="px-8 py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200"
+            class="px-6 sm:px-8 py-2.5 sm:py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
           >
             {{ t('common.close') }}
           </Button>
@@ -194,9 +194,15 @@ watch(() => props.notice, (newNotice) => {
 :deep(.ql-editor) {
   background: transparent !important;
   color: #374151 !important; /* text-gray-700 */
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.6;
   padding: 0 !important;
+}
+
+@media (min-width: 640px) {
+  :deep(.ql-editor) {
+    font-size: 16px;
+  }
 }
 
 :deep(.ql-container) {
