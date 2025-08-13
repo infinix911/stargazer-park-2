@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <PartnerPageHeader 
-    :title="t('partnerMenu.betting')"
+    :title="t('partnerMenu.betHistory')"
     subtitle="Betting history and game analytics"
     icon="fas fa-dice"
     icon-color="red-rose"
