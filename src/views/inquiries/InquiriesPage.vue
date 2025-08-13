@@ -24,34 +24,46 @@
         </div>
 
         <!-- Management Action Buttons -->
-        <div class="flex flex-wrap gap-3 mb-6">
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 mb-6 px-2 sm:px-0">
           <button 
             @click="handleDeleteInquiry(false)"
-            class="bg-[#ef4444] hover:bg-[#dc2626] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#ef4444] hover:bg-[#dc2626] px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ t('inquiries.Delete') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.Delete') }}</span>
           </button>
           <button 
             @click="handleDeleteInquiry(true)"
-            class="bg-[#ef4444] hover:bg-[#ef4444]/80 px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#ef4444] hover:bg-[#ef4444]/80 px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
           >
-            {{ t('inquiries.DeleteAll') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.DeleteAll') }}</span>
           </button>
           <button 
             @click="handleReadInquiry(false)"
-            class="bg-[#dd7c2b] hover:bg-[#ca8a04] px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#dd7c2b] hover:bg-[#ca8a04] px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
             :disabled="selectedInquiries.length === 0"
             :class="{ 'opacity-50 cursor-not-allowed': selectedInquiries.length === 0 }"
           >
-            {{ t('inquiries.Read') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.Read') }}</span>
           </button>
           <button 
             @click="handleReadInquiry(true)"
-            class="bg-[#dd7c2b] hover:bg-[#dd7c2b]/80 px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors"
+            class="bg-[#dd7c2b] hover:bg-[#dd7c2b]/80 px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-white text-xs sm:text-sm font-medium transition-all duration-200 ease-in-out hover:shadow-lg active:scale-95 flex items-center justify-center"
           >
-            {{ t('inquiries.ReadAll') }}
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span class="whitespace-nowrap">{{ t('inquiries.ReadAll') }}</span>
           </button>
         </div>
 
