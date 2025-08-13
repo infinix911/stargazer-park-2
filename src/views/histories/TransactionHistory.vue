@@ -217,27 +217,27 @@ const filters = ref({
 const columns = computed<ColumnDef<Transaction>[]>(() => [
   {
     accessorKey: 'type',
-    header: t('transactionHistory.columns.type'),
+    header: t('depWid.Type'),
     size: 100
   },
   {
     accessorKey: 'bank_name',
-    header: t('transactionHistory.columns.bankName'),
+    header: t('register.bankName'),
     size: 150
   },
   {
     accessorKey: 'bank_account_name',
-    header: t('transactionHistory.columns.bankAccountName'),
+    header: t('register.bankAccountName'),
     size: 150
   },
   {
     accessorKey: 'bank_account',
-    header: t('transactionHistory.columns.bankAccount'),
+    header: t('register.bankAccount'),
     size: 150
   },
   {
     accessorKey: 'amount',
-    header: t('transactionHistory.columns.amount'),
+    header: t('depWid.Amount'),
     size: 120,
     cell: ({ getValue }) => {
       const amount = getValue() as number
@@ -246,12 +246,12 @@ const columns = computed<ColumnDef<Transaction>[]>(() => [
   },
   {
     accessorKey: 'status',
-    header: t('transactionHistory.columns.status'),
+    header: t('depWid.State'),
     size: 120
   },
   {
     accessorKey: 'createdAt',
-    header: t('transactionHistory.columns.date'),
+    header: t('depWid.Date'),
     size: 150
   }
 ])
