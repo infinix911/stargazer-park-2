@@ -1,6 +1,6 @@
 <template>
   <Dialog :open="open" @update:open="$emit('update:open', $event)">
-    <DialogContent class="w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl bg-white p-0 overflow-hidden max-h-[90vh] flex flex-col">
+    <DialogContent class="w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl bg-[#2c334a] border border-[#2d334b] p-0 overflow-hidden max-h-[90vh] flex flex-col">
       <!-- Header -->
       <DialogHeader class="bg-gradient-to-r from-[#00c990] to-[#3b959c] text-white p-4 sm:p-6 flex-shrink-0">
         <DialogTitle class="text-lg sm:text-xl lg:text-2xl font-bold flex items-center justify-start space-x-3">
@@ -16,12 +16,12 @@
         <!-- Notice Image -->
         <div v-if="notice?.imgsrc" class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
-            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('notifications.image') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('notifications.image') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3 sm:p-4 shadow-sm">
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <img 
               :src="notice.imgsrc" 
               :alt="notice.title"
@@ -33,12 +33,12 @@
         <!-- Notice Content -->
         <div class="space-y-2 sm:space-y-3">
           <div class="flex items-center space-x-2">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
-            <label class="text-gray-700 font-semibold text-base sm:text-lg">{{ t('notifications.content') }}</label>
+            <label class="text-white font-semibold text-lg">{{ t('notifications.content') }}</label>
           </div>
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 sm:p-4 shadow-sm">
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-3 sm:p-4 shadow-sm">
             <QuillEditor
               v-if="noticeContent"
               v-model:content="noticeContent"
@@ -47,9 +47,9 @@
               theme="snow"
               toolbar="false"
               readOnly
-              class="bg-transparent text-gray-900"
+              class="bg-transparent text-white"
             />
-            <div v-else class="text-gray-500 italic text-center py-6 sm:py-8 text-sm sm:text-base">
+            <div v-else class="text-slate-400 italic text-center py-6 sm:py-8 text-lg">
               {{ t('notifications.noContent') }}
             </div>
           </div>
@@ -57,14 +57,14 @@
       </div>
 
       <!-- Footer -->
-      <DialogFooter class="p-4 sm:p-6 bg-gray-50 border-t border-gray-200 flex-shrink-0">
+      <DialogFooter class="p-4 sm:p-6 bg-[#2c334a] border-t border-slate-600 flex-shrink-0">
         <DialogClose as-child>
-          <Button 
-            variant="outline" 
-            class="px-6 sm:px-8 py-2.5 sm:py-3 text-gray-700 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all duration-200 text-sm sm:text-base"
+          <button
+            type="button"
+            class="cursor-pointer px-6 sm:px-8 py-2.5 sm:py-3 bg-slate-600 text-white border border-slate-500 hover:bg-slate-700 hover:border-slate-400 transition-all duration-200 text-sm sm:text-base font-medium rounded-lg inline-flex items-center justify-center"
           >
             {{ t('common.close') }}
-          </Button>
+          </button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
@@ -193,16 +193,45 @@ watch(() => props.notice, (newNotice) => {
 /* Custom styles for QuillEditor in modal */
 :deep(.ql-editor) {
   background: transparent !important;
-  color: #374151 !important; /* text-gray-700 */
-  font-size: 14px;
-  line-height: 1.6;
+  color: #ffffff !important; /* white text for dark theme */
+  font-size: 18px; /* text-lg */
+  line-height: 1.8;
   padding: 0 !important;
+  min-height: auto !important;
 }
 
-@media (min-width: 640px) {
-  :deep(.ql-editor) {
-    font-size: 16px;
-  }
+/* Force all text content in QuillEditor to be readable on dark background */
+:deep(.ql-editor *) {
+  color: #ffffff !important; /* Override any dark text colors */
+}
+
+/* Specific overrides for common text colors that might be dark */
+:deep(.ql-editor span[style*="color"]) {
+  color: #ffffff !important; /* Override inline color styles */
+}
+
+:deep(.ql-editor p) {
+  color: #ffffff !important;
+}
+
+:deep(.ql-editor div) {
+  color: #ffffff !important;
+}
+
+/* Maintain formatting but ensure readability */
+:deep(.ql-editor strong) {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+:deep(.ql-editor em) {
+  color: #ffffff !important;
+  font-style: italic;
+}
+
+:deep(.ql-editor u) {
+  color: #ffffff !important;
+  text-decoration: underline;
 }
 
 :deep(.ql-container) {
@@ -219,28 +248,28 @@ watch(() => props.notice, (newNotice) => {
   transition: all 0.2s ease-in-out;
 }
 
-/* Modal scrollbar styling */
+/* Modal scrollbar styling for dark theme */
 .overflow-y-auto::-webkit-scrollbar {
   width: 6px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #1e293b;
   border-radius: 3px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #475569;
   border-radius: 3px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #64748b;
 }
 
-/* Hover effects for content containers */
-.bg-gradient-to-r:hover {
+/* Hover effects for form containers */
+.bg-slate-700\/50:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 </style>

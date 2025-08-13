@@ -94,7 +94,7 @@
             <table class="w-full">
               <thead>
                 <tr class="bg-[#141722]">
-                  <th class="px-6 py-4 text-left text-sm font-medium text-slate-200 border-b border-slate-600 w-12">
+                  <th class="px-6 py-6 text-left text-sm font-medium text-slate-200 border-b border-slate-600 w-12">
                     <div class="flex items-center justify-center">
                       <label class="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -123,7 +123,7 @@
                   <th 
                     v-for="header in table.getFlatHeaders()" 
                     :key="header.id"
-                    class="px-6 py-4 text-center text-sm font-medium text-slate-200 border-b border-slate-600"
+                    class="px-6 py-6 text-center text-sm font-medium text-slate-200 border-b border-slate-600"
                   >
                     <div 
                       v-if="header.isPlaceholder" 
