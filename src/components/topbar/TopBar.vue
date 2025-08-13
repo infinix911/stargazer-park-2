@@ -115,7 +115,7 @@
 
           <!-- Right side - Language Switcher and User Menu -->
           <div class="flex items-center space-x-2 md:space-x-4 text-gray-300">
-            <div
+            <div v-if="authStore.isAuthenticated"
               class="messages cursor-pointer flex items-center space-x-1 md:space-x-2 relative"
               @click="navigateToInquiries"
             >

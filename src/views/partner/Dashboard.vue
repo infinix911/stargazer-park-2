@@ -114,17 +114,6 @@
           :key="transaction.deposits"
           class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
         >
-          <!-- First Row: Title and Date -->
-          <!-- <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <i class="fas fa-exchange-alt text-white text-sm"></i>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-white">{{ t('partner.transaction') }}</h3>
-              </div>
-            </div>
-          </div> -->
 
           <!-- Second Row: Main Values -->
           <div class="grid grid-cols-2 gap-4 mb-4">
