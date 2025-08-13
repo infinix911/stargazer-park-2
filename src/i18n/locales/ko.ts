@@ -1464,5 +1464,15 @@ export default {
     refresh: "새로고침",
     popupBlocked: "팝업이 차단되었습니다",
     popupBlockedMessage: "브라우저에서 팝업을 차단했습니다. 팝업 차단을 해제하고 다시 시도해주세요."
-  }
+  },
+  table: {
+    Subject: "제목",
+    Date: "일자",
+    Number: "번호",
+    AnswerStatus: "답변여부",
+    Withdraw: "출금",
+    AccountHolder: "예금주",
+    ReqDate: "요청 날짜",
+    state: "상태",
+  },
 } 

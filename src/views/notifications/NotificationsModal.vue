@@ -2,11 +2,11 @@
   <Dialog :open="open" @update:open="$emit('update:open', $event)">
     <DialogContent class="w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl bg-white p-0 overflow-hidden max-h-[90vh] flex flex-col">
       <!-- Header -->
-      <DialogHeader class="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 sm:p-6 flex-shrink-0">
+      <DialogHeader class="bg-gradient-to-r from-[#00c990] to-[#3b959c] text-white p-4 sm:p-6 flex-shrink-0">
         <DialogTitle class="text-lg sm:text-xl lg:text-2xl font-bold flex items-center justify-start space-x-3">
           <span>{{ notice?.title }}</span>
         </DialogTitle>
-        <DialogDescription class="text-purple-100 mt-2 text-left text-sm sm:text-base">
+        <DialogDescription class="text-white/80 mt-2 text-left text-sm sm:text-base">
           {{ formatDate(notice?.createdAt) }}
         </DialogDescription>
       </DialogHeader>
