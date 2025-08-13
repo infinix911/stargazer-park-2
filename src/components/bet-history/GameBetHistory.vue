@@ -374,7 +374,7 @@
                     }}</span>
                   </div>
                   <div class="flex items-center justify-between text-sm">
-                    <span class="text-gray-400">{{ t("partner.amountAfter") }}</span>
+                    <span class="text-gray-400">{{ t("partner.betAmountAfter") }}</span>
                     <span class="text-white font-medium">{{
                       n(Number(bet.after_acc))
                     }}</span>
@@ -613,8 +613,8 @@ export default defineComponent({
       { key: "betamount", name: t("partner.betamount"), currency: true },
       { key: "winamount", name: t("partner.winamount"), currency: true },
       { key: "profit", name: t("partner.betProfit"), customslot: true },
-      { key: "pre_acc", name: t("pointWithdrawal.current"), currency: true },
-      { key: "after_acc", name: t("partner.amountAfter"), customslot: true },
+      { key: "pre_acc", name: t("partner.amountBefore"), currency: true },
+      { key: "after_acc", name: t("partner.betAmountAfter"), customslot: true },
       { key: "createdAt", name: t("partner.betDate") },
       { key: "updatedAt", name: t("partner.resultDate") },
     ];

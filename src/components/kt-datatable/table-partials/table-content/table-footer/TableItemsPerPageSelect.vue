@@ -4,7 +4,7 @@
   >
     <label for="items-per-page">
       <select
-        class="form-select form-select-sm form-select-solid"
+        class="form-select form-select-sm form-select-solid bg-gray-800 px-2 py-1 rounded-md"
         v-if="itemsPerPageDropdownEnabled"
         v-model="itemsCountInTable"
         name="items-per-page"

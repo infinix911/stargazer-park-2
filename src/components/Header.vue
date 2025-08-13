@@ -375,7 +375,7 @@ const route = useRoute();
 const partnerMenuItems = [
   {
     key: "dashboard",
-    label: "partnerMenu.dashboard",
+    label: "partnerMenu.home",
     path: "/partner/dashboard",
     icon: "fas fa-home",
   },
