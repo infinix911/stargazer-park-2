@@ -58,7 +58,9 @@ export default {
     errorMessage: '아이디, 비밀번호 또는 캡차가 올바르지 않습니다. 다시 시도해주세요.'
   },
   register: {
-    title: '계정 만들기',
+    title: 'PRODTEST2',
+    subtitleLine1: '회원가입이 필요합니다',
+    subtitleLine2: '새로운 계정을 만들어 서비스를 이용하세요',
     basicInformation: '기본 정보',
     accountInformation: '계정 정보',
     username: '아이디',

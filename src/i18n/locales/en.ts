@@ -58,7 +58,9 @@ export default {
     errorMessage: 'Invalid username, password, or captcha. Please try again.'
   },
   register: {
-    title: 'Create an account',
+    title: 'PRODTEST2',
+    subtitleLine1: 'Registration Required',
+    subtitleLine2: 'Create a new account to use our services',
     basicInformation: 'Basic Information',
     accountInformation: 'Account Information',
     username: 'Username',

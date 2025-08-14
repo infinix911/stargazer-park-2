@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen bg-gray-100 flex items-center justify-center px-4">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+    <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
       <!-- Logo/Header -->
       <div class="text-center mb-8">
         <h1 class="text-4xl font-orbitron font-black text-gray-900">{{ t('login.title') }}</h1>
