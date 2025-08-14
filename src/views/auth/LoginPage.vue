@@ -103,8 +103,7 @@
         <!-- Login Button -->
         <Button
           type="submit"
-          class="cursor-pointer w-full text-white font-medium h-[66px]"
-          style="background: linear-gradient(90deg, rgb(56, 51, 216) 0%, rgb(26, 22, 141) 100%);"
+          class="cursor-pointer w-full text-white font-medium h-[66px] !transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg login-button"
           :disabled="isSubmitting"
         >
           <span class="text-xl" v-if="isSubmitting">{{ t('login.loggingIn') }}</span>
@@ -261,4 +260,11 @@ onMounted(() => {
 
 <style scoped>
 /* Login page specific styles */
+.login-button {
+  background: linear-gradient(90deg, rgb(56, 51, 216) 0%, rgb(26, 22, 141) 100%);
+}
+
+.login-button:hover {
+  background: linear-gradient(90deg, rgb(67, 56, 202) 0%, rgb(37, 99, 235) 100%);
+}
 </style> 
