@@ -30,6 +30,8 @@ export default {
     id: "User ID",
     title: 'PRODTEST2',
     subtitle: 'Login Required',
+    subtitleLine1: 'Login Required',
+    subtitleLine2: 'Please log in to access the selected service',
     description: 'Please log in to access the selected service',
     username: 'Username',
     usernamePlaceholder: 'Enter username',
