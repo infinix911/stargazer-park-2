@@ -107,7 +107,7 @@
               <label class="text-gray-700 font-medium">{{ t('register.mobileNumber') }}</label>
             </div>
             <div class="relative">
-                          <Input
+            <Input
               v-model="form.mobile"
               type="tel"
               :placeholder="t('register.mobileNumberPlaceholder')"
