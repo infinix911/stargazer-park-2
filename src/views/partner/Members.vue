@@ -311,7 +311,8 @@
                             {{ member.member_count }}</span
                           >
                           <span>•</span>
-                          <span>{{ moment(member.createdAt).format("MM/DD/YYYY") }}</span>
+                          <span class="text-gray-400">{{ t("partner.nickname") }}</span>
+                          <span class="text-gray-300">{{ member.nickname || "-" }}</span>
                         </div>
                       </div>
                     </div>
@@ -328,7 +329,7 @@
                         }}</span>
                         <div class="inline-flex items-center gap-2">
                           <span class="text-sm font-bold text-white">{{
-                            member.wallet?.toLocaleString() || "0"
+                            n(Number(member.wallet))
                           }}</span>
                           <button
                             type="button"
@@ -344,7 +345,7 @@
                           t("partner.walletPoint")
                         }}</span>
                         <span class="text-sm font-bold text-yellow-300">{{
-                          member.wallet_point?.toLocaleString() || "0"
+                          n(Number(member.wallet_point))
                         }}</span>
                       </div>
                     </div>
@@ -406,8 +407,10 @@
                         <span class="text-xs text-gray-400">{{
                           t("partner.slotMoney")
                         }}</span>
-                        <!-- .wallet_game && member.wallet_game > 0 -->
-                        <div v-if="member" class="mt-1">
+                        <div
+                          v-if="member.wallet_game && member.wallet_game > 0"
+                          class="mt-1"
+                        >
                           <button
                             type="button"
                             class="h-[26px] px-3 py-1 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-green-400/30"
@@ -417,7 +420,7 @@
                             {{ t("partner.slotButton") }}
                           </button>
                           <div class="text-sm font-bold text-white mt-1">
-                            {{ member.wallet_game?.toString() || "0" }}
+                            {{ n(Number(member.wallet_game)) }}
                           </div>
                         </div>
                         <div v-else class="text-xs text-gray-500 mt-1">-</div>
@@ -450,7 +453,7 @@
                   <div class="flex justify-center">
                     <button
                       @click="toggleMemberExpand(member.member_id)"
-                      class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 text-gray-300 hover:text-white"
+                      class="flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 text-gray-300 hover:text-white"
                     >
                       <span class="text-xs">{{
                         expandedMembers.includes(member.member_id)
@@ -478,19 +481,19 @@
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.depAmount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.deposits?.toLocaleString() || "0"
+                            n(Number(member.deposits || 0))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.depBonus") }}</span>
                           <span class="text-white font-medium">{{
-                            member.bonus?.toLocaleString() || "0"
+                            n(Number(member.bonus || 0))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.widAmount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.withdrawals?.toLocaleString() || "0"
+                            n(Number(member.withdrawals || 0))
                           }}</span>
                         </div>
                       </div>
@@ -502,13 +505,13 @@
                             t("partner.depWidProfit")
                           }}</span>
                           <span class="text-white font-medium">{{
-                            member.sonic?.toLocaleString() || "0"
+                            n(Number(member.sonic || 0))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                           <span class="text-gray-400">{{ t("partner.winamount") }}</span>
                           <span class="text-white font-medium">{{
-                            member.winamt?.toLocaleString() || "0"
+                            n(Number(member.winamt || 0))
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
@@ -519,8 +522,8 @@
                               member.profit >= 0 ? 'text-green-400' : 'text-red-400'
                             "
                           >
-                            {{ member.profit >= 0 ? "+" : ""
-                            }}{{ member.profit?.toLocaleString() || "0" }}
+                            {{ Number(member.profit) >= 0 ? "+" : ""
+                            }}{{ n(Number(member.profit || 0)) }}
                           </span>
                         </div>
                       </div>
@@ -530,16 +533,22 @@
                     <div class="mt-4 pt-3 border-t border-white/10">
                       <div class="grid grid-cols-2 gap-4 text-xs">
                         <div class="flex items-center justify-between">
-                          <span class="text-gray-400">{{ t("partner.lastLogin") }}</span>
+                          <span class="text-gray-400">{{ t("partner.regdate") }}</span>
                           <span class="text-gray-300">{{
-                            member.last_login
-                              ? moment(member.last_login).format("MM/DD/YYYY HH:mm")
+                            member.createdAt &&
+                            member.createdAt !== "null" &&
+                            member.createdAt !== "undefined"
+                              ? moment(member.createdAt).format("MM/DD/YYYY HH:mm")
                               : "-"
                           }}</span>
                         </div>
                         <div class="flex items-center justify-between">
-                          <span class="text-gray-400">{{ t("partner.nickname") }}</span>
-                          <span class="text-gray-300">{{ member.nickname || "-" }}</span>
+                          <span class="text-gray-400">{{ t("partner.lastLogin") }}</span>
+                          <span>{{
+                            member.last_login
+                              ? moment(member.last_login).format("MM/DD/YYYY HH:mm")
+                              : "-"
+                          }}</span>
                         </div>
                       </div>
                     </div>
@@ -560,8 +569,6 @@
     :type="shop.type"
     @refresh="getList"
   />
-
-
 
   <!-- Add Sub Member Modal -->
   <AddSubMember
@@ -633,10 +640,6 @@ const authStore = useAuthStore();
 
 // Computed
 const selectedModal = computed(() => appStore.activeModal);
-
-
-
-
 
 // Mobile state
 const expandedMembers = ref<string[]>([]);
@@ -877,32 +880,35 @@ const openMemberPopup = (memberData: any) => {
   const popupWindow = window.open(
     `/partner/member/${memberData.member_id}`,
     `member_${memberData.member_id}`,
-    'width=1000,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no,centerscreen=yes'
+    "width=1000,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no,centerscreen=yes"
   );
-  
+
   // Focus the new window
   if (popupWindow) {
     popupWindow.focus();
   } else {
     // If popup is blocked, show a message to the user
     Swal.fire({
-      icon: 'warning',
-      title: t('common.popupBlocked'),
-      text: t('common.popupBlockedMessage'),
-      confirmButtonText: t('common.ok')
+      icon: "warning",
+      title: t("common.popupBlocked"),
+      text: t("common.popupBlockedMessage"),
+      confirmButtonText: t("common.ok"),
     });
   }
 };
 
-
-
 // Mobile helpers
 const toggleMemberExpand = (memberId: string) => {
+  console.log("toggleMemberExpand called with:", memberId);
+  console.log("Current expandedMembers:", expandedMembers.value);
+
   const index = expandedMembers.value.indexOf(memberId);
   if (index > -1) {
     expandedMembers.value.splice(index, 1);
+    console.log("Removed member, new array:", expandedMembers.value);
   } else {
     expandedMembers.value.push(memberId);
+    console.log("Added member, new array:", expandedMembers.value);
   }
 };
 
@@ -929,13 +935,4 @@ const onGameMoneyWithdraw = async (memberId: string) => {
 
 // Initialize
 getList();
-
-// Expose functions and state for template
-const exposed = {
-  expandedMembers,
-  toggleMemberExpand,
-  toggleMemberTreeAccordion,
-  isMemberTreeExpanded,
-  moment,
-};
 </script>

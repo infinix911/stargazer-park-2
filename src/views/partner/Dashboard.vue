@@ -1,6 +1,6 @@
 <template>
   <!-- Page Header -->
-  <PartnerPageHeader 
+  <PartnerPageHeader
     :title="t('partnerMenu.home')"
     subtitle="Transactions Overview and Game Summary"
     icon="fas fa-users"
@@ -9,7 +9,9 @@
 
   <!-- Controls Section -->
   <div class="max-w-[1500px] mx-auto px-4 py-6">
-    <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5">
+    <div
+      class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-end justify-end mt-5"
+    >
       <!-- Date Range Picker -->
       <div class="w-full lg:flex-1 lg:min-w-0 lg:max-w-[300px]">
         <DateRangePicker
@@ -20,7 +22,9 @@
       </div>
 
       <!-- Quick Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-2 lg:min-w-0 lg:flex-shrink-0 items-stretch sm:items-end justify-center lg:justify-end">
+      <div
+        class="flex flex-col sm:flex-row gap-2 lg:min-w-0 lg:flex-shrink-0 items-stretch sm:items-end justify-center lg:justify-end"
+      >
         <!-- Date buttons row for mobile, inline for larger screens -->
         <div class="flex gap-2 flex-1 sm:flex-initial">
           <button
@@ -40,7 +44,7 @@
         >
           <i v-if="loading" class="fas fa-spinner fa-spin mr-1"></i>
           <i v-else class="fas fa-search mr-1"></i>
-          {{ loading ? t('common.loading') : t('search') }}
+          {{ loading ? t("common.loading") : t("search") }}
         </button>
       </div>
     </div>
@@ -59,14 +63,23 @@
     >
       <!-- Desktop Table -->
       <div class="hidden lg:block">
-        <KTDatatable :tableHeader="tableHeaders" :tableData="tableData" :rowsPerPage="50" :loading="loading" />
+        <KTDatatable
+          :tableHeader="tableHeaders"
+          :tableData="tableData"
+          :rowsPerPage="50"
+          :loading="loading"
+        />
       </div>
 
       <!-- Mobile Cards -->
       <div class="lg:hidden space-y-4">
         <!-- Loading State -->
         <div v-if="loading" class="space-y-4">
-          <div v-for="i in 3" :key="i" class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse">
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse"
+          >
             <div class="flex items-center justify-between mb-3">
               <div class="w-24 h-4 bg-white/10 rounded"></div>
               <div class="w-16 h-4 bg-white/10 rounded"></div>
@@ -86,49 +99,55 @@
 
         <!-- Empty State -->
         <div v-else-if="tableData.length === 0" class="text-center py-12">
-          <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div
+            class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
             <i class="fas fa-exchange-alt text-white/40 text-2xl"></i>
           </div>
-          <p class="text-white/60 text-sm">{{ t('common.noDataFound') }}</p>
+          <p class="text-white/60 text-sm">{{ t("common.noDataFound") }}</p>
         </div>
 
         <!-- Transaction Cards -->
-        <div v-else v-for="transaction in tableData" :key="transaction.deposits" class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200">
-          <!-- First Row: Title and Date -->
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <i class="fas fa-exchange-alt text-white text-sm"></i>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-white">{{ t('partner.transaction') }}</h3>
-              </div>
-            </div>
-          </div>
+        <div
+          v-else
+          v-for="transaction in tableData"
+          :key="transaction.deposits"
+          class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
+        >
 
           <!-- Second Row: Main Values -->
           <div class="grid grid-cols-2 gap-4 mb-4">
             <!-- Deposits & Withdrawals -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.deposit') }}</span>
-                <span class="text-sm font-bold text-green-400">{{ transaction.deposits?.toLocaleString() || '0' }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.depAmount") }}</span>
+                <span class="text-sm font-bold text-green-400">{{
+                  n(Number(transaction.deposits))
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.withdrawal') }}</span>
-                <span class="text-sm font-bold text-red-400">{{ transaction.withdrawals?.toLocaleString() || '0' }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.widAmount") }}</span>
+                <span class="text-sm font-bold text-red-400">{{
+                  n(Number(transaction.withdrawals))
+                }}</span>
               </div>
             </div>
-            
+
             <!-- Net & Wallet -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.depWid') }}</span>
-                <span class="text-sm font-bold text-blue-300">{{ transaction.depwid?.toLocaleString() || '0' }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.depWidProfit") }}</span>
+                <span class="text-sm font-bold text-blue-300">{{
+                  n(Number(transaction.depwid))
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.wallet') }}</span>
-                <span class="text-sm font-bold text-white">{{ transaction.wallet?.toLocaleString() || '0' }}</span>
+                <span class="text-xs text-gray-400">{{
+                  t("partner.currentWallet")
+                }}</span>
+                <span class="text-sm font-bold text-white">{{
+                  n(Number(transaction.wallet))
+                }}</span>
               </div>
             </div>
           </div>
@@ -136,8 +155,10 @@
           <!-- Third Row: Additional Info -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between">
-              <span class="text-xs text-gray-400">{{ t('partner.walletPoint') }}</span>
-              <span class="text-sm font-medium text-yellow-300">{{ transaction.wallet_point?.toLocaleString() || '0' }}</span>
+              <span class="text-xs text-gray-400">{{ t("partner.currentPoint") }}</span>
+              <span class="text-sm font-medium text-yellow-300">{{
+                n(Number(transaction.wallet_point))
+              }}</span>
             </div>
           </div>
         </div>
@@ -163,7 +184,11 @@
           :loading="loading"
         >
           <!-- Dynamic Sub Tables -->
-          <template v-for="(gameType, index) in gameTableData" :key="index" #[`table-sub${index}`]>
+          <template
+            v-for="(gameType, index) in gameTableData"
+            :key="index"
+            #[`table-sub${index}`]
+          >
             <KTDatatable
               :tableHeader="gameTableHeaders"
               :tableData="gameType?.games || []"
@@ -176,7 +201,7 @@
           </template>
           <!-- Main Game Type Cell -->
           <template #cell-game="{ row: data }">
-            <span>{{ t('common.' + data.game_type) }}</span>
+            <span>{{ t("common." + data.game_type) }}</span>
           </template>
         </KTDatatable>
       </div>
@@ -185,7 +210,11 @@
       <div class="lg:hidden space-y-4">
         <!-- Loading State -->
         <div v-if="loading" class="space-y-4">
-          <div v-for="i in 3" :key="i" class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse">
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse"
+          >
             <div class="flex items-center justify-between mb-3">
               <div class="w-24 h-4 bg-white/10 rounded"></div>
               <div class="w-16 h-4 bg-white/10 rounded"></div>
@@ -205,31 +234,46 @@
 
         <!-- Empty State -->
         <div v-else-if="gameTableData.length === 0" class="text-center py-12">
-          <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div
+            class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
             <i class="fas fa-gamepad text-white/40 text-2xl"></i>
           </div>
-          <p class="text-white/60 text-sm">{{ t('common.noDataFound') }}</p>
+          <p class="text-white/60 text-sm">{{ t("common.noDataFound") }}</p>
         </div>
 
         <!-- Game Summary Cards -->
-        <div v-else v-for="game in gameTableData" :key="game.game_type" class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200">
+        <div
+          v-else
+          v-for="game in gameTableData"
+          :key="game.game_type"
+          class="mt-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all duration-200"
+        >
           <!-- First Row: Game Type and Expand Button -->
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center"
+              >
                 <i class="fas fa-gamepad text-white text-sm"></i>
               </div>
               <div>
-                <h3 class="text-sm font-semibold text-white">{{ t('common.' + game.game_type) }}</h3>
+                <h3 class="text-sm font-semibold text-white">
+                  {{ t("common." + game.game_type) }}
+                </h3>
               </div>
             </div>
-            
+
             <!-- Expand Button -->
             <button
               @click="toggleGameExpand(game.game_type)"
               class="!w-[100px] flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200 text-gray-300 hover:text-white"
             >
-              <span class="text-xs">{{ expandedGames.includes(game.game_type) ? t('common.showLess') : t('common.showMore') }}</span>
+              <span class="text-xs">{{
+                expandedGames.includes(game.game_type)
+                  ? t("common.showLess")
+                  : t("common.showMore")
+              }}</span>
               <i
                 class="fas fa-chevron-down transition-transform text-xs"
                 :class="{
@@ -244,28 +288,55 @@
             <!-- Bet & Win Amounts -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.totalBetAmount') }}</span>
-                <span class="text-sm font-bold text-blue-400">{{ Number(game.betamt) || 0 }}</span>
+                <span class="text-xs text-gray-400">{{
+                  t("partner.totalBetAmount")
+                }}</span>
+                <span class="text-sm font-bold text-blue-400">{{
+                  n(Number(game.betamt))
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.totalWinAmount') }}</span>
-                <span class="text-sm font-bold text-green-400">{{ Number(game.winamt) || 0 }}</span>
+                <span class="text-xs text-gray-400">{{
+                  t("partner.totalWinAmount")
+                }}</span>
+                <span class="text-sm font-bold text-green-400">{{
+                  n(Number(game.winamt))
+                }}</span>
               </div>
             </div>
-            
+
             <!-- Rolling & Profit -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.rollAmount') }}</span>
-                <span class="text-sm font-bold text-yellow-300">{{ Number(game.rollamt) || 0 }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.subRolling") }}</span>
+                <span class="text-sm font-bold text-yellow-300">{{
+                  n(Number(game.rollamtsub))
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-400">{{ t('partner.totalProfit') }}</span>
-                                  <span class="text-sm font-bold" :class="Number(game.total_profit) >= 0 ? 'text-green-400' : 'text-red-400'">
-                    {{ Number(game.total_profit) >= 0 ? '+' : '' }}{{ Number(game.total_profit) || 0 }}
-                  </span>
+                <span class="text-xs text-gray-400">{{ t("partner.myRolling") }}</span>
+                <span class="text-sm font-bold text-yellow-300">{{
+                  n(Number(game.rollamt))
+                }}</span>
               </div>
             </div>
+
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-400">{{ t("partner.totalProfit") }}</span>
+                <span
+                  class="text-sm font-bold"
+                  :class="
+                    Number(game.total_profit) >= 0 ? 'text-green-400' : 'text-red-400'
+                  "
+                >
+                  {{ Number(game.total_profit) >= 0 ? "+" : ""
+                  }}{{ n(Number(game.total_profit)) }}
+                </span>
+              </div>
+            </div>
+
+            <!--  -->
           </div>
 
           <!-- Expandable Details: Sub Games -->
@@ -274,40 +345,50 @@
             class="mt-4 pt-4 border-t border-white/10 animate-in slide-in-from-top duration-200"
           >
             <div class="space-y-3">
-              <h4 class="text-xs font-medium text-gray-300 mb-3">{{ t('partner.subGames') }}</h4>
-              
               <!-- Sub Game Cards -->
               <div v-if="game.games && game.games.length > 0" class="space-y-3">
-                <div v-for="subGame in game.games" :key="subGame.game" class="bg-white/5 rounded-lg p-3">
+                <div
+                  v-for="subGame in game.games"
+                  :key="subGame.game"
+                  class="bg-white/5 rounded-lg p-3"
+                >
                   <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-medium text-white">{{ t(subGame.game) }}</span>
+                    <span class="text-xs font-medium text-white">{{
+                      t(subGame.game)
+                    }}</span>
                   </div>
                   <div class="grid grid-cols-2 gap-3 text-xs">
                     <div class="flex items-center justify-between">
-                      <span class="text-gray-400">{{ t('partner.betAmount') }}</span>
+                      <span class="text-gray-400">{{ t("partner.betAmount") }}</span>
                       <span class="text-white">{{ Number(subGame.betamt) || 0 }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-gray-400">{{ t('partner.winAmount') }}</span>
+                      <span class="text-gray-400">{{ t("partner.winAmount") }}</span>
                       <span class="text-white">{{ Number(subGame.winamt) || 0 }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-gray-400">{{ t('partner.profit') }}</span>
-                                              <span class="text-white" :class="Number(subGame.profit) >= 0 ? 'text-green-400' : 'text-red-400'">
-                          {{ Number(subGame.profit) >= 0 ? '+' : '' }}{{ Number(subGame.profit) || 0 }}
-                        </span>
+                      <span class="text-gray-400">{{ t("partner.profit") }}</span>
+                      <span
+                        class="text-white"
+                        :class="
+                          Number(subGame.profit) >= 0 ? 'text-green-400' : 'text-red-400'
+                        "
+                      >
+                        {{ Number(subGame.profit) >= 0 ? "+" : ""
+                        }}{{ Number(subGame.profit) || 0 }}
+                      </span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-gray-400">{{ t('partner.rollAmount') }}</span>
+                      <span class="text-gray-400">{{ t("partner.rollAmount") }}</span>
                       <span class="text-white">{{ Number(subGame.rollamt) || 0 }}</span>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <!-- No Sub Games -->
               <div v-else class="text-center py-4">
-                <p class="text-xs text-gray-400">{{ t('common.noDataFound') }}</p>
+                <p class="text-xs text-gray-400">{{ t("common.noDataFound") }}</p>
               </div>
             </div>
           </div>
@@ -367,20 +448,20 @@ export default defineComponent({
   props: {
     memberId: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   setup(props) {
-    const { t } = useI18n();
-    
+    const { t, n } = useI18n();
+
     // Data
     const tableData = ref<Array<IData>>([]);
     const gameTableData = ref<Array<ISummaryTable>>([]);
     const loading = ref(false);
-    
+
     // Mobile state
     const expandedGames = ref<string[]>([]);
-    
+
     // Table Headers
     const tableHeaders = [
       { key: "deposits", name: t("partner.depAmount"), currency: true },
@@ -389,7 +470,7 @@ export default defineComponent({
       { key: "wallet", name: t("partner.currentWallet"), currency: true },
       { key: "wallet_point", name: t("partner.currentPoint"), currency: true },
     ];
-    
+
     const gameTableHeaders = [
       { key: "game", name: t("partner.game"), customslot: true },
       { key: "betamt", name: t("partner.totalBetAmount"), currency: true },
@@ -465,9 +546,9 @@ export default defineComponent({
         );
 
         // Fetch transaction data
-        const results = await ApiService.get(
-          `/partner/dashboard${query}`
-        ).then((res) => res.data);
+        const results = await ApiService.get(`/partner/dashboard${query}`).then(
+          (res) => res.data
+        );
 
         // Clear and update table data without triggering watchers
         tableData.value.length = 0;
@@ -499,19 +580,27 @@ export default defineComponent({
 
     // Watch for memberId changes only when it's provided as a prop
     if (props.memberId) {
-      watch(() => props.memberId, (newMemberId, oldMemberId) => {
-        if (newMemberId && newMemberId !== oldMemberId) {
-          getList();
-        }
-      }, { immediate: false });
+      watch(
+        () => props.memberId,
+        (newMemberId, oldMemberId) => {
+          if (newMemberId && newMemberId !== oldMemberId) {
+            getList();
+          }
+        },
+        { immediate: false }
+      );
     }
 
     // Add watcher for dateRange to trigger getList
-    watch(dateRange, (newVal, oldVal) => {
-      if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
-        getList();
-      }
-    }, { deep: true });
+    watch(
+      dateRange,
+      (newVal, oldVal) => {
+        if (newVal.start !== oldVal.start || newVal.end !== oldVal.end) {
+          getList();
+        }
+      },
+      { deep: true }
+    );
 
     onMounted(() => {
       getList();
@@ -519,6 +608,7 @@ export default defineComponent({
 
     return {
       t,
+      n,
       tableHeaders,
       tableData,
       gameTableHeaders,

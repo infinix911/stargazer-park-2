@@ -9,21 +9,21 @@
        >
         <!-- Modal Wrapper -->
         <div
-          class="w-full bg-[#07102e]/5 backdrop-blur-md border border-white/50 p-3 sm:p-4 md:p-6 lg:p-8 rounded-lg overflow-hidden"
+          class="w-full bg-white border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8 rounded-lg overflow-hidden shadow-xl"
         >
           <!-- Modal Header with gradient -->
           <div
-            class="px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 border-b border-white/10 bg-gradient-to-r from-white/5 to-white/10 -mx-3 sm:-mx-4 md:-mx-6 -mt-3 sm:-mt-4 md:-mt-6 mb-3 sm:mb-4 md:mb-6 relative"
+            class="px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 -mx-3 sm:-mx-4 md:-mx-6 -mt-3 sm:-mt-4 md:-mt-6 mb-3 sm:mb-4 md:mb-6 relative"
           >
             <div class="flex items-center gap-2 sm:gap-3">
               <div class="px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-500/20 rounded-lg">
-                <i class="fas fa-wallet text-blue-400 text-xs sm:text-sm"></i>
+                <i class="fas fa-wallet text-blue-600 text-xs sm:text-sm"></i>
               </div>
               <div>
-                <h2 class="text-base sm:text-lg font-semibold text-white">
+                <h2 class="text-base sm:text-lg font-semibold text-gray-900">
                   {{ t(`partner.storeMoney${type}`) }}
                 </h2>
-                <p class="text-xs text-gray-400">
+                <p class="text-xs text-gray-600">
                   {{ type === "ADD" ? t("partner.add") : t("partner.subtract") }}
                   {{ t("partner.transaction") }}
                 </p>
@@ -34,7 +34,7 @@
             <button
               type="button"
               @click="handleClose"
-              class="custom-close-button absolute top-2 right-2 sm:top-4 sm:right-4 p-1.5 sm:p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-200 group"
+              class="custom-close-button absolute top-2 right-2 sm:top-4 sm:right-4 p-1.5 sm:p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition-all duration-200 group"
             >
               <X class="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
             </button>
@@ -45,68 +45,68 @@
             <!-- Member Field -->
             <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <User class="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
-                <label class="text-white font-medium text-sm sm:text-base">{{
+                <User class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                <label class="text-gray-700 font-medium text-sm sm:text-base">{{
                   t("partnerMenu.member")
                 }}</label>
               </div>
               <Input
                 v-model="user.username"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
+                class="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Store Member Field -->
             <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <Users class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
-                <label class="text-white font-medium text-sm sm:text-base">{{
+                <Users class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                <label class="text-gray-700 font-medium text-sm sm:text-base">{{
                   t("partner.storeMember")
                 }}</label>
               </div>
               <Input
                 v-model="receiver.username"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
+                class="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Balance Field -->
             <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <Wallet class="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
-                <label class="text-white font-medium text-sm sm:text-base">{{
+                <Wallet class="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                <label class="text-gray-700 font-medium text-sm sm:text-base">{{
                   t("partner.shopMemberBalance")
                 }}</label>
               </div>
               <Input
                 v-model="balanceDisplay"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
+                class="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Transaction Type Field -->
             <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <ArrowUpDown class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-                <label class="text-white font-medium text-sm sm:text-base">{{
+                <ArrowUpDown class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" />
+                <label class="text-gray-700 font-medium text-sm sm:text-base">{{
                   t("partner.transaction")
                 }}</label>
               </div>
               <Input
                 v-model="transactionTypeDisplay"
                 readonly
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
+                class="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base h-9 sm:h-10"
               />
             </div>
 
             <!-- Transaction Amount Field -->
             <div class="space-y-1 sm:space-y-2">
               <div class="flex items-center space-x-2">
-                <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
-                <label class="text-white font-medium text-sm sm:text-base">{{
+                <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                <label class="text-gray-700 font-medium text-sm sm:text-base">{{
                   t("partner.tranAmount")
                 }}</label>
               </div>
@@ -115,9 +115,9 @@
                 type="number"
                 :placeholder="t('partner.shopTransferNotifAnyAmount')"
                 :class="{ 'border-red-500': errors.amount }"
-                class="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base h-9 sm:h-10"
+                class="bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base h-9 sm:h-10"
               />
-              <p v-if="errors.amount" class="text-xs sm:text-sm text-red-400">{{ errors.amount }}</p>
+              <p v-if="errors.amount" class="text-xs sm:text-sm text-red-600">{{ errors.amount }}</p>
             </div>
 
             <!-- Quick Amount Buttons -->
@@ -131,8 +131,8 @@
                   variant="outline"
                   :class="
                     amount.value === 0
-                      ? 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 h-8 sm:h-9'
-                      : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white border-gray-600 hover:border-gray-500 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 shadow-lg h-8 sm:h-9'
+                      ? '!bg-gray-500 text-white border-0 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 hover:scale-105 h-8 sm:h-9 hover:text-white'
+                      : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white rounded shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 border border-blue-400/30 py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium h-8 sm:h-9 hover:text-white'
                   "
                 >
                   {{ t(amount.label) }}
@@ -143,7 +143,7 @@
             <!-- Submit Button -->
             <Button
               type="submit"
-              class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white font-medium py-2.5 sm:py-3 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg h-10 sm:h-11 text-sm sm:text-base"
+              class="w-full bg-[#1A1A2E] hover:bg-[#16213E] text-white font-medium py-2.5 sm:py-3 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg h-10 sm:h-11 text-sm sm:text-base border-0"
               :disabled="isSubmitting"
             >
               <span v-if="isSubmitting">{{ t("partner.processing") }}</span>

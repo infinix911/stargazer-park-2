@@ -638,6 +638,7 @@ export default {
     vip: "등급 4",
     rollFee: "롤링피",
     losingAmount: "루징 보유금액",
+    settleLosingAmount: "미당첨금액",
     requestWithdrawal: "출금 요청",
     addSubSuccess: "하부 회원을 생성되었습니다.",
     member_already_exist: "아아디, 전화번호, 계좌번호 다시 확인해주세요",
@@ -690,6 +691,8 @@ export default {
     AMOUNT_GT_WALLET: "보유 금액보다 큰 금액은 불가능 합니다.",
     StoreMoneySuccess: "매장 머니거래가 처리되었습니다.",
     NO_SETTLEMENT_DATA: "정산 데이터가 없습니다.",
+    EOD_LIMIT_2330_1230: "당사는 23:30분부터 00:30분까지 은행점검 및 정산으로 인해 충전 환전 업무가 처리되지 않습니다.점검 이후 다시 신청해주시기 바랍니다",
+
   },
   commission: {
     settings: "요율 설정",

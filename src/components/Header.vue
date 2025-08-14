@@ -15,7 +15,7 @@
             <Sheet v-model:open="isMobileMenuOpen">
               <SheetTrigger as-child>
                 <button
-                  class="lg:hidden p-1.5 sm:p-2 text-white hover:text-red-400 transition-colors"
+                  class="lg:hidden p-1.5 sm:p-2 text-white hover:text-[#1494dc] transition-colors"
                 >
                   <svg
                     class="w-5 h-5 sm:w-6 sm:h-6"
@@ -42,7 +42,7 @@
                     <h2 class="text-lg font-bold text-white font-orbitron">PRODTEST2</h2>
                     <button
                       @click="isMobileMenuOpen = false"
-                      class="text-white hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-800"
+                      class="text-white hover:[#1494dc] transition-colors p-2 rounded-lg hover:bg-gray-800"
                     >
                       <svg
                         class="w-5 h-5"
@@ -79,9 +79,9 @@
                               :key="subItem.key"
                               :to="subItem.path"
                               @click="isMobileMenuOpen = false"
-                              class="flex items-center space-x-2 hover:text-red-400 transition-colors py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300"
+                              class="flex items-center space-x-2 hover:text-[#1494dc] transition-colors py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300"
                               :class="
-                                isActive(subItem.path) ? 'bg-gray-800 text-red-400' : ''
+                                isActive(subItem.path) ? 'bg-gray-800 text-[#1494dc]' : ''
                               "
                             >
                               <i :class="subItem.icon + ' w-4 h-4 text-sm'"></i>
@@ -95,9 +95,9 @@
                           v-else
                           :to="menuItem.path"
                           @click="isMobileMenuOpen = false"
-                          class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                          class="flex items-center space-x-3 hover:text-[#1494dc] transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                           :class="
-                            isActive(menuItem.path) ? 'bg-gray-800 text-red-400' : ''
+                            isActive(menuItem.path) ? 'bg-gray-800 text-[#1494dc]' : ''
                           "
                         >
                           <i :class="menuItem.icon + ' w-5 h-5 text-base'"></i>
@@ -110,7 +110,7 @@
                     <template v-else>
                       <router-link
                         to="/casino"
-                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 hover:text-[#1494dc] transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/casino.svg"
@@ -121,7 +121,7 @@
                       </router-link>
                       <router-link
                         to="/slot"
-                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 hover:text-[#1494dc] transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/slot.svg"
@@ -132,7 +132,7 @@
                       </router-link>
                       <a
                         href="#"
-                        class="flex items-center space-x-3 hover:text-red-400 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                        class="flex items-center space-x-3 transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
                       >
                         <img
                           src="/images/header/holdem.svg"
@@ -140,6 +140,14 @@
                           class="w-6 h-6 filter brightness-0 invert"
                         />
                         <span class="text-lg">홀덤</span>
+                      </a>
+                      <a
+                        href="/partner/dashboard"
+                        class="flex items-center space-x-3 hover:text-[#1494dc] transition-colors font-bold py-3 px-3 rounded-lg hover:bg-gray-800 text-white"
+                      >
+            
+                        <i class="fas fa-users"></i>
+                        <span class="text-lg">{{ t("header.partner") }}</span>
                       </a>
                     </template>
                   </nav>
@@ -188,7 +196,7 @@
             <!-- Logo -->
             <router-link
               to="/"
-              class="text-xl font-bold text-red-500 font-orbitron text-lg lg:text-[2.25rem] text-white hover:text-red-400 transition-colors cursor-pointer"
+              class="text-xl font-bold text-red-500 font-orbitron text-lg lg:text-[2.25rem] text-white hover:text-[#1494dc] transition-colors cursor-pointer"
             >
               prodtest2
             </router-link>
@@ -204,8 +212,8 @@
                 <!-- Menu items with submenus -->
                 <div v-if="menuItem.submenu" class="relative group">
                   <div
-                    class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold cursor-pointer"
-                    :class="isActiveMenu(menuItem) ? 'text-red-400' : ''"
+                    class="flex items-center space-x-1 hover:text-[#1494dc] transition-colors font-bold cursor-pointer"
+                    :class="isActiveMenu(menuItem) ? 'text-[#1494dc]' : ''"
                   >
                     <i :class="menuItem.icon + ' w-4 h-4 lg:w-6 lg:h-6'"></i>
                     <span class="hidden xl:inline">{{ t(menuItem.label) }}</span>
@@ -221,10 +229,10 @@
                       v-for="subItem in menuItem.submenu"
                       :key="subItem.key"
                       :to="subItem.path"
-                      class="block px-4 py-3 text-sm hover:bg-gray-800 hover:text-red-400 transition-colors border-b border-gray-700 last:border-b-0"
+                      class="block px-4 py-3 text-sm hover:bg-gray-800 hover:text-[#1494dc] transition-colors border-b border-gray-700 last:border-b-0"
                       :class="
                         isActive(subItem.path)
-                          ? 'text-red-400 bg-gray-800'
+                          ? 'text-[#1494dc] bg-gray-800'
                           : 'text-gray-300'
                       "
                     >
@@ -238,8 +246,8 @@
                 <router-link
                   v-else
                   :to="menuItem.path"
-                  class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
-                  :class="isActive(menuItem.path) ? 'text-red-400' : ''"
+                  class="flex items-center space-x-1 hover:text-[#1494dc] transition-colors font-bold"
+                  :class="isActive(menuItem.path) ? 'text-[#1494dc]' : ''"
                 >
                   <i :class="menuItem.icon + ' w-4 h-4 lg:w-6 lg:h-6'"></i>
                   <span class="hidden xl:inline">{{ t(menuItem.label) }}</span>
@@ -251,7 +259,7 @@
             <template v-else>
               <router-link
                 to="/casino"
-                class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                class="flex items-center space-x-1 hover:text-[#1494dc] transition-colors font-bold"
               >
                 <img
                   src="/images/header/casino.svg"
@@ -262,7 +270,7 @@
               </router-link>
               <router-link
                 to="/slot"
-                class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                class="flex items-center space-x-1 hover:text-[#1494dc] transition-colors font-bold"
               >
                 <img
                   src="/images/header/slot.svg"
@@ -284,7 +292,7 @@
               </a> -->
               <a
                 href="/partner/dashboard"
-                class="flex items-center space-x-1 hover:text-red-400 transition-colors font-bold"
+                class="flex items-center space-x-1 hover:text-[#1494dc] transition-colors font-bold"
               >
                 <i class="fas fa-users"></i>
                 <span class="hidden xl:inline">{{ t("header.partner") }}</span>
