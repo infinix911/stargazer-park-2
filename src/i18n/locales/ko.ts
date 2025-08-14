@@ -88,9 +88,9 @@ export default {
     alreadyHaveAccount: '이미 계정이 있으세요?',
     loginHere: '로그인하기',
     errors: {
-      usernameRequired: '아이디를 입력해주세요',
-      usernameMinLength: '아이디는 최소 3자 이상이어야 합니다',
-      usernameMaxLength: '아이디는 20자 미만이어야 합니다',
+      usernameRequired: '3~7자의 영문, 숫자만 가능',
+      usernameMinLength: '3~7자의 영문, 숫자만 가능',
+      usernameMaxLength: '3~7자의 영문, 숫자만 가능',
       usernameFormat: '아이디는 영문, 숫자, 언더스코어만 사용 가능합니다',
       passwordRequired: '비밀번호를 입력해주세요',
       passwordMinLength: '비밀번호는 최소 8자 이상이어야 합니다',
