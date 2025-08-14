@@ -1,9 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-20">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+  <div class="h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
       <!-- Logo/Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ t('login.title') }}</h1>
+        <h1 class="text-4xl font-orbitron font-black text-gray-900">{{ t('login.title') }}</h1>
+        <div class="text-gray-400 text-sm mt-1 flex flex-col items-center">
+          <span class="mt-3 font-bold text-xl text-gray-800">{{ t('login.subtitleLine1') }}</span>
+          <span class="mt-1 text-md">{{ t('login.subtitleLine2') }}</span>
+        </div>
       </div>
 
       <!-- Login Form -->
@@ -21,7 +25,7 @@
             type="text"
             :placeholder="t('login.usernamePlaceholder')"
             :class="{ 'border-red-500': errors.username }"
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
           />
           <p v-if="errors.username" class="text-red-400 text-sm">{{ errors.username }}</p>
         </div>
@@ -40,7 +44,7 @@
               :type="showPassword ? 'text' : 'password'"
               :placeholder="t('login.passwordPlaceholder')"
               :class="{ 'border-red-500': errors.password }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12 rounded-[4px] h-12"
             />
             <button
               type="button"
@@ -79,14 +83,14 @@
               type="text"
               :placeholder="t('login.captchaPlaceholder')"
               :class="{ 'border-red-500': errors.captcha }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             />
             <Button
               type="button"
               @click="refreshServerCaptcha"
               variant="outline"
               size="icon"
-              class="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+              class="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 h-12"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -99,11 +103,11 @@
         <!-- Login Button -->
         <Button
           type="submit"
-          class="cursor-pointer w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
+          class="cursor-pointer w-full text-white font-medium h-[66px] !transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg login-button"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ t('login.loggingIn') }}</span>
-          <span v-else>{{ t('login.loginButton') }}</span>
+          <span class="text-xl" v-if="isSubmitting">{{ t('login.loggingIn') }}</span>
+          <span class="text-xl" v-else>{{ t('login.loginButton') }}</span>
         </Button>
       </form>
 
@@ -256,4 +260,11 @@ onMounted(() => {
 
 <style scoped>
 /* Login page specific styles */
+.login-button {
+  background: linear-gradient(90deg, rgb(56, 51, 216) 0%, rgb(26, 22, 141) 100%);
+}
+
+.login-button:hover {
+  background: linear-gradient(90deg, rgb(67, 56, 202) 0%, rgb(37, 99, 235) 100%);
+}
 </style> 

@@ -16,6 +16,11 @@ export default {
     login: 'Login',
     signup: 'Sign Up'
   },
+  userDropdown: {
+    pointWithdrawal: 'Point Withdrawal',
+    changePassword: 'Change Password',
+    logout: 'Logout'
+  },
   auth: {
     loginRequired: 'Login Required',
     loginRequiredMessage: 'Please log in to access this feature.',
@@ -25,6 +30,8 @@ export default {
     id: "User ID",
     title: 'PRODTEST2',
     subtitle: 'Login Required',
+    subtitleLine1: 'Login Required',
+    subtitleLine2: 'Please log in to access the selected service',
     description: 'Please log in to access the selected service',
     username: 'Username',
     usernamePlaceholder: 'Enter username',
@@ -51,7 +58,9 @@ export default {
     errorMessage: 'Invalid username, password, or captcha. Please try again.'
   },
   register: {
-    title: 'Create an account',
+    title: 'PRODTEST2',
+    subtitleLine1: 'Registration Required',
+    subtitleLine2: 'Create a new account to use our services',
     basicInformation: 'Basic Information',
     accountInformation: 'Account Information',
     username: 'Username',
@@ -297,7 +306,9 @@ export default {
     },
     InquiryRead: "Inquiry marked as read successfully",
     InquiryDeletedSuccess: "Inquiry deleted successfully",
-    InquirySentSuccess: "Bank inquiry sent successfully"
+    InquirySentSuccess: "Bank inquiry sent successfully",
+    StateColumn: "Status",
+    DepositAccReq: "Deposit Account Request"
   },
   viewInquiry: {
     title: 'View Inquiry Details',
@@ -1056,6 +1067,8 @@ export default {
     loading: 'Loading...',
     retry: 'Retry',
     close: 'Close',
+    page: 'Page',
+    of: 'of',
     CASINO: "Casino",
     HOTEL: "Hotel",
     SLOT: "Slot",

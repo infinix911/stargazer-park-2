@@ -10,6 +10,7 @@
     :end-placeholder="t('dateRange.end')"
     :shortcuts="shortcuts"
     @change="onChange"
+    class="date-range-picker-dark"
   >
   </el-date-picker>
 </template>
@@ -150,4 +151,5 @@ export default defineComponent({
 .el-range-editor.el-input__wrapper {
   display: block;
 }
+
 </style>

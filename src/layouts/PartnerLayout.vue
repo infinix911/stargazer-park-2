@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 relative overflow-hidden text-white">
+  <div class="min-h-screen relative overflow-hidden text-white" style="background-image: linear-gradient(to bottom, #202436, #11131c);">
     <!-- Casino Banner Background Accent -->
     <div 
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-8 pointer-events-none"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-5 pointer-events-none"
       style="background-image: url('/images/banner/casino.webp')"
     ></div>
     
@@ -11,13 +11,6 @@
     
     <!-- Header with Partner Navigation -->
     <Header :is-partner="true" />
-    
-    <!-- Animated Background Pattern -->
-    <div class="absolute inset-0 opacity-20 pointer-events-none">
-      <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-      <div class="absolute top-0 right-0 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-      <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
-    </div>
 
     <!-- Main Content Area -->
     <main class="relative z-10 flex-1">
@@ -64,38 +57,6 @@ main::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Smooth transitions */
-* {
-  transition-property: color, background-color, border-color, transform, opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-}
-
-/* Animation for dropdowns */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* Mobile menu animation */
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.3s ease;
-  transform-origin: top;
-}
-
-.slide-down-enter-from,
-.slide-down-leave-to {
-  opacity: 0;
-  transform: scaleY(0);
-}
-
 /* Focus styles for accessibility */
 button:focus-visible,
 a:focus-visible {
@@ -107,25 +68,5 @@ a:focus-visible {
 .router-link-exact-active {
   background-color: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
-}
-
-/* Animation keyframes for background */
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.3;
-  }
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
 }
 </style>

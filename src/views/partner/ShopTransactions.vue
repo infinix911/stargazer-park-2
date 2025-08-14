@@ -12,9 +12,10 @@
     <div class="w-full mx-auto px-4 py-6" v-if="authStore.user.shoplevel < 2">
       <div class="flex flex-col sm:flex-row lg:flex-row gap-3 items-stretch sm:items-end lg:items-end justify-end">
         <!-- Search Fields Row -->
-        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial">
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:flex-initial justify-end items-end">
           <!-- Transaction Type -->
           <div class="w-full sm:w-32 lg:w-32">
+            <span class="text-gray-200 text-xs block mb-1">{{ t("partner.tranType") }}</span>
             <select
               v-model="tranType"
               class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none h-[40px]"
@@ -32,10 +33,10 @@
 
           <!-- Store Member -->
           <div class="w-full sm:w-48 lg:w-48">
+            <span class="text-gray-200 text-xs block mb-1">{{ t("partner.storeMember") }}</span>
             <input
               v-model="receiver"
               type="text"
-              placeholder="Store Member"
               class="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm px-3 focus:border-blue-500 focus:outline-none placeholder-gray-400 h-[40px]"
             />
           </div>

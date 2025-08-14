@@ -1,167 +1,182 @@
 <template>
   <Dialog :open="props.open" @update:open="handleOpenChange">
-    <DialogContent class="w-full max-w-md bg-white p-8">
+    <DialogContent class="w-[95vw] max-w-md sm:max-w-lg bg-[#2c334a] border border-[#2d334b] p-0 overflow-hidden max-h-[90vh] flex flex-col">
       <!-- Form Title -->
-      <DialogHeader class="text-center mb-8">
-        <DialogTitle class="text-3xl font-orbitron font-bold text-gray-900">
+      <DialogHeader class="text-center p-3 sm:p-4 flex-shrink-0 bg-gradient-to-r from-[#00c990] to-[#3b959c]">
+        <DialogTitle class="text-xl sm:text-2xl font-orbitron font-bold text-white">
           {{ t('withdrawal.title') }}
         </DialogTitle>
-        <DialogDescription class="text-gray-600 mt-2">
-          {{ t('withdrawal.description') }}
+        <DialogDescription class="text-white/80 mt-1 text-sm sm:text-base">
+          <!-- {{ t('withdrawal.description') }} -->
         </DialogDescription>
       </DialogHeader>
 
       <!-- Withdrawal Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1 overflow-y-auto">
         <!-- Bank Name Field -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <div class="flex items-center space-x-2">
-            <Building2 class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankName') }}</label>
+            <Building2 class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
+            <label class="text-white font-medium text-base">{{ t('withdrawal.bankName') }}</label>
           </div>
-          <Input
-            v-model="form.bankName"
-            type="text"
-            :placeholder="t('withdrawal.bankNamePlaceholder')"
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
-            readonly
-          />
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-2 sm:p-3">
+            <Input
+              v-model="form.bankName"
+              type="text"
+              :placeholder="t('withdrawal.bankNamePlaceholder')"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
+              readonly
+              disabled
+              tabindex="-1"
+            />
+          </div>
         </div>
 
         <!-- Bank Account Name Field -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <div class="flex items-center space-x-2">
-            <User class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccountName') }}</label>
+            <User class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
+            <label class="text-white font-medium text-base">{{ t('withdrawal.bankAccountName') }}</label>
           </div>
-          <Input
-            v-model="form.bankAccountName"
-            type="text"
-            :placeholder="t('withdrawal.bankAccountNamePlaceholder')"
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
-            readonly
-          />
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-2 sm:p-3">
+            <Input
+              v-model="form.bankAccountName"
+              type="text"
+              :placeholder="t('withdrawal.bankAccountNamePlaceholder')"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
+              readonly
+              disabled
+              tabindex="-1"
+            />
+          </div>
         </div>
 
         <!-- Bank Account Field -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <div class="flex items-center space-x-2">
-            <CreditCard class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.bankAccount') }}</label>
+            <CreditCard class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
+            <label class="text-white font-medium text-base">{{ t('withdrawal.bankAccount') }}</label>
           </div>
-          <Input
-            v-model="form.bankAccount"
-            type="text"
-            :placeholder="t('withdrawal.bankAccountPlaceholder')"
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
-            readonly
-          />
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-2 sm:p-3">
+            <Input
+              v-model="form.bankAccount"
+              type="text"
+              :placeholder="t('withdrawal.bankAccountPlaceholder')"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
+              readonly
+              disabled
+              tabindex="-1"
+            />
+          </div>
         </div>
 
         <!-- Balance Field -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <div class="flex items-center space-x-2">
-            <Wallet class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.balance') }}</label>
+            <Wallet class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
+            <label class="text-white font-medium text-base">{{ t('withdrawal.balance') }}</label>
           </div>
-          <Input
-            v-model="form.balance"
-            type="text"
-            :placeholder="t('withdrawal.balancePlaceholder')"
-            readonly
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
-          />
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-2 sm:p-3">
+            <Input
+              v-model="form.balance"
+              type="text"
+              :placeholder="t('withdrawal.balancePlaceholder')"
+              readonly
+              disabled
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none cursor-not-allowed"
+              tabindex="-1"
+            />
+          </div>
         </div>
 
         <!-- Withdrawal Amount Field -->
-        <div class="space-y-2">
+        <div class="space-y-1.5">
           <div class="flex items-center space-x-2">
-            <DollarSign class="w-5 h-5 text-gray-700" />
-            <label class="text-gray-700 font-medium">{{ t('withdrawal.withdrawalAmount') }}</label>
+            <DollarSign class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400" />
+            <label class="text-white font-medium text-base">{{ t('withdrawal.withdrawalAmount') }}</label>
           </div>
-          <Input
-            v-model="displayAmount"
-            type="text"
-            :placeholder="t('withdrawal.withdrawalAmountPlaceholder')"
-            :class="{ 'border-red-500': errors.amount }"
-            class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
-            @input="handleNumberInput"
-          />
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-2 sm:p-3">
+            <Input
+              ref="withdrawalAmountInput"
+              v-model="displayAmount"
+              type="text"
+              :placeholder="t('withdrawal.withdrawalAmountPlaceholder')"
+              :class="{ 'border-red-500': errors.amount }"
+              class="bg-transparent border-none text-white placeholder-slate-400 focus:ring-0 focus:border-none"
+              @input="handleNumberInput"
+              tabindex="0"
+              autofocus
+            />
+          </div>
           <p v-if="errors.amount" class="text-red-400 text-sm">{{ errors.amount }}</p>
         </div>
 
         <!-- Quick Amount Buttons -->
-        <div class="space-y-3">
-          <div class="grid grid-cols-3 gap-2">
-            <Button
+        <div class="space-y-1.5 sm:space-y-2">
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
+            <button
               type="button"
               @click="setAmount(10000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               10,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(50000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               50,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(100000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               100,000
-            </Button>
+            </button>
           </div>
-          <div class="grid grid-cols-3 gap-2">
-            <Button
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
+            <button
               type="button"
               @click="setAmount(500000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               500,000
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="setAmount(1000000)"
-              variant="outline"
-              :class="'!bg-[#075d4f] hover:!bg-[#064e42] !text-white !border-[#075d4f] hover:!border-[#064e42] py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-[#00c990] hover:bg-[#00c990]/80 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               1M
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
               @click="resetAmount"
-              variant="outline"
-              :class="'!bg-gray-500 hover:!bg-gray-600 !text-white !border-gray-500 hover:!border-gray-600 py-2 px-3 text-sm font-medium rounded-md transition-colors'"
+              class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-2 sm:px-3 text-xs sm:text-sm rounded-md transition-colors cursor-pointer inline-flex items-center justify-center"
             >
               {{ t('withdrawal.reset') }}
-            </Button>
+            </button>
           </div>
         </div>
 
         <!-- Submit Button -->
-        <Button
+        <button
           type="submit"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3"
+          class="w-full bg-[#95b1f8] hover:bg-[#95b1f8]/80 text-black font-medium py-2 sm:py-2.5 text-sm sm:text-base rounded-lg transition-colors cursor-pointer inline-flex items-center justify-center"
           :disabled="isSubmitting"
         >
           <span v-if="isSubmitting">{{ t('withdrawal.withdrawing') }}</span>
           <span v-else>{{ t('withdrawal.withdraw') }}</span>
-        </Button>
+        </button>
       </form>
     </DialogContent>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted, nextTick } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { Input } from '../../components/ui/input'
@@ -188,6 +203,19 @@ import { computed } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 const authStore = useAuthStore()
 const user = computed(() => authStore.user)
+
+// Ref for withdrawal amount input field
+const withdrawalAmountInput = ref<HTMLInputElement>()
+
+// Function to focus withdrawal amount input
+const focusWithdrawalAmountInput = () => {
+  setTimeout(() => {
+    if (withdrawalAmountInput.value) {
+      withdrawalAmountInput.value.focus()
+      withdrawalAmountInput.value.select()
+    }
+  }, 100)
+}
 
 // Props
 interface Props {
@@ -269,6 +297,9 @@ const isSubmitting = ref(false)
 const handleOpenChange = (open: boolean): void => {
   if (!open) {
     emit('close')
+  } else {
+    // Focus withdrawal amount input when modal opens
+    focusWithdrawalAmountInput()
   }
 }
 
@@ -336,8 +367,38 @@ const handleSubmit = async (): Promise<void> => {
     isSubmitting.value = false
   }
 }
+
+// Watch for modal open state and focus withdrawal amount input
+watch(() => props.open, (isOpen) => {
+  if (isOpen) {
+    focusWithdrawalAmountInput()
+  }
+})
 </script>
 
 <style scoped>
 /* Withdrawal modal specific styles */
+.bg-slate-700\/50:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom scrollbar for dark theme */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
 </style>

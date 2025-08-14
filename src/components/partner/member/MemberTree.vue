@@ -334,8 +334,5 @@ li.drag-over {
 	transform: scale(1.05);
 }
 
-.tree-content {
-	background-color: #242424;
-}
 </style>
       

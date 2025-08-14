@@ -131,7 +131,7 @@
             </div>
             <div class="space-y-2">
               <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-400">{{ t("partner.losingAmount") }}</span>
+                <span class="text-xs text-gray-400">{{ t("partner.settleLosingAmount") }}</span>
                 <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-white">
                   {{ n(settlement.loseamt) }}
                 </span>
@@ -254,7 +254,7 @@ const tableHeaders = [
     currency: true,
   },
   { key: "winamt", name: t("partner.winningAmount"), currency: true },
-  { key: "loseamt", name: t("partner.losingAmount"), currency: true },
+  { key: "loseamt", name: t("partner.settleLosingAmount"), currency: true },
   { key: "rollamt", name: t("partner.rollFee"), currency: true },
   {
     key: "profit",

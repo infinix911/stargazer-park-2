@@ -3,7 +3,11 @@
     <div class="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8">
       <!-- Logo/Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-orbitron font-bold text-gray-900">{{ t('register.title') }}</h1>
+        <h1 class="text-4xl font-orbitron font-black text-gray-900">{{ t('register.title') }}</h1>
+        <div class="text-gray-400 text-sm mt-1 flex flex-col items-center">
+          <span class="mt-3 font-bold text-xl text-gray-800">{{ t('register.subtitleLine1') }}</span>
+          <span class="mt-1 text-md">{{ t('register.subtitleLine2') }}</span>
+        </div>
       </div>
 
       <!-- Registration Form -->
@@ -23,7 +27,7 @@
               type="text"
               :placeholder="t('register.usernamePlaceholder')"
               :class="{ 'border-red-500': errors.username }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             />
             <p v-if="errors.username" class="text-red-400 text-sm">{{ errors.username }}</p>
           </div>
@@ -40,7 +44,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 :placeholder="t('register.passwordPlaceholder')"
                 :class="{ 'border-red-500': errors.password }"
-                class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
+                class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12 rounded-[4px] h-12"
               />
               <button
                 type="button"
@@ -66,7 +70,7 @@
               :type="showConfirmPassword ? 'text' : 'password'"
               :placeholder="t('register.confirmPasswordPlaceholder')"
               :class="{ 'border-red-500': errors.confirm_pass }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12 rounded-[4px] h-12"
             />
               <button
                 type="button"
@@ -91,7 +95,7 @@
               type="text"
               :placeholder="t('register.namePlaceholder')"
               :class="{ 'border-red-500': errors.name }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             />
             <p v-if="errors.name" class="text-red-400 text-sm">{{ errors.name }}</p>
           </div>
@@ -108,7 +112,7 @@
               type="tel"
               :placeholder="t('register.mobileNumberPlaceholder')"
               :class="{ 'border-red-500': errors.mobile }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12 rounded-[4px] h-12"
             />
               <div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col">
                 <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,7 +140,7 @@
             <Select
               v-model="form.bank_name"
               :class="{ 'border-red-500': errors.bank_name }"
-              class="bg-white border-gray-300 text-gray-900 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             >
               <option value="" disabled class="bg-white text-gray-500">{{ t('register.bankNamePlaceholder') }}</option>
               <option 
@@ -162,7 +166,7 @@
               type="text"
               :placeholder="t('register.bankAccountNamePlaceholder')"
               :class="{ 'border-red-500': errors.bank_account_name }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             />
             <p v-if="errors.bank_account_name" class="text-red-400 text-sm">{{ errors.bank_account_name }}</p>
           </div>
@@ -179,7 +183,7 @@
               type="text"
               :placeholder="t('register.bankAccountPlaceholder')"
               :class="{ 'border-red-500': errors.bank_account }"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 pr-12 rounded-[4px] h-12"
             />
               <div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col">
                 <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +210,7 @@
               v-model="form.recommand"
               type="text"
               :placeholder="t('register.referralCodePlaceholder')"
-              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+              class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
             />
           </div>
 
@@ -228,14 +232,14 @@
                 type="text"
                 :placeholder="t('register.captchaPlaceholder')"
                 :class="{ 'border-red-500': errors.captcha }"
-                class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500"
+                class="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-purple-500 rounded-[4px] h-12"
               />
               <Button
                 type="button"
                 @click="refreshServerCaptcha"
                 variant="outline"
                 size="icon"
-                class="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+                class="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 h-12"
               >
                 <RefreshCw class="w-4 h-4" />
               </Button>
@@ -247,11 +251,11 @@
         <!-- Create Account Button -->
         <Button
           type="submit"
-          class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3"
+          class="cursor-pointer w-full text-white font-medium h-[66px] !transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg register-button"
           :disabled="isSubmitting"
         >
-          <span v-if="isSubmitting">{{ t('register.creatingAccount') }}</span>
-          <span v-else>{{ t('register.createAccountButton') }}</span>
+          <span class="text-xl" v-if="isSubmitting">{{ t('register.creatingAccount') }}</span>
+          <span class="text-xl" v-else>{{ t('register.createAccountButton') }}</span>
         </Button>
       </form>
 
@@ -518,4 +522,11 @@ onMounted(() => {
 
 <style scoped>
 /* Register page specific styles */
+.register-button {
+  background: linear-gradient(90deg, rgb(56, 51, 216) 0%, rgb(26, 22, 141) 100%);
+}
+
+.register-button:hover {
+  background: linear-gradient(90deg, rgb(67, 56, 202) 0%, rgb(37, 99, 235) 100%);
+}
 </style>
